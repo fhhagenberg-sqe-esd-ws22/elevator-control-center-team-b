@@ -10,7 +10,7 @@ public class SystemInfoTest {
     public void testJavaVersion() {
         String javaVersion = SystemInfo.javaVersion();
 
-        assertEquals("11", javaVersion.split("\\.")[0]);
+        assertEquals("12", javaVersion.split("\\.")[0]);
     }
 
     @Test
