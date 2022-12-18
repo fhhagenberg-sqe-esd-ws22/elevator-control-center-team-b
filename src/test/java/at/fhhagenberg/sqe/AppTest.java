@@ -11,7 +11,7 @@ import org.testfx.matcher.control.LabeledMatchers;
 import javafx.stage.Stage;
 
 @ExtendWith(ApplicationExtension.class)
-public class AppTest {
+class AppTest {
     /**
      * Will be called with {@code @Before} semantics, i. e. before each test method.
      *
@@ -27,7 +27,7 @@ public class AppTest {
      * @param robot - Will be injected by the test runner.
      */
     @Test
-    public void testButtonWithText(FxRobot robot) {
+    void testButtonWithText(FxRobot robot) {
         FxAssert.verifyThat(".button", LabeledMatchers.hasText("Click me!"));
     }
 
@@ -35,7 +35,7 @@ public class AppTest {
      * @param robot - Will be injected by the test runner.
      */
     @Test
-    public void testButtonClick(FxRobot robot) {
+    void testButtonClick(FxRobot robot) {
         // when:
         robot.clickOn(".button");
 
