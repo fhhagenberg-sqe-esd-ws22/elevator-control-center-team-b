@@ -36,11 +36,13 @@ public class Floor {
         mIsServiced = true;
     }
 
+    public int getElevatorNumber() { return mElevatorNr; }
+
     /**
      * Getter for the floor number
      * @return number of this floor
      */
-    public int FloorNumber()
+    public int getFloorNumber()
     {
         return mFloorNr;
     }
@@ -49,7 +51,7 @@ public class Floor {
      * Getter for the call upwards button
      * @return boolean if someone called the elevator upwards
      */
-    public Boolean WantUp()
+    public Boolean getWantUp()
     {
         return mWantUp;
     }
@@ -58,7 +60,7 @@ public class Floor {
      * Getter for the call downwards button
      * @return boolean if someone called the elevator downwards
      */
-    public Boolean WantDown()
+    public Boolean getWantDown()
     {
         return mWantDown;
     }
@@ -67,7 +69,7 @@ public class Floor {
      * Getter for information if a lift rider (i find des wort gibts) requested a stop at this floor
      * @return true if someone wants to get off the elevator at this floor
      */
-    public Boolean ElevatorButtonPressed()
+    public Boolean getElevatorButtonPressed()
     {
         return mElevatorButtonPressed;
     }
@@ -76,7 +78,7 @@ public class Floor {
      * Getter for information if the floor is currently serviced
      * @return true if this floor can be targeted and the elevator can be called from this floor
      */
-    public Boolean IsServiced()
+    public Boolean isServiced()
     {
         return mIsServiced;
     }
@@ -85,7 +87,7 @@ public class Floor {
      * Attempts to update the information about the floor
      * @throws RemoteException if the server is unreachable
      */
-    public void Update() throws RemoteException
+    public void update() throws RemoteException
     {
         mIsServiced = mElevator.getServicesFloors(mElevatorNr, mFloorNr);
         if (mIsServiced)

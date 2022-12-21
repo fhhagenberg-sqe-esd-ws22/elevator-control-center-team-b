@@ -2,6 +2,7 @@ package at.fhhagenberg.sqelevator;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 // contains all information of a single elevator
 public class Elevator {
@@ -32,13 +33,18 @@ public class Elevator {
      * Constructor of an elevator
      * @param elevator api for retrieving information about the elevator
      * @param elevatorNr number for identifying this elevator
-     * @throws RemoteException if the server is unreachable
+     * @throws ElevatorException if the creation of the object failed
      */
-    public Elevator(IElevator elevator, int elevatorNr) throws RemoteException
+    public Elevator(IElevator elevator, int elevatorNr, ArrayList<Floor> floors) throws ElevatorException
     {
+        if (floors == null || floors.isEmpty()) {
+            throw new ElevatorException("Can not create Elevatro object with empty or null floor list!");
+        }
+
         mElevator = elevator;
+        mFloorHeight = floors.size();
+        mFloors = floors;
         mElevatorNr = elevatorNr;
-        mFloorHeight = mElevator.getFloorHeight();
         mSpeed = 0;
         mAccel = 0;
         mTarget = 0;
@@ -46,18 +52,21 @@ public class Elevator {
         mDirection = IElevator.ELEVATOR_DIRECTION_UNCOMMITTED;
         mDoorStatus = IElevator.ELEVATOR_DOORS_CLOSED;
         mNearestFloor = 0;
-        int nrFloors = mElevator.getFloorNum();
-        mFloors = new ArrayList<Floor>(nrFloors);
-        for(int i = 0; i < nrFloors; ++i){
-            mFloors.add(new Floor(elevator, elevatorNr, i));
-        }
+    }
+
+    /**
+     * Getter function for thefloors of an elevator.
+     * @return List of Floor objects.
+     */
+    public ArrayList<Floor> getFloors() {
+        return  mFloors;
     }
 
     /**
      * Getter for current speed of the elevator
      * @return current speed
      */
-    public int GetSpeed() {
+    public int getSpeed() {
         return mSpeed;
     }
 
@@ -65,7 +74,7 @@ public class Elevator {
      * Getter for current accelleration of the elevator
      * @return current acceleration
      */
-    public int GetAccel() {
+    public int getAccel() {
         return mAccel;
     }
 
@@ -73,7 +82,7 @@ public class Elevator {
      * Getter for the current target floor of the elevator
      * @return next planned stop of the elevator
      */
-    public int GetTarget() {
+    public int getTarget() {
         return mTarget;
     }
 
@@ -81,7 +90,7 @@ public class Elevator {
      * Getter for the current direction of the elevator
      * @return current direction of the elevator
      */
-    public int GetDirection() {
+    public int getDirection() {
         return mDirection;
     }
 
@@ -89,7 +98,7 @@ public class Elevator {
      * Getter for the current payload of the elevator
      * @return current payload of the elevator
      */
-    public int GetPayload() {
+    public int getPayload() {
         return mPayload;
     }
 
@@ -97,7 +106,7 @@ public class Elevator {
      * Getter for the current status of the elevator door
      * @return current status of the elevator door
      */
-    public int GetDoorStatus() {
+    public int getDoorStatus() {
         return mDoorStatus;
     }
 
@@ -105,7 +114,7 @@ public class Elevator {
      * Getter for the nearest floor of the elevator
      * @return nearest floor of the elevator
      */
-    public int GetNearestFloor() {
+    public int getNearestFloor() {
         return mNearestFloor;
     }
 
@@ -113,7 +122,7 @@ public class Elevator {
      * Attempts to update the information of the elevator
      * @throws RemoteException if the server is unreachable
      */
-    public void Update() throws RemoteException
+    public void update() throws RemoteException
     {
         mSpeed = mElevator.getElevatorSpeed(mElevatorNr);
         // we have a direction - no negative speeds needed
@@ -124,7 +133,7 @@ public class Elevator {
         mAccel = mElevator.getElevatorAccel(mElevatorNr);
         int target = mElevator.getTarget(mElevatorNr);
         if (target < 0) {
-            target = 0;
+            target = 0; //TODO(PH): what about underground floors?
         }
         else if (target > mFloors.size()) {
             target = mFloors.size() - 1;
@@ -133,7 +142,7 @@ public class Elevator {
         int direction = mElevator.getCommittedDirection(mElevatorNr);
         if (direction == IElevator.ELEVATOR_DIRECTION_UP ||
           direction == IElevator.ELEVATOR_DIRECTION_DOWN ||
-          direction == IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) {
+          direction == IElevator.ELEVATOR_DIRECTION_UNCOMMITTED) { //TODO(PH): either proof integer range and throw an exception if wrong or just addign the value
             mDirection = direction;
         }
         // no max weight specified
@@ -148,11 +157,11 @@ public class Elevator {
           doorStatus == IElevator.ELEVATOR_DOORS_OPENING) {
             mDoorStatus = doorStatus;
         }
-        CalcNearestFloor();
+        calcNearestFloor();
 
-        for (Floor floor : mFloors) 
+        for (Floor floor : mFloors)
         {
-            floor.Update();
+            floor.update();
         }
     }
 
@@ -160,7 +169,7 @@ public class Elevator {
      * Updates mNearestFloor
      * @throws RemoteException if the server is unreachable
      */
-    private void CalcNearestFloor() throws RemoteException
+    private void calcNearestFloor() throws RemoteException
     {
         int height = mElevator.getElevatorPosition(mElevatorNr);
 
