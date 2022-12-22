@@ -2,8 +2,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>at.fhhagenberg.sqe</groupId>
-    <artifactId>javafx-base</artifactId>
+    <artifactId>elevator-team-b</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>elevator-team-b</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
