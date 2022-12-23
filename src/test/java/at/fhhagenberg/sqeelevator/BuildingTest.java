@@ -4,9 +4,9 @@
  */
 package at.fhhagenberg.sqeelevator;
 
-import at.fhhagenberg.sqelevator.Building;
-import at.fhhagenberg.sqelevator.ElevatorException;
-import at.fhhagenberg.sqelevator.IElevator;
+import at.fhhagenberg.model.Building;
+import at.fhhagenberg.model.ElevatorException;
+import at.fhhagenberg.service.IElevator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

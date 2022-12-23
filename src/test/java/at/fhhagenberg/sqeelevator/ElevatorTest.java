@@ -4,10 +4,10 @@
  */
 package at.fhhagenberg.sqeelevator;
 
-import at.fhhagenberg.sqelevator.Elevator;
-import at.fhhagenberg.sqelevator.ElevatorException;
-import at.fhhagenberg.sqelevator.Floor;
-import at.fhhagenberg.sqelevator.IElevator;
+import at.fhhagenberg.model.Elevator;
+import at.fhhagenberg.model.ElevatorException;
+import at.fhhagenberg.model.Floor;
+import at.fhhagenberg.service.IElevator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
