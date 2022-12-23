@@ -2,11 +2,10 @@
  * Author: Philipp Holzer
  * Mat.-Nr.: s2110567016
  */
-package at.fhhagenberg.sqeelevator;
+/*
+package at.fhhagenberg.model;
 
-import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.ElevatorException;
-import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.service.IElevator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -187,4 +186,4 @@ public class ElevatorTest {
         Elevator e = new Elevator(api, 0, floors);
         assertThrows(RemoteException.class, e::update);
     }
-}
+}*/

@@ -30,12 +30,8 @@ public class ModelFactory {
      * @param floors Floors of the building.
      * @return Building object.
      */
-    public Building createBuilding(ArrayList<Elevator> elevators, ArrayList<Floor> floors) {
-        if (elevators == null || floors == null || elevators.isEmpty() || floors.isEmpty()) {
-            throw new ModelException("Could not create building, since either no elevators or no floors where given at construction!");
-        }
-
-        return new Building(elevators, floors);
+    public Building createBuilding() {
+        return new Building(createElevators(), createFloors());
     }
 
     /**

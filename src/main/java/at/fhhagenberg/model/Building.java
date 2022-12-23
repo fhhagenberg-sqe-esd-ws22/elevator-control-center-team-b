@@ -1,10 +1,6 @@
 package at.fhhagenberg.model;
 
-import at.fhhagenberg.service.IElevator;
-
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 // contains information about all elevators of a building

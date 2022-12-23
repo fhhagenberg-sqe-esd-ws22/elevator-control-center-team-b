@@ -2,10 +2,10 @@
  * Author: Philipp Holzer
  * Mat.-Nr.: s2110567016
  */
-package at.fhhagenberg.sqeelevator;
+/*
+package at.fhhagenberg.model;
 
 
-import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.service.IElevator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,3 +106,4 @@ public class FloorTest {
 
     }
 }
+*/
