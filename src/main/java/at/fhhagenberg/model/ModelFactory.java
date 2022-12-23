@@ -4,7 +4,7 @@
  */
 package at.fhhagenberg.model;
 
-import at.fhhagenberg.service.ElevatorServiceExcption;
+import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ModelFactory {
 
             return floors;
         }
-        catch(ElevatorServiceExcption ex) {
+        catch(ElevatorServiceException ex) {
             throw new ModelException("Could not create floor objects, the following error occurred: \n" + ex.getMessage());
         }
     }
@@ -72,7 +72,7 @@ public class ModelFactory {
 
             return elevators;
         }
-        catch(ElevatorServiceExcption ex) {
+        catch(ElevatorServiceException ex) {
             throw new ModelException("Could not create floor objects, the following error occurred: \n" + ex.getMessage());
         }
     }

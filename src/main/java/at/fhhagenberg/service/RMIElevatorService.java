@@ -11,7 +11,7 @@ public class RMIElevatorService implements IElevatorService{
 
     public RMIElevatorService(IElevator api) {
         if (api == null) {
-            throw new ElevatorServiceExcption("COuld not create RMIElevatorService, the given IElevator object is null!");
+            throw new ElevatorServiceException("COuld not create RMIElevatorService, the given IElevator object is null!");
         }
         mApi = api;
     }
@@ -22,7 +22,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getCommittedDirection(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the committed direction for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the committed direction for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -32,7 +32,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorAccel(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the acceleration for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the acceleration for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorButton(elevatorNumber, floor);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the state of the button for elevator " + elevatorNumber + "on floor" + floor + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the state of the button for elevator " + elevatorNumber + "on floor" + floor + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -52,7 +52,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorDoorStatus(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorFloor(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorNum();
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the number of elevators!" + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the number of elevators!" + ex.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorPosition(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the position for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the position for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorSpeed(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the speed for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the speed for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorWeight(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the weight for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the weight for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -112,7 +112,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getElevatorCapacity(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the capacity for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the capacity for elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getFloorButtonDown(floor);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the state of the down button for floor " + floor + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the state of the down button for floor " + floor + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getFloorButtonUp(floor);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the state of the up button for floor " + floor + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the state of the up button for floor " + floor + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getFloorHeight();
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the height of the floors!\nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the height of the floors!\nError message: " +  ex.getMessage());
         }
     }
 
@@ -152,7 +152,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getFloorNum();
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the number of floors!\nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the number of floors!\nError message: " +  ex.getMessage());
         }
     }
 
@@ -162,7 +162,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getServicesFloors(elevatorNumber, floor);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the state of service for " + floor + " by elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the state of service for " + floor + " by elevator " + elevatorNumber + "! \nError message: " +  ex.getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getTarget(elevatorNumber);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to retrieve the state of the target floor for elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to retrieve the state of the target floor for elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
         }
     }
 
@@ -182,7 +182,7 @@ public class RMIElevatorService implements IElevatorService{
             mApi.setCommittedDirection(elevatorNumber, direction);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to set the committed direction for elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to set the committed direction for elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
         }
     }
 
@@ -192,7 +192,7 @@ public class RMIElevatorService implements IElevatorService{
             mApi.setServicesFloors(elevatorNumber, floor, service);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to set the service state for floor" + floor + " on elevator " + elevatorNumber + "to " + service + "! \nError message: " + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to set the service state for floor" + floor + " on elevator " + elevatorNumber + "to " + service + "! \nError message: " + ex.getMessage());
         }
     }
 
@@ -202,7 +202,7 @@ public class RMIElevatorService implements IElevatorService{
             mApi.setTarget(elevatorNumber, target);
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to set the target floor to" + target + " on elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to set the target floor to" + target + " on elevator " + elevatorNumber + "! \nError message: " + ex.getMessage());
         }
     }
 
@@ -212,7 +212,7 @@ public class RMIElevatorService implements IElevatorService{
             return mApi.getClockTick();
         }
         catch(RemoteException ex) {
-            throw new ElevatorServiceExcption("An error occurred while trying to receive the clock tick!\nError message: " + ex.getMessage());
+            throw new ElevatorServiceException("An error occurred while trying to receive the clock tick!\nError message: " + ex.getMessage());
         }
     }
 }

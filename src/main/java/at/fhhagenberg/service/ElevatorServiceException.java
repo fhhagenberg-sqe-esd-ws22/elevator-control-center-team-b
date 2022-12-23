@@ -4,8 +4,8 @@
  */
 package at.fhhagenberg.service;
 
-public class ElevatorServiceExcption extends RuntimeException {
-    ElevatorServiceExcption(String msg) {
+public class ElevatorServiceException extends RuntimeException {
+    ElevatorServiceException(String msg) {
         super(msg);
     }
 }
