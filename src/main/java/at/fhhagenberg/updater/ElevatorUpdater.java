@@ -63,7 +63,7 @@ public class ElevatorUpdater extends UpdaterBase{
         int floorHeight = mElevatorService.getFloorHeight();
 
         int floor = height / floorHeight;
-        if (height % floorHeight > floorHeight / 2)
+        if (height % floorHeight >= floorHeight / 2)
         {
             floor++;
         }
