@@ -27,11 +27,24 @@ public class UpdaterFactory {
     }
 
     /**
+     * Creates a BuildingUpdater for the given Building object.
+     * @param building Building object which shall be updated.
+     * @return BuildingUpdater for the given Building object.
+     */
+    public BuildingUpdater createBuildingUpdater(Building building) {
+        if (building == null) {
+            throw new UpdaterException("Could not create BuildingUpdater, since there is no Building given!");
+        }
+
+        return new BuildingUpdater(mElevatorService, createElevatorUpdaters(building.getElevators()), createFloorUpdaters(building.getFloors()), building);
+    }
+
+    /**
      * Creates an ElevatorUpdater object for every given Elevator object.
      * @param elevators List of elevators which shall be updated.
      * @return List of ElevatorUpdaters for the given Elevator objects.
      */
-    public ArrayList<ElevatorUpdater> createElevatorUpdaters(ArrayList<Elevator> elevators) {
+    private ArrayList<ElevatorUpdater> createElevatorUpdaters(ArrayList<Elevator> elevators) {
         if (elevators == null || elevators.isEmpty()) {
             throw new UpdaterException("Could not create ElevatorUpdaters, since there are no Elevators given!");
         }
@@ -49,7 +62,7 @@ public class UpdaterFactory {
      * @param floors List of floors which shall be updated.
      * @return List of FloorUpdaters for the given Floor objects.
      */
-    public ArrayList<FloorUpdater> createFloorUpdaters(ArrayList<Floor> floors) {
+    private ArrayList<FloorUpdater> createFloorUpdaters(ArrayList<Floor> floors) {
         if (floors == null || floors.isEmpty()) {
             throw new UpdaterException("Could not create FloorUpdaters, since there are no Elevators given!");
         }
@@ -60,18 +73,5 @@ public class UpdaterFactory {
         }
 
         return updaters;
-    }
-
-    /**
-     * Creates a BuildingUpdater for the given Building object.
-     * @param building Building object which shall be updated.
-     * @return BuildingUpdater for the given Building object.
-     */
-    public BuildingUpdater createBuildingUpdater(Building building) {
-        if (building == null) {
-            throw new UpdaterException("Could not create BuildingUpdater, since there is no Building given!");
-        }
-
-        return new BuildingUpdater(mElevatorService, building);
     }
 }
