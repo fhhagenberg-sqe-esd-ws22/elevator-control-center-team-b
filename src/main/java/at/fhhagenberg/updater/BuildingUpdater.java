@@ -5,6 +5,7 @@
 package at.fhhagenberg.updater;
 
 import at.fhhagenberg.model.Building;
+import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
 
 import java.util.ArrayList;
@@ -36,9 +37,14 @@ public class BuildingUpdater extends UpdaterBase {
      */
     @Override
     public void update() {
-        updateFloors();
-        updateElevators();
-        updateBuilding();
+        try {
+            updateFloors();
+            updateElevators();
+            updateBuilding();
+        }
+        catch(ElevatorServiceException ex) {
+            throw new UpdaterException("An error occurred during updating the building!\nError message: " + ex.getMessage());
+        }
     }
 
     /**
