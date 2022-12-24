@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdaterFactoryTest {
@@ -24,6 +25,8 @@ public class UpdaterFactoryTest {
 
     @BeforeEach
     void setup() {
+        when(service.getFloorNum()).thenReturn(3);
+        when(service.getElevatorNum()).thenReturn(2);
         ModelFactory factory = new ModelFactory(service);
         building = factory.createBuilding();
     }
