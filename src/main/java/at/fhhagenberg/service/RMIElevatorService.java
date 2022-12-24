@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 public class RMIElevatorService implements IElevatorService{
     private final IElevator mApi;
 
-    private final String mErrorMessageLiteral = "! \nError message: ";
+    private static final String mErrorMessageLiteral = "! \nError message: ";
 
     public RMIElevatorService(IElevator api) {
         if (api == null) {

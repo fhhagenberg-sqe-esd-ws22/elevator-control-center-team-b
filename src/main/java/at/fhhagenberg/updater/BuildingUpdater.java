@@ -8,7 +8,6 @@ import at.fhhagenberg.model.Building;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BuildingUpdater extends UpdaterBase {
