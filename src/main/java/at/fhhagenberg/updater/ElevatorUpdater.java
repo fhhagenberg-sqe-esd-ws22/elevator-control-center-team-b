@@ -5,10 +5,7 @@
 package at.fhhagenberg.updater;
 
 import at.fhhagenberg.model.Elevator;
-import at.fhhagenberg.service.IElevator;
 import at.fhhagenberg.service.IElevatorService;
-
-import java.rmi.RemoteException;
 
 public class ElevatorUpdater extends UpdaterBase{
 

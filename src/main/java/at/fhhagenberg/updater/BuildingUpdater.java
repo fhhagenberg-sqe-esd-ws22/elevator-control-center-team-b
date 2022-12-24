@@ -9,19 +9,20 @@ import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuildingUpdater extends UpdaterBase {
 
     private final Building mModel;
-    private final ArrayList<ElevatorUpdater> mElevatorUpdaters;
-    private final ArrayList<FloorUpdater> mFloorUpdaters;
+    private final List<ElevatorUpdater> mElevatorUpdaters;
+    private final List<FloorUpdater> mFloorUpdaters;
 
     /**
      * Constructor for the BuildingUpdater
      * @param service IElevatorService object to retrieve the necessary information for an update on a building object.
      * @param model The to be updated Building object.
      */
-    public BuildingUpdater(IElevatorService service, ArrayList<ElevatorUpdater> elevatorUpdaters, ArrayList<FloorUpdater> floorUpdaters, Building model) {
+    public BuildingUpdater(IElevatorService service, List<ElevatorUpdater> elevatorUpdaters, List<FloorUpdater> floorUpdaters, Building model) {
         super(service);
         if (model == null || elevatorUpdaters == null || floorUpdaters == null || elevatorUpdaters.isEmpty() || floorUpdaters.isEmpty()) {
             throw new UpdaterException("Could not create BuildingUpdater, since the given Building object or the updater lists are null!");

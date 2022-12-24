@@ -10,6 +10,7 @@ import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.service.IElevatorService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UpdaterFactory {
     private final IElevatorService mElevatorService;
@@ -44,7 +45,7 @@ public class UpdaterFactory {
      * @param elevators List of elevators which shall be updated.
      * @return List of ElevatorUpdaters for the given Elevator objects.
      */
-    private ArrayList<ElevatorUpdater> createElevatorUpdaters(ArrayList<Elevator> elevators) {
+    private List<ElevatorUpdater> createElevatorUpdaters(List<Elevator> elevators) {
         if (elevators == null || elevators.isEmpty()) {
             throw new UpdaterException("Could not create ElevatorUpdaters, since there are no Elevators given!");
         }
@@ -62,7 +63,7 @@ public class UpdaterFactory {
      * @param floors List of floors which shall be updated.
      * @return List of FloorUpdaters for the given Floor objects.
      */
-    private ArrayList<FloorUpdater> createFloorUpdaters(ArrayList<Floor> floors) {
+    private List<FloorUpdater> createFloorUpdaters(List<Floor> floors) {
         if (floors == null || floors.isEmpty()) {
             throw new UpdaterException("Could not create FloorUpdaters, since there are no Elevators given!");
         }

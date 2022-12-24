@@ -2,11 +2,6 @@ package at.fhhagenberg.model;
 
 import at.fhhagenberg.service.IElevatorService;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-
-import static at.fhhagenberg.service.IElevator.ELEVATOR_DOORS_OPEN;
-
 // contains all information of a single elevator
 public class Elevator {
     // number of this elevator

@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BuildingTest {
+class BuildingTest {
     @Mock Elevator elevator1;
     @Mock Elevator elevator2;
 
@@ -49,10 +49,12 @@ public class BuildingTest {
 
     @Test
     void testObjectCreationFails() {
+        var emptyFloors = new ArrayList<Floor>();
+        var emptyElevators =  new ArrayList<Elevator>();
         assertThrows(ModelException.class, () -> { new Building(null, floors); });
         assertThrows(ModelException.class, () -> { new Building(elevators, null); });
-        assertThrows(ModelException.class, () -> { new Building(new ArrayList<Elevator>(), floors); });
-        assertThrows(ModelException.class, () -> { new Building(elevators, new ArrayList<Floor>()); });
+        assertThrows(ModelException.class, () -> { new Building(emptyElevators, floors); });
+        assertThrows(ModelException.class, () -> { new Building(elevators, emptyFloors); });
     }
 
     @Test

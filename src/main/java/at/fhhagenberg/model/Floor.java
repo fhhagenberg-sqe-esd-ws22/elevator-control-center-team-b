@@ -1,10 +1,5 @@
 package at.fhhagenberg.model;
 
-import at.fhhagenberg.service.IElevator;
-
-import java.rmi.RemoteException;
-
-// control panel of an elevator of a certain floor
 public class Floor {
     // number wich represents the floor - 0 is ground floor; 1 ist first floor, etc.
     private final int mFloorNr;

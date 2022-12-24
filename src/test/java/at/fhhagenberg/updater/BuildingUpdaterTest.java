@@ -7,7 +7,6 @@ package at.fhhagenberg.updater;
 
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
-import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
@@ -24,7 +23,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BuildingUpdaterTest {
+class BuildingUpdaterTest {
     @Mock IElevatorService service;
     @Mock Building building;
 
@@ -57,14 +56,16 @@ public class BuildingUpdaterTest {
 
     @Test
     void testObjectCreationNoElevatorUpdaters() {
+        var emptyElevators = new ArrayList<ElevatorUpdater>();
         assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, null, floors, building); });
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, new ArrayList<>(), floors, building); });
+        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, emptyElevators, floors, building); });
     }
 
     @Test
     void testObjectCreationNoFloorUpdaters() {
+        var emptyFloors = new ArrayList<FloorUpdater>();
         assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, null, building); });
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, new ArrayList<>(), building); });
+        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, emptyFloors, building); });
     }
 
     @Test
