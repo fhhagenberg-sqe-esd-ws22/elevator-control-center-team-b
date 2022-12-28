@@ -72,10 +72,10 @@ class ElevatorTest {
         elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDirection());
 
-        elevator.setDoorStatus(IElevator.ELEVATOR_DIRECTION_UP - 1);
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDoorStatus());
-        elevator.setDoorStatus(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED + 1);
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDoorStatus());
+        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UP - 1);
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDirection());
+        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED + 1);
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDirection());
     }
 
     @Test
