@@ -6,7 +6,6 @@ package at.fhhagenberg.updater;
 
 
 import at.fhhagenberg.model.Building;
-import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
