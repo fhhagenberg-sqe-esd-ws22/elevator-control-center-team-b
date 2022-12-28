@@ -1,6 +1,9 @@
 package at.fhhagenberg.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -108,5 +111,38 @@ class ElevatorTest {
         assertEquals(0, elevator.getNearestFloor());
         elevator.setNearestFloor(1);
         assertEquals(0, elevator.getNearestFloor());
+    }
+
+    @Test
+    void testSetAndResetStops() {
+        Elevator elevator = new Elevator(0, 2);
+        assertFalse(elevator.getStop(0));
+        assertFalse(elevator.getStop(1));
+
+        // set elevator to stop at both floors
+        elevator.setStop(0, true);
+        assertTrue(elevator.getStop(0));
+        elevator.setStop(1, true);
+        assertTrue(elevator.getStop(1));
+
+        // set elevator to stop at no floor
+        elevator.setStop(0, false);
+        assertFalse(elevator.getStop(0));
+        elevator.setStop(1, false);
+        assertFalse(elevator.getStop(1));
+    }
+
+    @Test 
+    void testInvalidFloorStops() {
+        Elevator elevator = new Elevator(0, 1);
+        elevator.setStop(0, true);
+        assertTrue(elevator.getStop(0));
+
+        elevator.setStop(-1, false);
+        assertThrows(ModelException.class, () -> elevator.getStop(-1));
+        assertTrue(elevator.getStop(0));
+        elevator.setStop(1, false);
+        assertThrows(ModelException.class, () -> elevator.getStop(1));
+        assertTrue(elevator.getStop(0));
     }
 }

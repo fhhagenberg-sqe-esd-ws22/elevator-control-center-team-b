@@ -8,6 +8,8 @@ public class Elevator {
     private final int mElevatorNr;
 
     private final int mNrOfFloors;
+    // container with all floors where people want to get off the elevator
+    private final boolean[] mStops;
     // speed of the elevator
     private int mSpeed;
     // current acceleration of the elevator
@@ -32,6 +34,7 @@ public class Elevator {
     {
         mNrOfFloors = numberOfFloors;
         mElevatorNr = elevatorNr;
+        mStops = new boolean[numberOfFloors];
         mSpeed = 0;
         mAccel = 0;
         mTarget = 0;
@@ -125,6 +128,19 @@ public class Elevator {
     }
 
     /**
+     * Sets a flag if the elevator should stop at a certain floor (request from inside the elevator)
+     * @param floorNr identifies at which floor the flag should be set
+     * @param doStop true if the elevator should stop at that floor, false otherwise
+     */
+    public void setStop(int floorNr, boolean doStop) {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            System.out.println("Given floor is out of the valid range and will not be set!");
+            return;
+        }
+        mStops[floorNr] = doStop;
+    }
+
+    /**
      * Getter for the elevator's number (is unique).
      * @return The elevator's number
      */
@@ -194,5 +210,17 @@ public class Elevator {
      */
     public int getNearestFloor() {
         return mNearestFloor;
+    }
+
+    /**
+     * Getter for the flag if the elevator should stop at a floor (button inside elevator)
+     * @param floorNr identifies the floor
+     * @return true if the elevator should stop at that floor, false if not or the floor is invalid
+     */
+    public boolean getStop(int floorNr) throws ModelException {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            throw new ModelException(String.format("Floor %d is invalid!\nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
+        }
+        return mStops[floorNr];
     }
 }

@@ -41,6 +41,7 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setPayload(mElevatorService.getElevatorWeight(elevatorNr));
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
 
+        checkForStops(elevatorNr);
         calcNearestFloor(elevatorNr);
     }
 
@@ -60,5 +61,14 @@ public class ElevatorUpdater extends UpdaterBase{
         }
 
         mModel.setNearestFloor(floor);
+    }
+
+    private void checkForStops(int elevatorNr) {
+        int floors = mElevatorService.getFloorNum();
+        System.out.println(String.format("There are %d floors", floors)); // todo: remove
+        for (int i = 0; i < floors; i++) {
+            System.out.println(String.format("Elevator %d; Floor %d", elevatorNr, i));
+            mModel.setStop(i, mElevatorService.getElevatorButton(elevatorNr, i));
+        }
     }
 }
