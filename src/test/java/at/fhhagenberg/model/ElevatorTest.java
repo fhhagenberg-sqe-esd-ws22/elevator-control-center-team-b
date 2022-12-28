@@ -8,14 +8,14 @@ import at.fhhagenberg.service.IElevator;
 
 public class ElevatorTest {
     @Test
-    public void testSetValidPositiveSpeed() {
+    void testSetValidPositiveSpeed() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setSpeed(8);
         assertEquals(8, elevator.getSpeed());
     }
 
     @Test
-    public void testSetValidZeroSpeed() {
+    void testSetValidZeroSpeed() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setSpeed(5);
         assertEquals(5, elevator.getSpeed());
@@ -25,7 +25,7 @@ public class ElevatorTest {
     }
 
     @Test
-    public void testNegativeSpeed() {
+    void testNegativeSpeed() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setSpeed(5);
         assertEquals(5, elevator.getSpeed());
@@ -34,7 +34,7 @@ public class ElevatorTest {
         assertEquals(1, elevator.getSpeed());
     }
 
-    public void testChangeToNegativeTargetFloor() {
+    void testChangeToNegativeTargetFloor() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setTarget(0);
         assertEquals(0, elevator.getTarget());
@@ -43,7 +43,7 @@ public class ElevatorTest {
         assertEquals(0, elevator.getTarget());
     }
 
-    public void testChangeToInvalidTargetFloor() {
+    void testChangeToInvalidTargetFloor() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setTarget(0);
         assertEquals(0, elevator.getTarget());
@@ -52,7 +52,7 @@ public class ElevatorTest {
         assertEquals(0, elevator.getTarget());
     }
 
-    public void testChangeToInvalidDoorStatus() {
+    void testChangeToInvalidDoorStatus() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
         assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, elevator.getDoorStatus());
@@ -63,7 +63,7 @@ public class ElevatorTest {
         assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, elevator.getDoorStatus());
     }
 
-    public void testChangeToInvalidDirection() {
+    void testChangeToInvalidDirection() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDirection());
@@ -74,7 +74,7 @@ public class ElevatorTest {
         assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevator.getDoorStatus());
     }
 
-    public void testValidPayload() {
+    void testValidPayload() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setPayload(0);
         assertEquals(0, elevator.getPayload());
@@ -83,7 +83,7 @@ public class ElevatorTest {
         assertEquals(500000, elevator.getPayload());
     }
 
-    public void testInvalidPayload() {
+    void testInvalidPayload() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setPayload(0);
         assertEquals(0, elevator.getPayload());
@@ -92,7 +92,7 @@ public class ElevatorTest {
         assertEquals(0, elevator.getPayload());
     }
 
-    public void testInvalidNearestFloor() {
+    void testInvalidNearestFloor() {
         Elevator elevator = new Elevator(0, 1);
         elevator.setNearestFloor(0);
         assertEquals(0, elevator.getNearestFloor());
