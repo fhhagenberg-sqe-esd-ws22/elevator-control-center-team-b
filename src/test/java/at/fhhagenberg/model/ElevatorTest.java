@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.service.IElevator;
 
-public class ElevatorTest {
+class ElevatorTest {
     @Test
     void testSetValidPositiveSpeed() {
         Elevator elevator = new Elevator(0, 1);
