@@ -46,6 +46,11 @@ public class Elevator {
      * @param speed The current speed of the elevator.
      */
     public void setSpeed(int speed) {
+        // we have a direction - no negative speeds needed
+        if (speed < 0) {
+            speed *= -1;
+        }
+
         this.mSpeed = speed;
     }
 
@@ -62,6 +67,10 @@ public class Elevator {
      * @param target The current target floor of the elevator.
      */
     public void setTarget(int target) {
+        if (target >= mNrOfFloors || target < 0) {
+            System.out.println("Given target is out of the valid range and will not be set!");
+            return;
+        }
         this.mTarget = target;
     }
 
@@ -76,22 +85,6 @@ public class Elevator {
         }
 
         this.mDirection = direction;
-    }
-
-    /**
-     * Getter for the elevator's number (is unique).
-     * @return The elevator's number
-     */
-    public int getElevatorNr() {
-        return mElevatorNr;
-    }
-
-    /**
-     * Getter for the number of floors which can be targeted by the elevator.
-     * @return The number of floors which can be targeted by the elevator.
-     */
-    public int getNrOfFloors() {
-        return mNrOfFloors;
     }
 
     /**
@@ -124,7 +117,27 @@ public class Elevator {
      * @param nearestFloor Currently nearest floor.
      */
     public void setNearestFloor(int nearestFloor) {
+        if (nearestFloor < 0 || nearestFloor >= mNrOfFloors) {
+            System.out.println("Given nearest floor is out of the valid range and will not be set!");
+            return;
+        }
         this.mNearestFloor = nearestFloor;
+    }
+
+    /**
+     * Getter for the elevator's number (is unique).
+     * @return The elevator's number
+     */
+    public int getElevatorNr() {
+        return mElevatorNr;
+    }
+
+    /**
+     * Getter for the number of floors which can be targeted by the elevator.
+     * @return The number of floors which can be targeted by the elevator.
+     */
+    public int getNrOfFloors() {
+        return mNrOfFloors;
     }
 
     /**

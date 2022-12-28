@@ -36,13 +36,7 @@ public class ElevatorUpdater extends UpdaterBase{
         //display that in the GUI and tell the user to check the connection to the elevator service
 
         int elevatorNr = mModel.getElevatorNr();
-        int speed = mElevatorService.getElevatorSpeed(elevatorNr);
-        // we have a direction - no negative speeds needed
-        if (speed < 0) {
-            speed *= -1;
-        }
-        mModel.setSpeed(speed);
-
+        mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
         // negative accelleration in upwards speed is possible - no need for abs
         mModel.setAccel(mElevatorService.getElevatorAccel(elevatorNr));
         mModel.setTarget(mElevatorService.getTarget(elevatorNr));
