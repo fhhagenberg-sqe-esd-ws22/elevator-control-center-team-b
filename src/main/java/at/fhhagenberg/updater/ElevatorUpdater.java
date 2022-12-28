@@ -31,10 +31,6 @@ public class ElevatorUpdater extends UpdaterBase{
      */
     @Override
     public void update() {
-        //TODO(PH): in the update function no exception handling happens, because if one exception occurres in the midlle of updating
-        //than the whole state of the elevator may be invalid. Therefor the exception handling may be handled one layer above (maybe some retries and if it doens't work
-        //display that in the GUI and tell the user to check the connection to the elevator service
-
         int elevatorNr = mModel.getElevatorNr();
         mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
         // negative accelleration in upwards speed is possible - no need for abs
