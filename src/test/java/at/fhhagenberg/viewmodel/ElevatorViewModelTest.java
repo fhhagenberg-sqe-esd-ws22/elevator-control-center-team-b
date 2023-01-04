@@ -19,10 +19,11 @@ class ElevatorViewModelTest {
     static ElevatorViewModel elevatorViewModel;
 
     @BeforeAll
-    void setup() {
+    static void setup() {
         MockElevatorService service = new MockElevatorService(1, 2, 10);
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
+        elevator = building.getElevatorByNumber(0);
         BusinesLogic logic = new BusinesLogic(building);
         elevatorViewModel = new ElevatorViewModel(elevator, logic);
     }
