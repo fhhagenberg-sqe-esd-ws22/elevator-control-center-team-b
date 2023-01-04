@@ -46,7 +46,7 @@ public class Initializer {
         BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic);
         BuildingView buildingView = new BuildingView(buildingViewModel);
 
-        root = buildingView.GetLayout();
+        root = buildingView.getLayout();
     }
 
     /**

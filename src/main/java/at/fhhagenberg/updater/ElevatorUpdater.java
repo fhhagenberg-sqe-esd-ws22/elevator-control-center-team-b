@@ -40,7 +40,6 @@ public class ElevatorUpdater extends UpdaterBase{
         // no max weight specified
         mModel.setPayload(mElevatorService.getElevatorWeight(elevatorNr));
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
-        //mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
         checkForStops(elevatorNr);
         calcNearestFloor(elevatorNr);
     }

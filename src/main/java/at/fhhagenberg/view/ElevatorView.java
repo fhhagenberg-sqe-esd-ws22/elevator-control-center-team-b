@@ -90,7 +90,7 @@ public class ElevatorView {
      * Getter for the layout
      * @return layout
      */
-    public VBox GetView() {
+    public VBox getLayout() {
         return mView;
     }
 }

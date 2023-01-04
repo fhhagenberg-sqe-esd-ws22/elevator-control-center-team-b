@@ -219,7 +219,7 @@ public class Elevator {
      */
     public boolean getStop(int floorNr) throws ModelException {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            throw new ModelException(String.format("Floor %d is invalid!\nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
+            throw new ModelException(String.format("Floor %d is invalid!%nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
         }
         return mStops[floorNr];
     }

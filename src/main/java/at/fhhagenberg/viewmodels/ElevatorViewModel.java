@@ -165,16 +165,17 @@ public class ElevatorViewModel {
         mDoorStatus.set(mModel.getDoorStatus());
         mNearestFloor.set(mModel.getNearestFloor());
 
-        String stop = "";
+        StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < mStops.length; i++) {
             mStops[i] = mModel.getStop(i);
             if (mStops[i]) {
-                stop += Integer.toString(i) + ", ";
+                builder.append(Integer.toString(i));
+                builder.append(", ");
             }
         }
 
-        mStopString.set(stop);
+        mStopString.set(builder.toString());
 
         switch(mDirection.get())
         {

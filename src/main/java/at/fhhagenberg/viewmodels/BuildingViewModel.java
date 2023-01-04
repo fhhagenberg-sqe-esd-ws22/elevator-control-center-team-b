@@ -1,8 +1,8 @@
 package at.fhhagenberg.viewmodels;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Vector;
 
 import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.model.Building;
@@ -10,13 +10,12 @@ import at.fhhagenberg.updater.BuildingUpdater;
 
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
-    private final Building mBuilding;
-    private final Vector<ElevatorViewModel> mElevators;
-    private final Vector<FloorViewModel> mFloors;
+    private final ArrayList<ElevatorViewModel> mElevators;
+    private final ArrayList<FloorViewModel> mFloors;
     private final Timer mTimer;
 
     // update interval in [ms]
-    static private final int cUpdateInterval = 1000;
+    private static final int UPDATE_INTERVAL = 1000;
 
     /**
      * Constructor of BuildingViewModel
@@ -26,9 +25,8 @@ public class BuildingViewModel {
      */
     public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
         mUpdater = updater;
-        mBuilding = building;
-        mElevators = new Vector<>(mBuilding.getElevators().size());
-        mFloors = new Vector<>(mBuilding.getFloors().size());
+        mElevators = new ArrayList<>();
+        mFloors = new ArrayList<>();
         mTimer = new Timer();
 
         for (var elevator : building.getElevators()) {
@@ -41,22 +39,22 @@ public class BuildingViewModel {
 
         update();
 
-        mTimer.schedule(getUpdateTask(), cUpdateInterval);
+        mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);
     }
 
     /**
      * Getter for the elevator view models
-     * @return vector of the elevator view models
+     * @return ArrayList of the elevator view models
      */
-    public Vector<ElevatorViewModel> getElevatorViewModels() {
+    public ArrayList<ElevatorViewModel> getElevatorViewModels() {
         return mElevators;
     }
 
     /**
      * Getter for the floor view models
-     * @return vector of the floor view models
+     * @return ArrayList of the floor view models
      */
-    public Vector<FloorViewModel> getFloorViewModels() {
+    public ArrayList<FloorViewModel> getFloorViewModels() {
         return mFloors;
     }
 
@@ -84,6 +82,6 @@ public class BuildingViewModel {
             floor.update();
         }
 
-        mTimer.schedule(getUpdateTask(), cUpdateInterval);
+        mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);
     }
 }

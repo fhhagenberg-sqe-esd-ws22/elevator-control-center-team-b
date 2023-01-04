@@ -33,7 +33,7 @@ public class FloorView {
      * Getter for the layout
      * @return layout
      */
-    public HBox GetView() {
+    public HBox getLayout() {
         return mView;
     }
 }

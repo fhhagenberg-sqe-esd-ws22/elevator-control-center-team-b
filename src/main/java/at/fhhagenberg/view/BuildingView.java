@@ -1,6 +1,6 @@
 package at.fhhagenberg.view;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.scene.layout.HBox;
@@ -12,8 +12,8 @@ import javafx.scene.layout.VBox;
 public class BuildingView {
     private final HBox mView;
     private final BuildingViewModel mViewModel;
-    private final Vector<ElevatorView> mElevators;
-    private final Vector<FloorView> mFloors;
+    private final ArrayList<ElevatorView> mElevators;
+    private final ArrayList<FloorView> mFloors;
 
     /**
      * Constructor of BuildingView
@@ -21,8 +21,8 @@ public class BuildingView {
      */
     public BuildingView(BuildingViewModel viewModel) {
         mViewModel = viewModel;
-        mElevators = new Vector<>();
-        mFloors = new Vector<>();
+        mElevators = new ArrayList<>();
+        mFloors = new ArrayList<>();
         var elevatorLayout = new HBox(10);
         var floorLayout = new VBox(2);
 
@@ -31,7 +31,7 @@ public class BuildingView {
         }
 
         for (var elevator : mElevators) {
-            elevatorLayout.getChildren().add(elevator.GetView());
+            elevatorLayout.getChildren().add(elevator.getLayout());
         }
 
         for (var floor : mViewModel.getFloorViewModels()) {
@@ -39,7 +39,7 @@ public class BuildingView {
         }
 
         for (var floor : mFloors) {
-            floorLayout.getChildren().add(0, floor.GetView());
+            floorLayout.getChildren().add(0, floor.getLayout());
         }
 
         mView = new HBox(20);
@@ -51,7 +51,7 @@ public class BuildingView {
      * Getter for the layout
      * @return layout
      */
-    public HBox GetLayout() {
+    public HBox getLayout() {
         return mView;
     }
 }
