@@ -30,4 +30,13 @@ public class BusinesLogic {
     public void setManual(int elevatorNr, boolean active) {
         mManual[elevatorNr] = active;
     }
+
+    /**
+     * Getter for manual mode flag of an elevator
+     * @param elevatorNr elevator for which the flag is retrieved
+     * @return flag that indicates the manual mode
+     */
+    public boolean getManual(int elevatorNr) {
+        return mManual[elevatorNr];
+    }
 }
