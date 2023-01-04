@@ -1,7 +1,10 @@
 package at.fhhagenberg.view;
 
+import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.scene.control.Label;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -72,6 +75,10 @@ public class ElevatorView {
         stops.getChildren().add(new Label("Stops: "));
         stops.getChildren().add(stopsLbl);
         mView.getChildren().add(stops);
+
+        var button = new ToggleButton("Manual Mode");
+        mViewModel.getManualProp().bind(button.selectedProperty());
+        mView.getChildren().add(button);
     }
     
     public VBox GetView() {

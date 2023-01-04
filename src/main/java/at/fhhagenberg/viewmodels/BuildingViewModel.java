@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
+import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.updater.BuildingUpdater;
 
@@ -17,7 +18,7 @@ public class BuildingViewModel {
     // update interval in [ms]
     static private final int cUpdateInterval = 1000;
 
-    public BuildingViewModel(BuildingUpdater updater, Building building) {
+    public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
         mUpdater = updater;
         mBuilding = building;
         mElevators = new Vector<>(mBuilding.getElevators().size());
@@ -25,7 +26,7 @@ public class BuildingViewModel {
         mTimer = new Timer();
 
         for (var elevator : building.getElevators()) {
-            mElevators.add(new ElevatorViewModel(elevator));
+            mElevators.add(new ElevatorViewModel(elevator, logic));
         }
 
         for (var floor : building.getFloors()) {

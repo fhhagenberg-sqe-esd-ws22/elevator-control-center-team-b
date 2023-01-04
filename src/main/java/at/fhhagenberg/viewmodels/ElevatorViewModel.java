@@ -1,12 +1,17 @@
 package at.fhhagenberg.viewmodels;
 
+import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevator;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class ElevatorViewModel {
     private final Elevator mModel;
+    private final BusinesLogic mLogic;
     private final boolean[] mStops;
     // speed of the elevator
     private final SimpleIntegerProperty mSpeed;
@@ -26,11 +31,14 @@ public class ElevatorViewModel {
     private final SimpleStringProperty mDoorStatusString;
     // current direction of the elevator as a string
     private final SimpleStringProperty mDirectionString;
-
+    // string that contains all stops - temporary until a refined gui is developed
     private final SimpleStringProperty mStopString;
+    // boolean if the elevator is in manual mode
+    private final SimpleBooleanProperty mManual;
 
-    public ElevatorViewModel(Elevator elevator) {
+    public ElevatorViewModel(Elevator elevator, BusinesLogic logic) {
         mModel = elevator;
+        mLogic = logic;
         mStops = new boolean[mModel.getNrOfFloors()];
         mSpeed = new SimpleIntegerProperty();
         mAccel = new SimpleIntegerProperty();
@@ -42,6 +50,14 @@ public class ElevatorViewModel {
         mDoorStatusString = new SimpleStringProperty();
         mDirectionString = new SimpleStringProperty();
         mStopString = new SimpleStringProperty();
+        mManual = new SimpleBooleanProperty(false);
+
+        mManual.addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obj, Boolean oldVal, Boolean newVal) {
+                mLogic.setManual(getElevatorNr(), newVal);
+            }
+        });
     }
 
     public SimpleIntegerProperty getPayloadProp() {
@@ -82,6 +98,10 @@ public class ElevatorViewModel {
 
     public SimpleStringProperty getStopsProp() {
         return mStopString;
+    }
+
+    public SimpleBooleanProperty getManualProp() {
+        return mManual;
     }
 
     public final int getSpeed() {

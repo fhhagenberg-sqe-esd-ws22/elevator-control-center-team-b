@@ -3,6 +3,7 @@ package at.fhhagenberg.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.Floor;
@@ -34,7 +35,8 @@ public class Initializer {
 
         BuildingUpdater updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, building);
 
-        BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building);
+        BusinesLogic logic = new BusinesLogic(building);
+        BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic);
         BuildingView buildingView = new BuildingView(buildingViewModel);
 
         root = buildingView.GetLayout();

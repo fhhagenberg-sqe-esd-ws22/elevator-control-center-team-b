@@ -2,19 +2,33 @@ package at.fhhagenberg.viewmodel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.mock_observable.MockElevatorService;
+import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
+import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.IElevator;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 
 class ElevatorViewModelTest {
     static Elevator elevator;
+    static ElevatorViewModel elevatorViewModel;
+
+    @BeforeAll
+    void setup() {
+        MockElevatorService service = new MockElevatorService(1, 2, 10);
+        ModelFactory factory = new ModelFactory(service);
+        Building building = factory.createBuilding();
+        BusinesLogic logic = new BusinesLogic(building);
+        elevatorViewModel = new ElevatorViewModel(elevator, logic);
+    }
 
     @BeforeEach
     void setupElevator() {
-        elevator = new Elevator(0, 2);
         elevator.setAccel(0);
         elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
@@ -26,8 +40,6 @@ class ElevatorViewModelTest {
 
     @Test
     void testDoorStatusIntToStr() {
-        var elevatorViewModel = new ElevatorViewModel(elevator);
-
         elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
         elevatorViewModel.update();
         assertEquals("Closed", elevatorViewModel.getDoorStatusString());
@@ -47,8 +59,6 @@ class ElevatorViewModelTest {
 
     @Test
     void testDirectionIntToStr() {
-        var elevatorViewModel = new ElevatorViewModel(elevator);
-
         elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UP);
         elevatorViewModel.update();
         assertEquals("Up", elevatorViewModel.getDirectionString());
@@ -64,7 +74,6 @@ class ElevatorViewModelTest {
 
     @Test
     void testStops() {
-        var elevatorViewModel = new ElevatorViewModel(elevator);
         elevatorViewModel.update();
         assertEquals("", elevatorViewModel.getStops());
 
