@@ -45,6 +45,10 @@ public class ElevatorUpdater extends UpdaterBase{
         calcNearestFloor(elevatorNr);
     }
 
+    /**
+     * Calculates the nearest floor with the current position and average floor height
+     * @param elevatorNr identifier for the elevator
+     */
     private void calcNearestFloor(int elevatorNr)
     {
         int height = mElevatorService.getElevatorPosition(elevatorNr);
@@ -63,6 +67,10 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setNearestFloor(floor);
     }
 
+    /**
+     * Checks where people in the elevator want to get off
+     * @param elevatorNr identifies the elevator
+     */
     private void checkForStops(int elevatorNr) {
         int floors = mElevatorService.getFloorNum();
         

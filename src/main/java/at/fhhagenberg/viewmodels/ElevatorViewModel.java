@@ -36,6 +36,11 @@ public class ElevatorViewModel {
     // boolean if the elevator is in manual mode
     private final SimpleBooleanProperty mManual;
 
+    /**
+     * Constructor of ElevatorViewModel
+     * @param elevator elevator which's properties are copied
+     * @param logic logic that controls the elevator
+     */
     public ElevatorViewModel(Elevator elevator, BusinesLogic logic) {
         mModel = elevator;
         mLogic = logic;
@@ -148,6 +153,9 @@ public class ElevatorViewModel {
         return mModel.getElevatorNr();
     }
     
+    /**
+     * Updates all properties of this
+     */
     public void update() {
         mSpeed.set(mModel.getSpeed());
         mAccel.set(mModel.getAccel());

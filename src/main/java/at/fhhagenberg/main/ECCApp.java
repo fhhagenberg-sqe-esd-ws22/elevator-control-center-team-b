@@ -15,12 +15,16 @@ public class ECCApp extends Application {
     public void start(Stage stage) {
         Initializer initializer = new Initializer(createService());
 
-        var scene = new Scene(initializer.GetRoot(), 640, 480);
+        var scene = new Scene(initializer.getRoot(), 640, 480);
 
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * Creates a service that is used for the elevator control
+     * @return elevator service
+     */
     protected IElevatorService createService() {
         return new RMIElevatorService(null);
     }

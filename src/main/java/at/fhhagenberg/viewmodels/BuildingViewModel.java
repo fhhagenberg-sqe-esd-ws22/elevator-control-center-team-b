@@ -18,6 +18,12 @@ public class BuildingViewModel {
     // update interval in [ms]
     static private final int cUpdateInterval = 1000;
 
+    /**
+     * Constructor of BuildingViewModel
+     * @param updater updater for the building
+     * @param building model of the building
+     * @param logic BusinesLogic that is controling the elevators of this building
+     */
     public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
         mUpdater = updater;
         mBuilding = building;
@@ -35,17 +41,29 @@ public class BuildingViewModel {
 
         update();
 
-        mTimer.schedule(getUpdateTask(), cUpdateInterval); //
+        mTimer.schedule(getUpdateTask(), cUpdateInterval);
     }
 
+    /**
+     * Getter for the elevator view models
+     * @return vector of the elevator view models
+     */
     public Vector<ElevatorViewModel> getElevatorViewModels() {
         return mElevators;
     }
 
+    /**
+     * Getter for the floor view models
+     * @return vector of the floor view models
+     */
     public Vector<FloorViewModel> getFloorViewModels() {
         return mFloors;
     }
 
+    /**
+     * Getter for the task that calls this.update()
+     * @return task that calls this.update()
+     */
     private TimerTask getUpdateTask() {
         return new TimerTask() {
             public void run() {
@@ -54,6 +72,9 @@ public class BuildingViewModel {
         };
     }
 
+    /**
+     * Updates all models and the ViewModels afterwards
+     */
     private void update() {
         mUpdater.update();
         for (var elevator : mElevators) {

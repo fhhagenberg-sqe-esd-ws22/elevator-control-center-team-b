@@ -1,17 +1,22 @@
 package at.fhhagenberg.view;
 
-import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * View of an elevator
+ */
 public class ElevatorView {
     private final ElevatorViewModel mViewModel;
     private final VBox mView;
 
+    /**
+     * Constructor of ElevatorView
+     * @param viewModel view model of the elevator to be viewed
+     */
     public ElevatorView(ElevatorViewModel viewModel) {
         mViewModel = viewModel;
         mView = new VBox(4);
@@ -81,6 +86,10 @@ public class ElevatorView {
         mView.getChildren().add(button);
     }
     
+    /**
+     * Getter for the layout
+     * @return layout
+     */
     public VBox GetView() {
         return mView;
     }

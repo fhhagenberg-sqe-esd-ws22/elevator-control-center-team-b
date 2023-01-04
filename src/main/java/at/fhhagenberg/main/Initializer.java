@@ -16,9 +16,16 @@ import at.fhhagenberg.view.BuildingView;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.scene.Parent;
 
+/**
+ * Class responsible for initializing the individual components of the application
+ */
 public class Initializer {
     private final Parent root;
 
+    /**
+     * Creates all objects required for the application
+     * @param service
+     */
     public Initializer(IElevatorService service) {
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
@@ -42,7 +49,11 @@ public class Initializer {
         root = buildingView.GetLayout();
     }
 
-    public Parent GetRoot() {
+    /**
+     * Getter for the root layout
+     * @return layout of the building
+     */
+    public Parent getRoot() {
         return root;
     }
 }

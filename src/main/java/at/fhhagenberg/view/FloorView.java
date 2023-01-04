@@ -4,10 +4,17 @@ import at.fhhagenberg.viewmodels.FloorViewModel;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+/**
+ * View for a floor
+ */
 public class FloorView {
     private final FloorViewModel mViewModel;
     private final HBox mView;
 
+    /**
+     * Constructor of FloorView
+     * @param viewModel view model of the elevator to be viewed
+     */
     public FloorView(FloorViewModel viewModel) {
         mViewModel = viewModel;
         mView = new HBox(10);
@@ -22,6 +29,10 @@ public class FloorView {
         mView.getChildren().add(lblDown);
     }
 
+    /**
+     * Getter for the layout
+     * @return layout
+     */
     public HBox GetView() {
         return mView;
     }

@@ -6,12 +6,19 @@ import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Class that views a building
+ */
 public class BuildingView {
     private final HBox mView;
     private final BuildingViewModel mViewModel;
     private final Vector<ElevatorView> mElevators;
     private final Vector<FloorView> mFloors;
 
+    /**
+     * Constructor of BuildingView
+     * @param viewModel view model with the data of the building to be viewed
+     */
     public BuildingView(BuildingViewModel viewModel) {
         mViewModel = viewModel;
         mElevators = new Vector<>();
@@ -40,6 +47,10 @@ public class BuildingView {
         mView.getChildren().add(floorLayout);
     }
 
+    /**
+     * Getter for the layout
+     * @return layout
+     */
     public HBox GetLayout() {
         return mView;
     }

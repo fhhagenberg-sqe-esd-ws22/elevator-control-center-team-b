@@ -11,6 +11,10 @@ public class FloorViewModel {
     private final SimpleStringProperty mWantDownString;
     private final SimpleStringProperty mWantUpString;
 
+    /**
+     * Constructor of FloorViewModel
+     * @param floor model of the floor which is used to fill the properties
+     */
     public FloorViewModel(Floor floor) {
         mModel = floor;
         mWantUp = new SimpleBooleanProperty();
@@ -43,6 +47,9 @@ public class FloorViewModel {
         return mWantDown.get();
     }
 
+    /**
+     * Updates the properties with the model values
+     */
     public void update() {
         mWantUp.set(mModel.getWantUp());
         mWantDown.set(mModel.getWantDown());
