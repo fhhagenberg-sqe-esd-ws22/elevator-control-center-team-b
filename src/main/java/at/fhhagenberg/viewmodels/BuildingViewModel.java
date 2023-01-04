@@ -1,6 +1,7 @@
 package at.fhhagenberg.viewmodels;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,7 +47,7 @@ public class BuildingViewModel {
      * Getter for the elevator view models
      * @return ArrayList of the elevator view models
      */
-    public ArrayList<ElevatorViewModel> getElevatorViewModels() {
+    public List<ElevatorViewModel> getElevatorViewModels() {
         return mElevators;
     }
 
@@ -54,7 +55,7 @@ public class BuildingViewModel {
      * Getter for the floor view models
      * @return ArrayList of the floor view models
      */
-    public ArrayList<FloorViewModel> getFloorViewModels() {
+    public List<FloorViewModel> getFloorViewModels() {
         return mFloors;
     }
 

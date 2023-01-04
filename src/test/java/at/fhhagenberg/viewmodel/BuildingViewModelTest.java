@@ -21,7 +21,7 @@ import at.fhhagenberg.updater.ElevatorUpdater;
 import at.fhhagenberg.updater.FloorUpdater;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 
-public class BuildingViewModelTest {
+class BuildingViewModelTest {
     static Building model;
     static BuildingViewModel viewModel;
     static BusinesLogic logic;
