@@ -17,8 +17,8 @@ import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 
 class ElevatorViewModelTest {
-    static Elevator elevator;
-    static ElevatorViewModel elevatorViewModel;
+    static Elevator model;
+    static ElevatorViewModel viewModel;
     static BusinesLogic logic;
 
     @BeforeAll
@@ -26,157 +26,157 @@ class ElevatorViewModelTest {
         MockElevatorService service = new MockElevatorService(1, 2, 10);
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
-        elevator = building.getElevatorByNumber(0);
+        model = building.getElevatorByNumber(0);
         logic = new BusinesLogic(building);
-        elevatorViewModel = new ElevatorViewModel(elevator, logic);
+        viewModel = new ElevatorViewModel(model, logic);
     }
 
     @BeforeEach
     void setupElevator() {
-        elevator.setAccel(0);
-        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
-        elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
-        elevator.setNearestFloor(0);
-        elevator.setPayload(0);
-        elevator.setSpeed(0);
-        elevator.setTarget(0);
+        model.setAccel(0);
+        model.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+        model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
+        model.setNearestFloor(0);
+        model.setPayload(0);
+        model.setSpeed(0);
+        model.setTarget(0);
     }
 
     @Test
     void testDoorStatusIntToStr() {
-        elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
-        elevatorViewModel.update();
-        assertEquals("Closed", elevatorViewModel.getDoorStatusString());
-        assertEquals("Closed", elevatorViewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, elevatorViewModel.getDoorStatus());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, elevatorViewModel.getDoorStatusProp().get());
+        model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
+        viewModel.update();
+        assertEquals("Closed", viewModel.getDoorStatusString());
+        assertEquals("Closed", viewModel.getDoorStatusStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, viewModel.getDoorStatus());
+        assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, viewModel.getDoorStatusProp().get());
 
-        elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_OPEN);
-        elevatorViewModel.update();
-        assertEquals("Open", elevatorViewModel.getDoorStatusString());
-        assertEquals("Open", elevatorViewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPEN, elevatorViewModel.getDoorStatus());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPEN, elevatorViewModel.getDoorStatusProp().get());
+        model.setDoorStatus(IElevator.ELEVATOR_DOORS_OPEN);
+        viewModel.update();
+        assertEquals("Open", viewModel.getDoorStatusString());
+        assertEquals("Open", viewModel.getDoorStatusStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatus());
+        assertEquals(IElevator.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatusProp().get());
 
-        elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSING);
-        elevatorViewModel.update();
-        assertEquals("Closing", elevatorViewModel.getDoorStatusString());
-        assertEquals("Closing", elevatorViewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, elevatorViewModel.getDoorStatus());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, elevatorViewModel.getDoorStatusProp().get());
+        model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSING);
+        viewModel.update();
+        assertEquals("Closing", viewModel.getDoorStatusString());
+        assertEquals("Closing", viewModel.getDoorStatusStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, viewModel.getDoorStatus());
+        assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, viewModel.getDoorStatusProp().get());
 
-        elevator.setDoorStatus(IElevator.ELEVATOR_DOORS_OPENING);
-        elevatorViewModel.update();
-        assertEquals("Opening", elevatorViewModel.getDoorStatusString());
-        assertEquals("Opening", elevatorViewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPENING, elevatorViewModel.getDoorStatus());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPENING, elevatorViewModel.getDoorStatusProp().get());
+        model.setDoorStatus(IElevator.ELEVATOR_DOORS_OPENING);
+        viewModel.update();
+        assertEquals("Opening", viewModel.getDoorStatusString());
+        assertEquals("Opening", viewModel.getDoorStatusStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DOORS_OPENING, viewModel.getDoorStatus());
+        assertEquals(IElevator.ELEVATOR_DOORS_OPENING, viewModel.getDoorStatusProp().get());
     }
 
     @Test
     void testDirectionIntToStr() {
-        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UP);
-        elevatorViewModel.update();
-        assertEquals("Up", elevatorViewModel.getDirectionString());
-        assertEquals("Up", elevatorViewModel.getDirectionStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UP, elevatorViewModel.getDirection());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UP, elevatorViewModel.getDirectionProp().get());
+        model.setDirection(IElevator.ELEVATOR_DIRECTION_UP);
+        viewModel.update();
+        assertEquals("Up", viewModel.getDirectionString());
+        assertEquals("Up", viewModel.getDirectionStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UP, viewModel.getDirection());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UP, viewModel.getDirectionProp().get());
 
-        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
-        elevatorViewModel.update();
-        assertEquals("Down", elevatorViewModel.getDirectionString());
-        assertEquals("Down", elevatorViewModel.getDirectionStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, elevatorViewModel.getDirection());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, elevatorViewModel.getDirectionProp().get());
+        model.setDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
+        viewModel.update();
+        assertEquals("Down", viewModel.getDirectionString());
+        assertEquals("Down", viewModel.getDirectionStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, viewModel.getDirection());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, viewModel.getDirectionProp().get());
 
-        elevator.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
-        elevatorViewModel.update();
-        assertEquals("Uncommited", elevatorViewModel.getDirectionString());
-        assertEquals("Uncommited", elevatorViewModel.getDirectionStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevatorViewModel.getDirection());
-        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, elevatorViewModel.getDirectionProp().get());
+        model.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+        viewModel.update();
+        assertEquals("Uncommited", viewModel.getDirectionString());
+        assertEquals("Uncommited", viewModel.getDirectionStringProp().get());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, viewModel.getDirection());
+        assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, viewModel.getDirectionProp().get());
     }
 
     @Test
     void testStops() {
-        elevatorViewModel.update();
-        assertEquals("", elevatorViewModel.getStops());
-        assertEquals("", elevatorViewModel.getStopsProp().get());
+        viewModel.update();
+        assertEquals("", viewModel.getStops());
+        assertEquals("", viewModel.getStopsProp().get());
 
-        elevator.setStop(0, true);
-        elevatorViewModel.update();
-        assertEquals("0, ", elevatorViewModel.getStops());
-        assertEquals("0, ", elevatorViewModel.getStopsProp().get());
+        model.setStop(0, true);
+        viewModel.update();
+        assertEquals("0, ", viewModel.getStops());
+        assertEquals("0, ", viewModel.getStopsProp().get());
 
-        elevator.setStop(1, true);
-        elevatorViewModel.update();
-        assertEquals("0, 1, ", elevatorViewModel.getStops());
-        assertEquals("0, 1, ", elevatorViewModel.getStopsProp().get());
+        model.setStop(1, true);
+        viewModel.update();
+        assertEquals("0, 1, ", viewModel.getStops());
+        assertEquals("0, 1, ", viewModel.getStopsProp().get());
 
-        elevator.setStop(0, false);
-        elevatorViewModel.update();
-        assertEquals("1, ", elevatorViewModel.getStops());
-        assertEquals("1, ", elevatorViewModel.getStopsProp().get());
+        model.setStop(0, false);
+        viewModel.update();
+        assertEquals("1, ", viewModel.getStops());
+        assertEquals("1, ", viewModel.getStopsProp().get());
     }
 
     @Test
     void testPayloadProp() {
-        elevator.setPayload(40);
-        elevatorViewModel.update();
-        assertEquals(40, elevatorViewModel.getPayload());
-        assertEquals(40, elevatorViewModel.getPayloadProp().get());
+        model.setPayload(40);
+        viewModel.update();
+        assertEquals(40, viewModel.getPayload());
+        assertEquals(40, viewModel.getPayloadProp().get());
     }
 
     @Test
     void testSpeedProp() {
-        elevator.setSpeed(10);
-        elevatorViewModel.update();
-        assertEquals(10, elevatorViewModel.getSpeed());
-        assertEquals(10, elevatorViewModel.getSpeedProp().get());
+        model.setSpeed(10);
+        viewModel.update();
+        assertEquals(10, viewModel.getSpeed());
+        assertEquals(10, viewModel.getSpeedProp().get());
     }
 
     @Test
     void testAccelProp() {
-        elevator.setAccel(4);
-        elevatorViewModel.update();
-        assertEquals(4, elevatorViewModel.getAccel());
-        assertEquals(4, elevatorViewModel.getAccelProp().get());
+        model.setAccel(4);
+        viewModel.update();
+        assertEquals(4, viewModel.getAccel());
+        assertEquals(4, viewModel.getAccelProp().get());
     }
 
     @Test
     void testTargetProp() {
-        elevator.setTarget(1);
-        elevatorViewModel.update();
-        assertEquals(1, elevatorViewModel.getTarget());
-        assertEquals(1, elevatorViewModel.getTargetProp().get());
+        model.setTarget(1);
+        viewModel.update();
+        assertEquals(1, viewModel.getTarget());
+        assertEquals(1, viewModel.getTargetProp().get());
     }
 
     @Test
     void testDoorProp() {
-        elevator.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
-        elevatorViewModel.update();
-        assertEquals(IElevatorService.ELEVATOR_DOORS_OPEN, elevatorViewModel.getDoorStatus());
-        assertEquals(IElevatorService.ELEVATOR_DOORS_OPEN, elevatorViewModel.getDoorStatusProp().get());
-        assertEquals("Open", elevatorViewModel.getDoorStatusString());
-        assertEquals("Open", elevatorViewModel.getDoorStatusStringProp().get());
+        model.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
+        viewModel.update();
+        assertEquals(IElevatorService.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatus());
+        assertEquals(IElevatorService.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatusProp().get());
+        assertEquals("Open", viewModel.getDoorStatusString());
+        assertEquals("Open", viewModel.getDoorStatusStringProp().get());
     }
 
     @Test
     void testNearestFloorProp() {
-        elevator.setNearestFloor(1);
-        elevatorViewModel.update();
-        assertEquals(1, elevatorViewModel.getNearestFloor());
-        assertEquals(1, elevatorViewModel.getNearestFloorProp().get());
+        model.setNearestFloor(1);
+        viewModel.update();
+        assertEquals(1, viewModel.getNearestFloor());
+        assertEquals(1, viewModel.getNearestFloorProp().get());
     }
 
     @Test
     void testElevatorNr() {
-        elevatorViewModel.update();
-        assertEquals(0, elevatorViewModel.getElevatorNr());
+        viewModel.update();
+        assertEquals(0, viewModel.getElevatorNr());
     }
 
     @Test
     void testManual() {
-        assertFalse(elevatorViewModel.getManualProp().get());
+        assertFalse(viewModel.getManualProp().get());
     }
 }

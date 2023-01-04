@@ -47,6 +47,10 @@ public class FloorViewModel {
         return mWantDown.get();
     }
 
+    public int getFloorNumber() {
+        return mModel.getFloorNumber();
+    }
+
     /**
      * Updates the properties with the model values
      */

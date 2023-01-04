@@ -18,11 +18,14 @@ public class FloorView {
     public FloorView(FloorViewModel viewModel) {
         mViewModel = viewModel;
         mView = new HBox(10);
+        int floorNr = mViewModel.getFloorNumber();
 
         var lblUp = new Label();
+        lblUp.setId(String.format("Up%d", floorNr));
         lblUp.textProperty().bind(mViewModel.getWantUpStrProp());
 
         var lblDown = new Label();
+        lblDown.setId(String.format("Down%d", floorNr));
         lblDown.textProperty().bind(mViewModel.getWantDownStrProp());
 
         mView.getChildren().add(lblUp);

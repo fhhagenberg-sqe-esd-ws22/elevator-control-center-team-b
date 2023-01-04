@@ -42,6 +42,9 @@ public class BuildingView {
             floorLayout.getChildren().add(0, floor.getLayout());
         }
 
+        elevatorLayout.setId("ElevatorLayout");
+        floorLayout.setId("FloorLayout");
+
         mView = new HBox(20);
         mView.getChildren().add(elevatorLayout);
         mView.getChildren().add(floorLayout);
