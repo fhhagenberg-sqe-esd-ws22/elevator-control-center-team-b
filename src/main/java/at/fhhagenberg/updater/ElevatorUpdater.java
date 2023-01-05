@@ -41,6 +41,7 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setPayload(mElevatorService.getElevatorWeight(elevatorNr));
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
         checkForStops(elevatorNr);
+        checkServiced(elevatorNr);
         calcNearestFloor(elevatorNr);
     }
 
@@ -75,6 +76,18 @@ public class ElevatorUpdater extends UpdaterBase{
         
         for (int i = 0; i < floors; i++) {
             mModel.setStop(i, mElevatorService.getElevatorButton(elevatorNr, i));
+        }
+    }
+
+    /**
+     * Checks which floors are serviced
+     * @param elevatorNr identifies the elevator
+     */
+    private void checkServiced(int elevatorNr) {
+        int floors = mElevatorService.getFloorNum();
+
+        for (int i = 0; i < floors; i++) {
+            mModel.setServiced(i, mElevatorService.getServicesFloors(elevatorNr, i));
         }
     }
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.logic.BusinesLogic;
@@ -22,14 +23,14 @@ import at.fhhagenberg.updater.FloorUpdater;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 
 class BuildingViewModelTest {
-    static Building model;
-    static BuildingViewModel viewModel;
-    static BusinesLogic logic;
-    static BuildingUpdater updater;
-    static MockElevatorService service;
+    Building model;
+    BuildingViewModel viewModel;
+    BusinesLogic logic;
+    BuildingUpdater updater;
+    MockElevatorService service;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    void setup() {
         service = new MockElevatorService(2, 2, 10);
         ModelFactory factory = new ModelFactory(service);
         model = factory.createBuilding();

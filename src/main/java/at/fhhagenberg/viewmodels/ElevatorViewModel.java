@@ -15,7 +15,10 @@ import java.util.ArrayList;
 public class ElevatorViewModel {
     private final Elevator mModel;
     private final BusinesLogic mLogic;
+    // buttons pressed in the elevator
     private final SimpleObjectProperty<ArrayList<Integer>> mStops;
+    // floors that are serviced by the elevator
+    private final SimpleObjectProperty<ArrayList<Integer>> mServiced;
     // speed of the elevator
     private final SimpleIntegerProperty mSpeed;
     // current acceleration of the elevator
@@ -46,6 +49,7 @@ public class ElevatorViewModel {
         mModel = elevator;
         mLogic = logic;
         mStops = new SimpleObjectProperty<ArrayList<Integer>>();
+        mServiced = new SimpleObjectProperty<ArrayList<Integer>>();
         mSpeed = new SimpleIntegerProperty();
         mAccel = new SimpleIntegerProperty();
         mTarget = new SimpleIntegerProperty();
@@ -85,14 +89,6 @@ public class ElevatorViewModel {
         return mDirection;
     }
 
-    public SimpleStringProperty getDirectionStringProp() {
-        return mDirectionString;
-    }
-
-    public SimpleIntegerProperty getDoorStatusProp() {
-        return mDoorStatus;
-    }
-
     public SimpleStringProperty getDoorStatusStringProp() {
         return mDoorStatusString;
     }
@@ -101,8 +97,10 @@ public class ElevatorViewModel {
         return mNearestFloor;
     }
 
-    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() {
-        return mStops;
+    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { return mStops; }
+
+    public SimpleObjectProperty<ArrayList<Integer>> getServicedProp() {
+        return mServiced;
     }
 
     public SimpleBooleanProperty getManualProp() {
@@ -128,12 +126,17 @@ public class ElevatorViewModel {
         mNearestFloor.set(mModel.getNearestFloor());
 
         var stops = new ArrayList<Integer>();
+        var serviced = new ArrayList<Integer>();
         for(int i = 0; i < mModel.getNrOfFloors(); ++i){
             if(mModel.getStop(i)){
                 stops.add(i);
             }
+            if(mModel.getServiced(i)){
+                serviced.add(i);
+            }
         }
         mStops.set(stops);
+        mServiced.set(serviced);
 
         switch(mDirection.get())
         {

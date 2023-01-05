@@ -132,6 +132,25 @@ class ElevatorTest {
         assertFalse(elevator.getStop(1));
     }
 
+    @Test
+    void testSetAndResetServiced() {
+        Elevator elevator = new Elevator(0, 2);
+        assertFalse(elevator.getServiced(0));
+        assertFalse(elevator.getServiced(1));
+
+        // set elevator to service both floors
+        elevator.setServiced(0, true);
+        assertTrue(elevator.getServiced(0));
+        elevator.setServiced(1, true);
+        assertTrue(elevator.getServiced(1));
+
+        // set elevator to service both floors
+        elevator.setServiced(0, false);
+        assertFalse(elevator.getServiced(0));
+        elevator.setServiced(1, false);
+        assertFalse(elevator.getServiced(1));
+    }
+
     @Test 
     void testInvalidFloorStops() {
         Elevator elevator = new Elevator(0, 1);
@@ -144,5 +163,19 @@ class ElevatorTest {
         elevator.setStop(1, false);
         assertThrows(ModelException.class, () -> elevator.getStop(1));
         assertTrue(elevator.getStop(0));
+    }
+
+    @Test
+    void testInvalidFloorServiced() {
+        Elevator elevator = new Elevator(0, 1);
+        elevator.setServiced(0, true);
+        assertTrue(elevator.getServiced(0));
+
+        elevator.setServiced(-1, false);
+        assertThrows(ModelException.class, () -> elevator.getServiced(-1));
+        assertTrue(elevator.getServiced(0));
+        elevator.setServiced(1, false);
+        assertThrows(ModelException.class, () -> elevator.getServiced(1));
+        assertTrue(elevator.getServiced(0));
     }
 }

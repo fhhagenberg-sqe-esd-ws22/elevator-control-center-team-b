@@ -76,38 +76,11 @@ class BuildingUpdaterTest {
     void testUpdate() {
         when(service.getFloorNum()).thenReturn(3);
         when(service.getElevatorNum()).thenReturn(2);
-        //per default all floors are enabled so for the update test, alle floors get disabled
-        //for every elevator
-        when(service.getServicesFloors(0,0)).thenReturn(false);
-        when(service.getServicesFloors(0,1)).thenReturn(false);
-        when(service.getServicesFloors(0,2)).thenReturn(false);
-        when(service.getServicesFloors(1,0)).thenReturn(false);
-        when(service.getServicesFloors(1,1)).thenReturn(false);
-        when(service.getServicesFloors(1,2)).thenReturn(false);
 
         ModelFactory factory = new ModelFactory(service);
         var building = factory.createBuilding();
         BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
         updater.update();
-
-        for(int i = 0; i < building.getElevators().size(); ++i) {
-            for(int j = 0; j < building.getFloors().size(); ++j) {
-                assertFalse(building.getIsServiced(i, j));
-            }
-        }
-    }
-
-    @Test
-    void testUpdateGetServiceFloorsFails() {
-        when(service.getFloorNum()).thenReturn(3);
-        when(service.getElevatorNum()).thenReturn(2);
-        when(service.getServicesFloors(0,0)).thenThrow(ElevatorServiceException.class);
-
-        ModelFactory factory = new ModelFactory(service);
-        var building = factory.createBuilding();
-        BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
-
-        assertThrows(UpdaterException.class, updater::update);
     }
 
     @Test

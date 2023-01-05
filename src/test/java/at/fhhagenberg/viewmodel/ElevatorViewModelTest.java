@@ -16,22 +16,19 @@ import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ElevatorViewModelTest {
-    static Elevator model;
-    static ElevatorViewModel viewModel;
-    static BusinesLogic logic;
+    Elevator model;
+    ElevatorViewModel viewModel;
+    BusinesLogic logic;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    void setupElevator() {
         MockElevatorService service = new MockElevatorService(1, 2, 10);
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
         model = building.getElevatorByNumber(0);
         logic = new BusinesLogic(building);
         viewModel = new ElevatorViewModel(model, logic);
-    }
 
-    @BeforeEach
-    void setupElevator() {
         model.setAccel(0);
         model.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
@@ -46,39 +43,32 @@ class ElevatorViewModelTest {
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
         viewModel.update();
         assertEquals("Closed", viewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSED, viewModel.getDoorStatusProp().get());
 
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_OPEN);
         viewModel.update();
         assertEquals("Open", viewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatusProp().get());
 
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSING);
         viewModel.update();
         assertEquals("Closing", viewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_CLOSING, viewModel.getDoorStatusProp().get());
 
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_OPENING);
         viewModel.update();
         assertEquals("Opening", viewModel.getDoorStatusStringProp().get());
-        assertEquals(IElevator.ELEVATOR_DOORS_OPENING, viewModel.getDoorStatusProp().get());
     }
 
     @Test
     void testDirectionIntToStr() {
         model.setDirection(IElevator.ELEVATOR_DIRECTION_UP);
         viewModel.update();
-        assertEquals("Up", viewModel.getDirectionStringProp().get());
         assertEquals(IElevator.ELEVATOR_DIRECTION_UP, viewModel.getDirectionProp().get());
 
         model.setDirection(IElevator.ELEVATOR_DIRECTION_DOWN);
         viewModel.update();
-        assertEquals("Down", viewModel.getDirectionStringProp().get());
         assertEquals(IElevator.ELEVATOR_DIRECTION_DOWN, viewModel.getDirectionProp().get());
 
         model.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         viewModel.update();
-        assertEquals("Uncommited", viewModel.getDirectionStringProp().get());
         assertEquals(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED, viewModel.getDirectionProp().get());
     }
 
@@ -100,6 +90,26 @@ class ElevatorViewModelTest {
         viewModel.update();
         assertFalse(viewModel.getStopsProp().get().contains(0));
         assertTrue(viewModel.getStopsProp().get().contains(1));
+    }
+
+    @Test
+    void testServiced() {
+        viewModel.update();
+        assertTrue(viewModel.getServicedProp().get().isEmpty());
+
+        model.setServiced(0, true);
+        viewModel.update();
+        assertTrue(viewModel.getServicedProp().get().contains(0));
+
+        model.setServiced(1, true);
+        viewModel.update();
+        assertTrue(viewModel.getServicedProp().get().contains(0));
+        assertTrue(viewModel.getServicedProp().get().contains(1));
+
+        model.setServiced(0, false);
+        viewModel.update();
+        assertFalse(viewModel.getServicedProp().get().contains(0));
+        assertTrue(viewModel.getServicedProp().get().contains(1));
     }
 
     @Test
@@ -134,7 +144,6 @@ class ElevatorViewModelTest {
     void testDoorProp() {
         model.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         viewModel.update();
-        assertEquals(IElevatorService.ELEVATOR_DOORS_OPEN, viewModel.getDoorStatusProp().get());
         assertEquals("Open", viewModel.getDoorStatusStringProp().get());
     }
 

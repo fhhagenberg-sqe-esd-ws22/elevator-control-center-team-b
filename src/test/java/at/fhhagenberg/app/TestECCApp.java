@@ -33,6 +33,11 @@ public class TestECCApp extends ECCApp {
         service.setElevatorButton(3, 1, true);
         service.setElevatorButton(3, 4, true);
 
+        service.setServicesFloors(3,4,false);
+        service.setServicesFloors(0,1,false);
+        service.setServicesFloors(0,2,false);
+        service.setServicesFloors(0,3,false);
+
         service.setSpeed(1, 5);
         service.setSpeed(2, 3);
         service.setPosition(0, 20);

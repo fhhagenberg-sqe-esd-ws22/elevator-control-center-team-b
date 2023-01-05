@@ -65,10 +65,9 @@ class ElevatorUpdaterTest {
         verify(elevator).setNearestFloor(nearestFloor);
     }
 
-    @Test
-    void testRequestStops() {
-        when(elevator.getElevatorNr()).thenReturn(0);
-        
+    // these calls are all made in update() and expected to bring correct results,
+    // but they are unnecessary to see if serviced floors and stops were correctly handled
+    void setIrrelevantUpdateCalls(){
         when(service.getFloorNum()).thenReturn(3);
         when(service.getFloorHeight()).thenReturn(10);
         when(service.getElevatorAccel(0)).thenReturn(1);
@@ -76,6 +75,13 @@ class ElevatorUpdaterTest {
         when(service.getCommittedDirection(0)).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UP);
         when(service.getElevatorWeight(0)).thenReturn(100);
         when(service.getElevatorDoorStatus(0)).thenReturn(IElevatorService.ELEVATOR_DOORS_CLOSED);
+    }
+
+    @Test
+    void testRequestStops() {
+        when(elevator.getElevatorNr()).thenReturn(0);
+        
+       setIrrelevantUpdateCalls();
 
         when(service.getElevatorButton(0, 0)).thenReturn(true);
         when(service.getElevatorButton(0, 1)).thenReturn(false);
@@ -87,6 +93,24 @@ class ElevatorUpdaterTest {
         verify(elevator).setStop(0, true);
         verify(elevator).setStop(1, false);
         verify(elevator).setStop(2, true);
+    }
+
+    @Test
+    void testServiced() {
+        when(elevator.getElevatorNr()).thenReturn(0);
+
+        setIrrelevantUpdateCalls();
+
+        when(service.getServicesFloors(0, 0)).thenReturn(true);
+        when(service.getServicesFloors(0, 1)).thenReturn(false);
+        when(service.getServicesFloors(0, 2)).thenReturn(true);
+
+        ElevatorUpdater updater = new ElevatorUpdater(service, elevator);
+        updater.update();
+
+        verify(elevator).setServiced(0, true);
+        verify(elevator).setServiced(1, false);
+        verify(elevator).setServiced(2, true);
     }
 
     private static Stream<Arguments> provideHeights() {

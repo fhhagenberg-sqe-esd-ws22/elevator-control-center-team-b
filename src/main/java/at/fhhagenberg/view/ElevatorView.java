@@ -3,10 +3,7 @@ package at.fhhagenberg.view;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.binding.StringExpression;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -59,25 +56,22 @@ public class ElevatorView {
         return infoText;
     }
 
-    private VBox createElevatorGraphic(String identifierBase){
-        var elevatorGraphic = new VBox(0);
-        for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
-            var btn = new Button("Floor " + i);
-            btn.setId(String.format(identifierBase + "%d_%d", mElevatorNr, i));
-            btn.setDisable(true);
-            btn.setOpacity(1);
-            btn.setPrefHeight(mFloorHeightPx);
-            elevatorGraphic.getChildren().add(btn);
-        }
-        return elevatorGraphic;
+    private Button createElevatorFloor(String identifierBase, int i){
+        var btn = new Button("Floor " + i);
+        btn.setId(String.format(identifierBase + "%d_%d", mElevatorNr, i));
+        btn.setDisable(true);
+        btn.setOpacity(1);
+        btn.setPrefHeight(mFloorHeightPx);
+        return btn;
     }
 
     private VBox createPressedInElevatorGraphic(){
-        var buttonPressedGraphic = createElevatorGraphic("BtnInElevator");
+        var buttonPressedGraphic = new VBox(0);
         var floors = buttonPressedGraphic.getChildren();
         for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
             var floor = i;
-            floors.get(floor).styleProperty().bind(Bindings.createStringBinding(()->{
+            var btn = createElevatorFloor("PressedInEle", floor);
+            btn.styleProperty().bind(Bindings.createStringBinding(()->{
                 if(mViewModel.getStopsProp().get().contains(floor)){
                     return ElevatorFloorStyle + ElevatorButtonPressedColor;
                 }
@@ -85,26 +79,31 @@ public class ElevatorView {
                     return ElevatorFloorStyle + ElevatorNormalColor;
                 }
             }));
+            buttonPressedGraphic.getChildren().add(btn);
         }
         return buttonPressedGraphic;
     }
 
     private VBox createElevatorTargetGraphic(){
-        var elevatorTarget = createElevatorGraphic("ElevatorTarget");
-        var floors = elevatorTarget.getChildren();
+        var elevatorTarget = new VBox(0);
         for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
             var floor = i;
-            floors.get(floor).styleProperty().bind(Bindings.createStringBinding(()->{
+            var btn = createElevatorFloor("ElevatorTarget", floor);
+            btn.styleProperty().bind(Bindings.createStringBinding(()->{
                 if(mViewModel.getNearestFloorProp().get() == floor){
                     return ElevatorFloorStyle + ElevatorCurrentPosColor;
                 }
                 else if(mViewModel.getTargetProp().get() == floor){
                     return ElevatorFloorStyle + ElevatorTargetColor;
                 }
-                else{
+                else if(mViewModel.getServicedProp().get().contains(floor)){
                     return ElevatorFloorStyle + ElevatorNormalColor;
                 }
+                else{
+                    return ElevatorFloorStyle + ElevatorNoServiceColor;
+                }
             }));
+            elevatorTarget.getChildren().add(btn);
         }
         return elevatorTarget;
     }
