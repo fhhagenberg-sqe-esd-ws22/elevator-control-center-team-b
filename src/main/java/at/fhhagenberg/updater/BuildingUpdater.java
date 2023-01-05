@@ -51,7 +51,6 @@ public class BuildingUpdater extends UpdaterBase {
      * Updates the Building object.
      */
     private void updateBuilding() {
-        //TODO(PH): discuss if it is necessary to do that every update cycle
         var elevators = mModel.getElevators();
         var floors = mModel.getFloors();
         for (var e : elevators) {

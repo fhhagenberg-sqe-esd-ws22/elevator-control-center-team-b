@@ -65,6 +65,30 @@ class ElevatorUpdaterTest {
         verify(elevator).setNearestFloor(nearestFloor);
     }
 
+    @Test
+    void testRequestStops() {
+        when(elevator.getElevatorNr()).thenReturn(0);
+        
+        when(service.getFloorNum()).thenReturn(3);
+        when(service.getFloorHeight()).thenReturn(10);
+        when(service.getElevatorAccel(0)).thenReturn(1);
+        when(service.getTarget(0)).thenReturn(1);
+        when(service.getCommittedDirection(0)).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UP);
+        when(service.getElevatorWeight(0)).thenReturn(100);
+        when(service.getElevatorDoorStatus(0)).thenReturn(IElevatorService.ELEVATOR_DOORS_CLOSED);
+
+        when(service.getElevatorButton(0, 0)).thenReturn(true);
+        when(service.getElevatorButton(0, 1)).thenReturn(false);
+        when(service.getElevatorButton(0, 2)).thenReturn(true);
+
+        ElevatorUpdater updater = new ElevatorUpdater(service, elevator);
+        updater.update();
+
+        verify(elevator).setStop(0, true);
+        verify(elevator).setStop(1, false);
+        verify(elevator).setStop(2, true);
+    }
+
     private static Stream<Arguments> provideHeights() {
         return Stream.of(
                 Arguments.of(0, 0),
