@@ -22,6 +22,7 @@ public class ElevatorView {
     private final int padding = 10;
     private final String ElevatorBorderStyle = "-fx-border-color: blue;-fx-border-insets: 3;-fx-border-width: 2;";
     private final String ArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
+    private final String ElevatorPressableStyle = "-fx-border-color: lightblue;";
     private final String ElevatorFloorStyle = "-fx-background-radius: 0;";
     private final String ElevatorNormalColor = "-fx-background-color: silver;";
     private final String ElevatorTargetColor = "-fx-background-color: lightgreen;";
@@ -89,18 +90,24 @@ public class ElevatorView {
         for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
             var floor = i;
             var btn = createElevatorFloor("ElevatorTarget", floor);
+            btn.disableProperty().bind(mViewModel.getManualProp().not());
             btn.styleProperty().bind(Bindings.createStringBinding(()->{
+                var baseStyle = ElevatorFloorStyle;
+                if(mViewModel.getManualProp().get()){
+                    System.out.println("Btn pressed");
+                    baseStyle = ElevatorPressableStyle;
+                }
                 if(mViewModel.getNearestFloorProp().get() == floor){
-                    return ElevatorFloorStyle + ElevatorCurrentPosColor;
+                    return baseStyle + ElevatorCurrentPosColor;
                 }
                 else if(mViewModel.getTargetProp().get() == floor){
-                    return ElevatorFloorStyle + ElevatorTargetColor;
+                    return baseStyle + ElevatorTargetColor;
                 }
                 else if(mViewModel.getServicedProp().get().contains(floor)){
-                    return ElevatorFloorStyle + ElevatorNormalColor;
+                    return baseStyle + ElevatorNormalColor;
                 }
                 else{
-                    return ElevatorFloorStyle + ElevatorNoServiceColor;
+                    return baseStyle + ElevatorNoServiceColor;
                 }
             }));
             elevatorTarget.getChildren().add(btn);
@@ -157,6 +164,7 @@ public class ElevatorView {
 
         return information;
     }
+
 
     private HBox createElevatorNameHeader(){
         var header = new HBox();
