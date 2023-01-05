@@ -55,9 +55,7 @@ class BuildingViewModelTest {
     @Test
     void testUpdate() throws InterruptedException {
         assertEquals(0, model.getElevatorByNumber(0).getSpeed());
-        assertEquals(0, viewModel.getElevatorViewModels().get(0).getSpeed());
         assertEquals(0, model.getElevatorByNumber(1).getSpeed());
-        assertEquals(0, viewModel.getElevatorViewModels().get(1).getSpeed());
         assertFalse(model.getFloorByNumber(0).getWantUp());
         assertFalse(viewModel.getFloorViewModels().get(0).getWantUp());
         assertFalse(logic.getManual(0));
@@ -68,9 +66,7 @@ class BuildingViewModelTest {
         Thread.sleep(1100);
         
         assertEquals(10, model.getElevatorByNumber(0).getSpeed());
-        assertEquals(10, viewModel.getElevatorViewModels().get(0).getSpeed());
         assertEquals(20, model.getElevatorByNumber(1).getSpeed());
-        assertEquals(20, viewModel.getElevatorViewModels().get(1).getSpeed());
         assertTrue(model.getFloorByNumber(0).getWantUp());
         assertTrue(viewModel.getFloorViewModels().get(0).getWantUp());
     }

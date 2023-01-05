@@ -13,7 +13,7 @@ public class RMIElevatorService implements IElevatorService{
 
     public RMIElevatorService(IElevator api) {
         if (api == null) {
-            throw new ElevatorServiceException("COuld not create RMIElevatorService, the given IElevator object is null!");
+            throw new ElevatorServiceException("Could not create RMIElevatorService, the given IElevator object is null!");
         }
         mApi = api;
     }

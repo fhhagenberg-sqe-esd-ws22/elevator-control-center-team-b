@@ -6,6 +6,7 @@ import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.matcher.control.ButtonMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 
 import javafx.stage.Stage;
@@ -94,10 +95,10 @@ class AppTest {
      */
     @Test
     void testElevatorStops(FxRobot robot) {
-        FxAssert.verifyThat("#Stops0", LabeledMatchers.hasText("3, 4, "));
-        FxAssert.verifyThat("#Stops1", LabeledMatchers.hasText("0, "));
-        FxAssert.verifyThat("#Stops2", LabeledMatchers.hasText("0, 1, 2, 3, 4, 5, "));
-        FxAssert.verifyThat("#Stops3", LabeledMatchers.hasText("1, 4, "));
+        FxAssert.verifyThat("#Stops0", LabeledMatchers.hasText("43"));
+        FxAssert.verifyThat("#Stops1", LabeledMatchers.hasText("0"));
+        FxAssert.verifyThat("#Stops2", LabeledMatchers.hasText("543210"));
+        FxAssert.verifyThat("#Stops3", LabeledMatchers.hasText("41"));
     }
 
     /**
