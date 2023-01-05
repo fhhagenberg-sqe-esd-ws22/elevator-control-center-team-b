@@ -3,6 +3,10 @@ package at.fhhagenberg.view;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.binding.StringExpression;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -32,43 +36,25 @@ public class ElevatorView {
     private final int mFloorHeightPx = 40;
     private final int mElevatorNr;
 
+    private HBox createInfoLine(String identifierBase, String label, String unit, StringExpression binding){
+        var infoLine = new HBox();
+        Label payloadLbl = new Label();
+        payloadLbl.setId(String.format(identifierBase + "%d", mElevatorNr));
+        payloadLbl.textProperty().bind(binding);
+        infoLine.getChildren().add(new Label(label + ": "));
+        infoLine.getChildren().add(payloadLbl);
+        infoLine.getChildren().add(new Label(unit));
+        return infoLine;
+    }
+
     private VBox createInfoText(){
         var infoText = new VBox();
 
-        var payload = new HBox();
-        Label payloadLbl = new Label();
-        payloadLbl.setId(String.format("Payload%d", mElevatorNr));
-        payloadLbl.textProperty().bind(mViewModel.getPayloadProp().asString());
-        payload.getChildren().add(new Label("Payload: "));
-        payload.getChildren().add(payloadLbl);
-        payload.getChildren().add(new Label("mass"));
-        infoText.getChildren().add(payload);
-
-        var speed = new HBox();
-        Label speedLbl = new Label();
-        speedLbl.setId(String.format("Speed%d", mElevatorNr));
-        speedLbl.textProperty().bind(mViewModel.getSpeedProp().asString());
-        speed.getChildren().add(new Label("Speed: "));
-        speed.getChildren().add(speedLbl);
-        speed.getChildren().add(new Label("x/s"));
-        infoText.getChildren().add(speed);
-
-        var accel = new HBox();
-        Label accelLbl = new Label();
-        accelLbl.setId(String.format("Accel%d", mElevatorNr));
-        accelLbl.textProperty().bind(mViewModel.getAccelProp().asString());
-        accel.getChildren().add(new Label("Accel: "));
-        accel.getChildren().add(accelLbl);
-        accel.getChildren().add(new Label("x/s^2"));
-        infoText.getChildren().add(accel);
-
-        var door = new HBox();
-        Label doorLbl = new Label();
-        doorLbl.setId(String.format("Door%d", mElevatorNr));
-        doorLbl.textProperty().bind(mViewModel.getDoorStatusStringProp());
-        door.getChildren().add(new Label("Door: "));
-        door.getChildren().add(doorLbl);
-        infoText.getChildren().add(door);
+        infoText.getChildren().addAll(
+                createInfoLine("Payload", "Payload", "mass", mViewModel.getPayloadProp().asString()),
+                createInfoLine("Speed", "Speed", "x/y", mViewModel.getSpeedProp().asString()),
+                createInfoLine("Accel", "Accel", "x/y^2", mViewModel.getAccelProp().asString()),
+                createInfoLine("Door", "Door", "", mViewModel.getDoorStatusStringProp()));
 
         return infoText;
     }
@@ -166,7 +152,7 @@ public class ElevatorView {
         var information = new HBox();
         var graphics = createGraphics();
         var infoText = createInfoText();
-        HBox.setMargin(infoText,new Insets(2*padding, 0, 0, padding));
+        HBox.setMargin(infoText,new Insets(padding, padding, padding, padding));
         information.getChildren().add(graphics);
         information.getChildren().add(infoText);
 
