@@ -176,6 +176,11 @@ class ElevatorViewModelTest {
     }
 
     @Test
+    void testNrOfFloors() {
+        assertEquals(2, viewModel.getNrFloors());
+    }
+
+    @Test
     void testManual() {
         assertFalse(viewModel.getManualProp().get());
     }

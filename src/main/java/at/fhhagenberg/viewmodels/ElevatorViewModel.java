@@ -152,6 +152,8 @@ public class ElevatorViewModel {
     public int getElevatorNr() {
         return mModel.getElevatorNr();
     }
+
+    public int getNrFloors(){ return mModel.getNrOfFloors(); }
     
     /**
      * Updates all properties of this

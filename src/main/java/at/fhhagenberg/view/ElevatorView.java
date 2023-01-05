@@ -1,6 +1,10 @@
 package at.fhhagenberg.view;
 
+import at.fhhagenberg.service.IElevator;
+import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -12,6 +16,10 @@ import javafx.scene.layout.VBox;
 public class ElevatorView {
     private final ElevatorViewModel mViewModel;
     private final VBox mView;
+
+    private final String mArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
+    private final String mElevatorStyle = "-fx-background-radius: 0;";
+    private final int mFloorHeightPx = 40;
 
     /**
      * Constructor of ElevatorView
@@ -92,6 +100,52 @@ public class ElevatorView {
         stops.getChildren().add(new Label("Stops: "));
         stops.getChildren().add(stopsLbl);
         mView.getChildren().add(stops);
+
+        var stopsNewVis = new VBox(0);
+        for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
+            var btn = new Button("Floor "+i);
+            btn.setDisable(true);
+            btn.setOpacity(1);
+            btn.setPrefHeight(mFloorHeightPx);
+            int floor = i; //effectively final for lambda
+            btn.styleProperty().bind(Bindings.createStringBinding(()->{
+                if(mViewModel.getNearestFloorProp().get() == floor){
+                    return mElevatorStyle + "-fx-background-color: green;";
+                }
+                else if(mViewModel.getTargetProp().get() == floor){
+                    return mElevatorStyle + "-fx-background-color: red;";
+                }
+                else{
+                    return mElevatorStyle + "-fx-background-color: grey;";
+                }
+            }));
+            stopsNewVis.getChildren().add(btn);
+        }
+        mView.getChildren().add(stopsNewVis);
+
+        var arrows = new HBox();
+        var arrUp = new Button();
+        arrUp.setDisable(true);
+        arrUp.styleProperty().bind(Bindings.createStringBinding(()->
+        {if(mViewModel.getDirectionProp().get() == IElevatorService.ELEVATOR_DIRECTION_UP)
+        {return mArrowStyle + "-fx-background-color: green;";}
+        else{return mArrowStyle + "-fx-background-color: grey;";}}));
+        arrUp.setOpacity(1);
+        //arrUp.setStyle(mArrowStyle);
+        arrUp.setRotate(270);
+        arrows.getChildren().add(arrUp);
+
+        var arrDown= new Button();
+        arrDown.styleProperty().bind(Bindings.createStringBinding(()->
+        {if(mViewModel.getDirectionProp().get() == IElevatorService.ELEVATOR_DIRECTION_DOWN)
+        {return mArrowStyle + "-fx-background-color: green;";}
+        else{return mArrowStyle + "-fx-background-color: grey;";}}));
+        arrDown.setDisable(true);
+        arrDown.setOpacity(1);
+        arrDown.setRotate(90);
+        arrows.getChildren().add(arrDown);
+
+        mView.getChildren().add(arrows);
 
         var button = new ToggleButton("Manual Mode");
         button.setId(String.format("Manual%d", elevatorNr));
