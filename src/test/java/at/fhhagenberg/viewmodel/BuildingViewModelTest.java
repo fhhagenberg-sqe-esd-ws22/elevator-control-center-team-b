@@ -53,7 +53,7 @@ class BuildingViewModelTest {
 
 
     @Test
-    void testUpdate() {
+    void testUpdate() throws InterruptedException {
         assertEquals(0, model.getElevatorByNumber(0).getSpeed());
         assertEquals(0, viewModel.getElevatorViewModels().get(0).getSpeed());
         assertEquals(0, model.getElevatorByNumber(1).getSpeed());
@@ -65,13 +65,8 @@ class BuildingViewModelTest {
         service.setSpeed(0, 10);
         service.setSpeed(1, 20);
         service.setFloorUp(0, true);
-        try {
-            Thread.sleep(1100);
-        }
-        catch (InterruptedException ex) {
-            
-        }
-
+        Thread.sleep(1100);
+        
         assertEquals(10, model.getElevatorByNumber(0).getSpeed());
         assertEquals(10, viewModel.getElevatorViewModels().get(0).getSpeed());
         assertEquals(20, model.getElevatorByNumber(1).getSpeed());

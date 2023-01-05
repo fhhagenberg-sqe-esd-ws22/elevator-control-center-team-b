@@ -65,7 +65,7 @@ public class ElevatorView {
         Label doorLbl = new Label();
         doorLbl.setId(String.format("Door%d", elevatorNr));
         doorLbl.textProperty().bind(mViewModel.getDoorStatusStringProp());
-        door.getChildren().add(new Label("Next stop: "));
+        door.getChildren().add(new Label("Door: "));
         door.getChildren().add(doorLbl);
         mView.getChildren().add(door);
 

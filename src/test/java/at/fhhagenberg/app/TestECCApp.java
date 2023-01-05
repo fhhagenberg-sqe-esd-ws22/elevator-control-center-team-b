@@ -3,7 +3,6 @@ package at.fhhagenberg.app;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 
-import at.fhhagenberg.app.ECCApp;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.service.IElevatorService;
 
