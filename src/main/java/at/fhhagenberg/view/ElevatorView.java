@@ -5,6 +5,7 @@ import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -149,6 +151,16 @@ public class ElevatorView {
                 }
             }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
             mViewModel.getTargetProp(), mViewModel.getServicedProp()));
+            /*mViewModel.getManualProp().bind(Bindings.createIntegerBinding(()->{
+                        btn.onActionProperty().
+                    }),
+                    btn.onActionProperty());*/
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    mViewModel.getManualFloorProp().setValue(floor);
+                }
+            });
             elevatorTarget.getChildren().add(btn);
         }
         return elevatorTarget;

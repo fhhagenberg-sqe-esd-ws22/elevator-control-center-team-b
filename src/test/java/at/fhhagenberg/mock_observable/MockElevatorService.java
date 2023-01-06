@@ -151,6 +151,8 @@ public class MockElevatorService implements IElevatorService{
 
     @Override
     public void setTarget(int elevatorNumber, int target) {
+        //TODO: remove
+        System.out.println("New target");
         this.target[elevatorNumber] = target;
     }
 
