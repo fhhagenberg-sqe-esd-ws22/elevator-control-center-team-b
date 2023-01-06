@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * JavaFX App
@@ -56,7 +57,7 @@ public class ECCApp extends Application {
         BuildingUpdater updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, building);
 
         BusinesLogic logic = new BusinesLogic(building);
-        BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic);
+        BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic, new Timer());
         BuildingView buildingView = new BuildingView(buildingViewModel);
 
         return new Scene(buildingView.getLayout(), 1200, 480);
