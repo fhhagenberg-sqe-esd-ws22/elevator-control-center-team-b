@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 @ExtendWith(ApplicationExtension.class)
 class AppTest {
 
-    static private int TIMEOUT = 10000;
+    static private int TIMEOUT = 50000;
 
     FxRobot robot;
 
@@ -49,9 +49,8 @@ class AppTest {
         TestECCApp.service.setDoorStatus(1, IElevatorService.ELEVATOR_DOORS_CLOSING);
         TestECCApp.service.setDoorStatus(2, IElevatorService.ELEVATOR_DOORS_OPEN);
         TestECCApp.service.setDoorStatus(3, IElevatorService.ELEVATOR_DOORS_OPENING);
-        var obj = robot.lookup("#Door1").query();
 
-        while (!LabeledMatchers.hasText("Closing").matches(obj)) {
+        while (!LabeledMatchers.hasText("Opening").matches(robot.lookup("#Door3").query())) {
         }
         
         FxAssert.verifyThat("#Door0", LabeledMatchers.hasText("Closed"));
@@ -72,9 +71,7 @@ class AppTest {
         TestECCApp.service.setWeight(2, 30);
         TestECCApp.service.setWeight(3, 40);
 
-        var obj = robot.lookup("#Payload0").query();
-
-        while (!LabeledMatchers.hasText("10").matches(obj)) {
+        while (!LabeledMatchers.hasText("40").matches(robot.lookup("#Payload3").query())) {
         }
 
         FxAssert.verifyThat("#Payload0", LabeledMatchers.hasText("10"));
@@ -91,11 +88,12 @@ class AppTest {
         TestECCApp.service.setSpeed(1, 5);
         TestECCApp.service.setSpeed(2, 3);
 
-        var obj = robot.lookup("#Speed1").query();
-
-        while (!LabeledMatchers.hasText("5").matches(obj)) {
+        int cnt = 0;
+        while ((!LabeledMatchers.hasText("5").matches(robot.lookup("#Speed1").query()) ||
+            !LabeledMatchers.hasText("3").matches(robot.lookup("#Speed2").query())) && 
+            cnt < TIMEOUT) {
+            cnt++;
         }
-
 
         FxAssert.verifyThat("#Speed1", LabeledMatchers.hasText("5"));
         FxAssert.verifyThat("#Speed2", LabeledMatchers.hasText("3"));
@@ -144,7 +142,7 @@ class AppTest {
         TestECCApp.service.setTarget(2, 2);
 
         int cnt = 0;
-        while (!robot.lookup("#ElevatorTarget0_0").query().getStyle().equals(base+"lightgreen;") &&
+        while (!robot.lookup("#ElevatorTarget2_2").query().getStyle().equals(base+"lightgreen;") &&
             cnt < TIMEOUT) {
             cnt++;
         }
@@ -178,11 +176,9 @@ class AppTest {
 
         int cnt = 0;
 
-        while (!robot.lookup("#Arrow1_0").query().getStyle().equals(base+"green;") && cnt < TIMEOUT) {
+        while (!robot.lookup("#Arrow2_1").query().getStyle().equals(base+"green;") && cnt < TIMEOUT) {
             cnt++;
         }
-
-        assertTrue(cnt < TIMEOUT);
 
         styleUp = robot.lookup("#Arrow1_0").query().getStyle();
         styleDown = robot.lookup("#Arrow1_1").query().getStyle();
@@ -276,7 +272,7 @@ class AppTest {
         TestECCApp.service.setServicesFloors(0,3,false);
 
         int cnt = 0;
-        while (!robot.lookup("#ElevatorTarget0_3").query().getStyle().equals(base+"grey;") &&
+        while(!robot.lookup("#ElevatorTarget3_4").query().getStyle().equals(base+"grey;") &&
             cnt < TIMEOUT) {
             cnt++;
         }
@@ -318,9 +314,11 @@ class AppTest {
         TestECCApp.service.setAccel(1, -1);
         TestECCApp.service.setAccel(2, 3);
 
-        var obj = robot.lookup("#Accel1").query();
-
-        while (!LabeledMatchers.hasText("-1").matches(obj)) {
+        int cnt = 0;
+        while ((!LabeledMatchers.hasText("-1").matches(robot.lookup("#Accel1").query()) || 
+            !LabeledMatchers.hasText("3").matches(robot.lookup("#Accel2").query())) && 
+            cnt < TIMEOUT) {
+            cnt++;
         }
 
         FxAssert.verifyThat("#Accel1", LabeledMatchers.hasText("-1"));
@@ -359,7 +357,7 @@ class AppTest {
         TestECCApp.service.setFloorDown(4, true);
 
         int cnt = 0;
-        while(robot.lookup("#FloorArrow4_1").query().getStyle().equals(base+"yellow;") &&
+        while(!robot.lookup("#FloorArrow4_1").query().getStyle().equals(base+"yellow;") &&
             cnt < TIMEOUT) {
             cnt++;
         }

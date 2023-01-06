@@ -109,7 +109,7 @@ public class ElevatorView {
                 else{
                     return ElevatorFloorStyle + ElevatorNormalColor;
                 }
-            }));
+            }, mViewModel.getStopsProp()));
             buttonPressedGraphic.getChildren().add(btn);
         }
         return buttonPressedGraphic;
@@ -147,7 +147,8 @@ public class ElevatorView {
                 else{
                     return baseStyle + ElevatorNoServiceColor;
                 }
-            }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp()));
+            }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
+            mViewModel.getTargetProp(), mViewModel.getServicedProp()));
             elevatorTarget.getChildren().add(btn);
         }
         return elevatorTarget;
@@ -171,7 +172,7 @@ public class ElevatorView {
             else{
                 return ArrowStyle + ElevatorArrowInactiveColor;
             }
-        }));
+        }, mViewModel.getDirectionProp()));
         arrow.setRotate(rotation);
         return arrow;
     }
