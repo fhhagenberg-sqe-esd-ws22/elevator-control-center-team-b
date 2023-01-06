@@ -26,6 +26,13 @@ public class FloorView {
     private final int Width = 60;
     private final int Padding = 10;
 
+    /**
+     * creates an arrow for going up/down
+     * @param direction does the arrow go up or down
+     * @param rotation rotation from a right pointing arrow in degrees (90 for down, 270 for up)
+     * @param binding property that the arrow is bound to
+     * @return disabled button that depicts an arrow
+     */
     private Button createArrow(int direction, int rotation, SimpleBooleanProperty binding){
         var arrow = new Button();
         arrow.setId(String.format("FloorArrow%d",direction));
@@ -43,6 +50,10 @@ public class FloorView {
         return arrow;
     }
 
+    /**
+     * creates the graphic for a single floor
+     * @return graphic for a single floor in an HBox
+     */
     private HBox createFloorGraphic(){
         var floorGraphic = new HBox();
         floorGraphic.setStyle(FloorStyle);
@@ -54,9 +65,13 @@ public class FloorView {
         return floorGraphic;
     }
 
+    /**
+     * creates a label for a floor
+     * @return floor number as a label
+     */
     private Label createFloorLabel(){
         var lbl = new Label(Integer.toString(mViewModel.getFloorNumber()));
-        lbl.setPadding(new Insets(Padding,Padding,Padding,Padding));
+        lbl.setPadding(new Insets(Padding));
         return lbl;
     }
 

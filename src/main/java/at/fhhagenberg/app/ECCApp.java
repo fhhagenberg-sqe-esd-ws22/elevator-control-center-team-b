@@ -15,8 +15,11 @@ public class ECCApp extends Application {
     public void start(Stage stage) {
         Initializer initializer = new Initializer(createService());
 
-        var scene = new Scene(initializer.getRoot(), 640, 480);
+        var scene = new Scene(initializer.getRoot(), 1200, 480);
 
+        // TODO: set stage minimum height as nrFloors*floorHeight + minimum elevator height
+        // TODO: set stage minimum width as nrElevators*eleWidth + floorWidth
+        stage.setTitle("Elevator Control");
         stage.setScene(scene);
         stage.show();
     }

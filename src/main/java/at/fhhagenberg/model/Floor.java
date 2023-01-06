@@ -1,7 +1,7 @@
 package at.fhhagenberg.model;
 
 public class Floor {
-    // number wich represents the floor - 0 is ground floor; 1 ist first floor, etc.
+    // number which represents the floor - 0 is ground floor; 1 ist first floor, etc.
     private final int mFloorNr;
 
     // true if someone pressed the "Up" button on this floor
