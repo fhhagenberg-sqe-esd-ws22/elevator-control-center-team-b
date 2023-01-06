@@ -1,6 +1,6 @@
 package at.fhhagenberg.app;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.Floor;
@@ -56,7 +56,7 @@ public class ECCApp extends Application {
 
         BuildingUpdater updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, building);
 
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic, new Timer());
         BuildingView buildingView = new BuildingView(buildingViewModel);
 

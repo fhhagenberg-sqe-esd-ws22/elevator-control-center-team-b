@@ -1,6 +1,6 @@
 package at.fhhagenberg.viewmodels;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevator;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,10 +11,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class ElevatorViewModel {
     private final Elevator mModel;
-    private final BusinesLogic mLogic;
+    private final BusinessLogic mLogic;
     // buttons pressed in the elevator
     private final SimpleObjectProperty<ArrayList<Integer>> mStops;
     // floors that are serviced by the elevator
@@ -39,13 +40,15 @@ public class ElevatorViewModel {
     private final SimpleStringProperty mDirectionString;
     // boolean if the elevator is in manual mode
     private final SimpleBooleanProperty mManual;
+    // what floor was selected on manual mode
+    private final SimpleIntegerProperty mManualFloor;
 
     /**
      * Constructor of ElevatorViewModel
      * @param elevator elevator which's properties are copied
      * @param logic logic that controls the elevator
      */
-    public ElevatorViewModel(Elevator elevator, BusinesLogic logic) {
+    public ElevatorViewModel(Elevator elevator, BusinessLogic logic) {
         mModel = elevator;
         mLogic = logic;
         mStops = new SimpleObjectProperty<ArrayList<Integer>>();
@@ -60,6 +63,17 @@ public class ElevatorViewModel {
         mDoorStatusString = new SimpleStringProperty();
         mDirectionString = new SimpleStringProperty();
         mManual = new SimpleBooleanProperty(false);
+        mManualFloor = new SimpleIntegerProperty();
+
+
+        var listener = new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> obj, Integer oldVal, Integer newVal) {
+                mLogic.setElevatorManualTarget(getElevatorNr(),newVal);
+            }
+        };
+
+        mManualFloor.addListener(listener);
 
         mManual.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -103,8 +117,14 @@ public class ElevatorViewModel {
         return mServiced;
     }
 
+    // TODO: test properly
     public SimpleBooleanProperty getManualProp() {
         return mManual;
+    }
+
+    // TODO: test properly
+    public SimpleIntegerProperty getManualFloorProp() {
+        return mManualFloor;
     }
 
     public int getElevatorNr() {

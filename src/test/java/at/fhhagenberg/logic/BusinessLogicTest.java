@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.ModelFactory;
 
-class BusinesLogicTest {
+class BusinessLogicTest {
     @Test
     void testSetGetManual() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 2, 10));
-        BusinesLogic logic = new BusinesLogic(factory.createBuilding());
+        BusinessLogic logic = new BusinessLogic(factory.createBuilding());
         assertFalse(logic.getManual(0));
         assertFalse(logic.getManual(1));
 
@@ -30,7 +30,7 @@ class BusinesLogicTest {
     void testSetManualTargetStaysTheSame() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 2, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         elevator0.setTarget(1);
 
@@ -43,7 +43,7 @@ class BusinesLogicTest {
     void testSetElevatorManualTarget() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 2, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         elevator0.setTarget(1);
 
@@ -61,7 +61,7 @@ class BusinesLogicTest {
     void testManualModeWithUnservicedFloor(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 2, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         elevator0.setServiced(1,false);
         elevator0.setTarget(1);
@@ -80,7 +80,7 @@ class BusinesLogicTest {
     void testAutomaticModeSingleElevatorPressedInsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
 
         elevator0.setStop(1, true);
@@ -121,7 +121,7 @@ class BusinesLogicTest {
     void testAutomaticModeSingleElevatorPressedOutsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var floors = building.getFloors();
 
@@ -149,7 +149,7 @@ class BusinesLogicTest {
     void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var floors = building.getFloors();
 
@@ -181,7 +181,7 @@ class BusinesLogicTest {
     void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var floors = building.getFloors();
         elevator0.setServiced(3,false);
@@ -213,7 +213,7 @@ class BusinesLogicTest {
     void testAutomaticModeMultipleElevatorPressedInsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 4, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var elevator1 = building.getElevatorByNumber(1);
 
@@ -249,7 +249,7 @@ class BusinesLogicTest {
     void testAutomaticModeMultipleElevatorPressedOutsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var elevator1 = building.getElevatorByNumber(1);
         var floors = building.getFloors();
@@ -283,7 +283,7 @@ class BusinesLogicTest {
     void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequence(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var elevator1 = building.getElevatorByNumber(1);
         var floors = building.getFloors();
@@ -317,7 +317,7 @@ class BusinesLogicTest {
     void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var elevator1 = building.getElevatorByNumber(1);
         var floors = building.getFloors();
@@ -352,7 +352,7 @@ class BusinesLogicTest {
     void testSwitchToManualModeAndBack(){
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 3, 10));
         var building = factory.createBuilding();
-        BusinesLogic logic = new BusinesLogic(building);
+        BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         var floors = building.getFloors();
 

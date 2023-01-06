@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import javafx.application.Platform;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
@@ -28,7 +26,7 @@ import at.fhhagenberg.viewmodels.BuildingViewModel;
 class BuildingViewModelTest {
     Building model;
     BuildingViewModel viewModel;
-    BusinesLogic logic;
+    BusinessLogic logic;
     BuildingUpdater updater;
     MockElevatorService service;
     TimerSetable timer;
@@ -38,7 +36,7 @@ class BuildingViewModelTest {
         service = new MockElevatorService(2, 2, 10);
         ModelFactory factory = new ModelFactory(service);
         model = factory.createBuilding();
-        logic = new BusinesLogic(model);
+        logic = new BusinessLogic(model);
         
         List<FloorUpdater> floorUpdaters = new ArrayList<>();
         List<ElevatorUpdater> elevatorUpdaters = new ArrayList<>();

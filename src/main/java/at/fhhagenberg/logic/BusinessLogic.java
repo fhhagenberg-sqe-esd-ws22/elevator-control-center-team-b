@@ -9,7 +9,7 @@ import at.fhhagenberg.service.IElevatorService;
 /**
  * Class responsible for controlling the elevator
  */
-public class BusinesLogic {
+public class BusinessLogic {
     private final Building mModel;
     private final boolean[] mManual;
     private final int[] mManualTarget;
@@ -151,10 +151,10 @@ public class BusinesLogic {
     }
 
     /**
-     * Constructor of BusinesLogic
-     * @param building the building for which the elevators should be controled
+     * Constructor of BusinessLogic
+     * @param building the building for which the elevators should be controlled
      */
-    public BusinesLogic(Building building) {
+    public BusinessLogic(Building building) {
         mModel = building;
         mManual = new boolean[mModel.getElevators().size()];
         Arrays.fill(mManual, false);

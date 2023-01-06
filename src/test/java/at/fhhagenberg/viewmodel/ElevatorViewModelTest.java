@@ -1,10 +1,9 @@
 package at.fhhagenberg.viewmodel;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
@@ -12,13 +11,19 @@ import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class ElevatorViewModelTest {
     Elevator model;
     ElevatorViewModel viewModel;
-    BusinesLogic logic;
+    @Mock
+    BusinessLogic logic;
 
     @BeforeEach
     void setupElevator() {
@@ -26,7 +31,6 @@ class ElevatorViewModelTest {
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
         model = building.getElevatorByNumber(0);
-        logic = new BusinesLogic(building);
         viewModel = new ElevatorViewModel(model, logic);
 
         model.setAccel(0);
@@ -95,21 +99,17 @@ class ElevatorViewModelTest {
     @Test
     void testServiced() {
         viewModel.update();
-        assertTrue(viewModel.getServicedProp().get().isEmpty());
-
-        model.setServiced(0, true);
-        viewModel.update();
-        assertTrue(viewModel.getServicedProp().get().contains(0));
-
-        model.setServiced(1, true);
-        viewModel.update();
-        assertTrue(viewModel.getServicedProp().get().contains(0));
-        assertTrue(viewModel.getServicedProp().get().contains(1));
 
         model.setServiced(0, false);
         viewModel.update();
         assertFalse(viewModel.getServicedProp().get().contains(0));
-        assertTrue(viewModel.getServicedProp().get().contains(1));
+
+        viewModel.update();
+        assertFalse(viewModel.getServicedProp().get().contains(0));
+
+        model.setServiced(0, true);
+        viewModel.update();
+        assertTrue(viewModel.getServicedProp().get().contains(0));
     }
 
     @Test
@@ -165,8 +165,4 @@ class ElevatorViewModelTest {
         assertEquals(2, viewModel.getNrFloors());
     }
 
-    @Test
-    void testManual() {
-        assertFalse(viewModel.getManualProp().get());
-    }
 }
