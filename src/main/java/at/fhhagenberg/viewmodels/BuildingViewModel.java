@@ -25,11 +25,11 @@ public class BuildingViewModel {
      * @param building model of the building
      * @param logic BusinesLogic that is controling the elevators of this building
      */
-    public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
+    public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic, Timer timer) {
         mUpdater = updater;
         mElevators = new ArrayList<>();
         mFloors = new ArrayList<>();
-        mTimer = new Timer();
+        mTimer = timer;
 
         for (var elevator : building.getElevators()) {
             mElevators.add(new ElevatorViewModel(elevator, logic));
@@ -72,7 +72,7 @@ public class BuildingViewModel {
                     public void run() {
                         update();
                     }
-                });;
+                });
             }
         };
     }
