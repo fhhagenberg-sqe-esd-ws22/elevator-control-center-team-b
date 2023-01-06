@@ -161,7 +161,7 @@ public class ElevatorView {
      */
     private Button createArrow(int direction, int rotation){
         var arrow = new Button();
-        arrow.setId(String.format("Arrow%d",direction));
+        arrow.setId(String.format("Arrow%d_%d",mElevatorNr, direction));
         arrow.setDisable(true);
         arrow.setOpacity(1);
         arrow.styleProperty().bind(Bindings.createStringBinding(()-> {

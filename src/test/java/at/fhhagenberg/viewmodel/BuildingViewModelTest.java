@@ -64,6 +64,8 @@ class BuildingViewModelTest {
         service.setSpeed(0, 10);
         service.setSpeed(1, 20);
         service.setFloorUp(0, true);
+
+        // TODO: clean this stuff up, not pretty (@Breiti)
         Thread.sleep(1100);
         
         assertEquals(10, model.getElevatorByNumber(0).getSpeed());
