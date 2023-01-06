@@ -46,7 +46,7 @@ public class FloorView {
             else{
                 return ArrowStyle + ButtonInactiveColor;
             }
-        }));
+        }, binding));
         arrow.setRotate(rotation);
         return arrow;
     }
