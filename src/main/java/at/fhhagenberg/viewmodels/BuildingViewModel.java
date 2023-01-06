@@ -17,7 +17,7 @@ public class BuildingViewModel {
     private final Timer mTimer;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 1000;
+    private static final int UPDATE_INTERVAL = 100;
 
     /**
      * Constructor of BuildingViewModel

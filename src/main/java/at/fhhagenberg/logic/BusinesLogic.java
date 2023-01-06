@@ -29,7 +29,6 @@ public class BusinesLogic {
      */
     public void setManual(int elevatorNr, boolean active) {
         mManual[elevatorNr] = active;
-        System.out.println("Manual set");
     }
 
     /**
