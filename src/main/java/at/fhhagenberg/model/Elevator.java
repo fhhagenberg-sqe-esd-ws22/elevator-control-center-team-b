@@ -2,7 +2,9 @@ package at.fhhagenberg.model;
 
 import at.fhhagenberg.service.IElevatorService;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // contains all information of a single elevator
 public class Elevator {
@@ -40,6 +42,7 @@ public class Elevator {
         mElevatorNr = elevatorNr;
         mStops = new boolean[numberOfFloors];
         mServiced = new boolean[numberOfFloors];
+        Arrays.fill(mServiced, true);
         mSpeed = 0;
         mAccel = 0;
         mTarget = 0;
@@ -47,6 +50,7 @@ public class Elevator {
         mDirection = IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED;
         mDoorStatus = IElevatorService.ELEVATOR_DOORS_CLOSED;
         mNearestFloor = 0;
+
     }
 
     /**
