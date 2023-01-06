@@ -66,14 +66,14 @@ public class ElevatorViewModel {
         mManualFloor = new SimpleIntegerProperty();
 
 
-        var listener = new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> obj, Integer oldVal, Integer newVal) {
-                mLogic.setElevatorManualTarget(getElevatorNr(),newVal);
-            }
-        };
 
-        mManualFloor.addListener(listener);
+
+        mManualFloor.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> obj, Number oldVal, Number newVal) {
+                mLogic.setElevatorManualTarget(getElevatorNr(),newVal.intValue());
+            }
+        });
 
         mManual.addListener(new ChangeListener<Boolean>() {
             @Override
