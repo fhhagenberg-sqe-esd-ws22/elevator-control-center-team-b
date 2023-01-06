@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import at.fhhagenberg.logic.BusinesLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.updater.BuildingUpdater;
+import javafx.application.Platform;
 
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
@@ -66,7 +67,12 @@ public class BuildingViewModel {
     private TimerTask getUpdateTask() {
         return new TimerTask() {
             public void run() {
-                update();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                });;
             }
         };
     }

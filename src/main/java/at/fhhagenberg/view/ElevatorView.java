@@ -2,13 +2,17 @@ package at.fhhagenberg.view;
 
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -22,7 +26,7 @@ public class ElevatorView {
     private final int padding = 10;
     private final String ElevatorBorderStyle = "-fx-border-color: blue;-fx-border-insets: 3;-fx-border-width: 2;";
     private final String ArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
-    private final String ElevatorPressableStyle = "-fx-border-color: lightblue;";
+    private final String ElevatorPressableStyle = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;";
     private final String ElevatorFloorStyle = "-fx-background-radius: 0;";
     private final String ElevatorNormalColor = "-fx-background-color: silver;";
     private final String ElevatorTargetColor = "-fx-background-color: lightgreen;";
@@ -94,7 +98,6 @@ public class ElevatorView {
             btn.styleProperty().bind(Bindings.createStringBinding(()->{
                 var baseStyle = ElevatorFloorStyle;
                 if(mViewModel.getManualProp().get()){
-                    System.out.println("Btn pressed");
                     baseStyle = ElevatorPressableStyle;
                 }
                 if(mViewModel.getNearestFloorProp().get() == floor){
@@ -109,7 +112,7 @@ public class ElevatorView {
                 else{
                     return baseStyle + ElevatorNoServiceColor;
                 }
-            }));
+            }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp()));
             elevatorTarget.getChildren().add(btn);
         }
         return elevatorTarget;
@@ -175,10 +178,13 @@ public class ElevatorView {
         return header;
     }
 
+
+
     private ToggleButton createManualModeButton(){
         var button = new ToggleButton("Manual Mode");
         button.setId(String.format("Manual%d", mElevatorNr));
         mViewModel.getManualProp().bind(button.selectedProperty());
+
         return button;
     }
 
