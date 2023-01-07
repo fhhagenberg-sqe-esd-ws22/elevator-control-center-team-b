@@ -51,8 +51,6 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
         // negative acceleration in upwards speed is possible - no need for abs
         mModel.setAccel(mElevatorService.getElevatorAccel(elevatorNr));
-        mModel.setTarget(mElevatorService.getTarget(elevatorNr));
-        mModel.setDirection(mElevatorService.getCommittedDirection(elevatorNr));
         // no max weight specified
         mModel.setPayload(mElevatorService.getElevatorWeight(elevatorNr));
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));

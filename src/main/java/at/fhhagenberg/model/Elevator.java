@@ -95,7 +95,6 @@ public class Elevator {
             System.out.println("Given door status is out of the valid range and will not be set!");
             return;
         }
-
         this.mDirection = direction;
     }
 

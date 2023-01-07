@@ -43,6 +43,8 @@ class ElevatorUpdaterTest {
     void testUpdateNearestFloorIsMinimum(int elevatorPos, int nearestFloor) {
         when(elevator.getElevatorNr()).thenReturn(0);
         when(elevator.getNrOfFloors()).thenReturn(3);
+        when(elevator.getTarget()).thenReturn(0);
+        when(elevator.getDirection()).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED);
 
         when(service.getElevatorSpeed(0)).thenReturn(30);
         when(service.getElevatorAccel(0)).thenReturn(1);
@@ -58,6 +60,7 @@ class ElevatorUpdaterTest {
 
         verify(elevator).setSpeed(30);
         verify(elevator).setAccel(1);
+        verify(elevator).setTarget(1);
         verify(elevator).setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
         verify(elevator).setPayload(100);
         verify(elevator).setDoorStatus(IElevatorService.ELEVATOR_DOORS_CLOSED);
@@ -67,6 +70,7 @@ class ElevatorUpdaterTest {
     // these calls are all made in update() and expected to bring correct results,
     // but they are unnecessary to see if serviced floors and stops were correctly handled
     void setIrrelevantUpdateCalls(){
+        when(service.getTarget(0)).thenReturn(1);
         when(service.getFloorNum()).thenReturn(3);
         when(service.getFloorHeight()).thenReturn(10);
         when(service.getElevatorAccel(0)).thenReturn(1);
@@ -77,13 +81,12 @@ class ElevatorUpdaterTest {
 
     @Test
     void testTargetDirectionUpdate(){
+        when(service.getFloorHeight()).thenReturn(10); // otherwise there is an exception because of a division through 0
         when(elevator.getElevatorNr()).thenReturn(0);
         when(elevator.getTarget()).thenReturn(3);
         when(elevator.getDirection()).thenReturn(IElevatorService.ELEVATOR_DIRECTION_DOWN);
         when(service.getTarget(0)).thenReturn(1);
         when(service.getCommittedDirection(0)).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UP);
-
-        setIrrelevantUpdateCalls();
 
         ElevatorUpdater updater = new ElevatorUpdater(service, elevator);
         updater.update();
@@ -95,7 +98,6 @@ class ElevatorUpdaterTest {
     @Test
     void testRequestStops() {
         when(elevator.getElevatorNr()).thenReturn(0);
-        when(service.getTarget(0)).thenReturn(1);
         
        setIrrelevantUpdateCalls();
 
