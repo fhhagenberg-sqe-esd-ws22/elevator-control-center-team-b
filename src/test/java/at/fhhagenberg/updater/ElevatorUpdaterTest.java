@@ -58,7 +58,6 @@ class ElevatorUpdaterTest {
 
         verify(elevator).setSpeed(30);
         verify(elevator).setAccel(1);
-        verify(elevator).setTarget(1);
         verify(elevator).setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
         verify(elevator).setPayload(100);
         verify(elevator).setDoorStatus(IElevatorService.ELEVATOR_DOORS_CLOSED);
@@ -71,15 +70,32 @@ class ElevatorUpdaterTest {
         when(service.getFloorNum()).thenReturn(3);
         when(service.getFloorHeight()).thenReturn(10);
         when(service.getElevatorAccel(0)).thenReturn(1);
-        when(service.getTarget(0)).thenReturn(1);
         when(service.getCommittedDirection(0)).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UP);
         when(service.getElevatorWeight(0)).thenReturn(100);
         when(service.getElevatorDoorStatus(0)).thenReturn(IElevatorService.ELEVATOR_DOORS_CLOSED);
     }
 
     @Test
+    void testTargetDirectionUpdate(){
+        when(elevator.getElevatorNr()).thenReturn(0);
+        when(elevator.getTarget()).thenReturn(3);
+        when(elevator.getDirection()).thenReturn(IElevatorService.ELEVATOR_DIRECTION_DOWN);
+        when(service.getTarget(0)).thenReturn(1);
+        when(service.getCommittedDirection(0)).thenReturn(IElevatorService.ELEVATOR_DIRECTION_UP);
+
+        setIrrelevantUpdateCalls();
+
+        ElevatorUpdater updater = new ElevatorUpdater(service, elevator);
+        updater.update();
+
+        verify(service).setTarget(0,3);
+        verify(service).setCommittedDirection(0,IElevatorService.ELEVATOR_DIRECTION_DOWN);
+    }
+
+    @Test
     void testRequestStops() {
         when(elevator.getElevatorNr()).thenReturn(0);
+        when(service.getTarget(0)).thenReturn(1);
         
        setIrrelevantUpdateCalls();
 
@@ -98,6 +114,7 @@ class ElevatorUpdaterTest {
     @Test
     void testServiced() {
         when(elevator.getElevatorNr()).thenReturn(0);
+        when(service.getTarget(0)).thenReturn(1);
 
         setIrrelevantUpdateCalls();
 

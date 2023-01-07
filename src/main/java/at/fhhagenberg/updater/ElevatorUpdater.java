@@ -32,8 +32,21 @@ public class ElevatorUpdater extends UpdaterBase{
     @Override
     public void update() {
         int elevatorNr = mModel.getElevatorNr();
-        mElevatorService.setTarget(elevatorNr, mModel.getTarget());
-        mElevatorService.setCommittedDirection(elevatorNr, mModel.getDirection());
+
+        var target = mElevatorService.getTarget(elevatorNr);
+        var direction = mElevatorService.getCommittedDirection(elevatorNr);
+        if(direction != mModel.getDirection()){
+            mElevatorService.setCommittedDirection(elevatorNr, mModel.getDirection());
+
+            // model gets updated with gotten direction, new direction
+            // will take one update cycle to propagate
+            mModel.setDirection(direction);
+        }
+
+        if(target != mModel.getTarget()){
+            mElevatorService.setTarget(elevatorNr, mModel.getTarget());
+            mModel.setTarget(target);
+        }
 
         mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
         // negative acceleration in upwards speed is possible - no need for abs
