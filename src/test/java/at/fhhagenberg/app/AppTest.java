@@ -191,6 +191,7 @@ class AppTest {
         Assertions.assertEquals(base+"green;", styleDown);
     }
 
+
     @Test
     void testElevatorStops() {
         final String base = "-fx-background-radius: 0;-fx-background-color: ";
@@ -381,5 +382,37 @@ class AppTest {
         styleDown = robot.lookup("#FloorArrow4_1").query().getStyle();
         Assertions.assertEquals(base+"silver;", styleUp);
         Assertions.assertEquals(base+"yellow;", styleDown);
+    }
+
+    @Test
+    void testManualMode(){
+        var baseArrow ="-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';-fx-background-color: ";
+        var baseButton = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;-fx-background-color: ";
+
+        robot.clickOn("#Manual1");
+
+        int cnt = 0;
+        while(!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseArrow+"silver;") &&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        var styleArrow = robot.lookup("#Arrow1_0").query().getStyle();
+        var styleButton = robot.lookup("#ElevatorTarget1_3").query().getStyle();
+        Assertions.assertEquals(baseArrow+"silver;", styleArrow);
+        Assertions.assertEquals(baseButton+"silver;", styleButton);
+
+        robot.clickOn("#ElevatorTarget1_3");
+
+        cnt = 0;
+        while(!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseArrow+"green;") &&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        styleArrow = robot.lookup("#Arrow1_0").query().getStyle();
+        styleButton = robot.lookup("#ElevatorTarget1_3").query().getStyle();
+        Assertions.assertEquals(baseArrow+"green;", styleArrow);
+        Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
     }
 }
