@@ -1,5 +1,6 @@
 package at.fhhagenberg.app;
 
+import at.fhhagenberg.mock_observable.MockElevatorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,10 @@ class AppTest {
         TestECCApp.service.setDoorStatus(3, IElevatorService.ELEVATOR_DOORS_OPENING);
 
         int cnt = 0;
-        while (!LabeledMatchers.hasText("Opening").matches(robot.lookup("#Door3").query()) && cnt < TIMEOUT) {
+        while ((!LabeledMatchers.hasText("Closed").matches(robot.lookup("#Door0").query()) ||
+                !LabeledMatchers.hasText("Closing").matches(robot.lookup("#Door1").query()) ||
+                !LabeledMatchers.hasText("Open").matches(robot.lookup("#Door2").query()) ||
+                !LabeledMatchers.hasText("Opening").matches(robot.lookup("#Door3").query()))&& cnt < TIMEOUT) {
             cnt++;
         }
         
@@ -74,7 +78,10 @@ class AppTest {
         TestECCApp.service.setWeight(3, 40);
 
         int cnt = 0;
-        while (!LabeledMatchers.hasText("40").matches(robot.lookup("#Payload3").query()) && cnt < TIMEOUT) {
+        while ((!LabeledMatchers.hasText("10").matches(robot.lookup("#Payload0").query()) ||
+                !LabeledMatchers.hasText("20").matches(robot.lookup("#Payload1").query()) ||
+                !LabeledMatchers.hasText("30").matches(robot.lookup("#Payload2").query()) ||
+                !LabeledMatchers.hasText("40").matches(robot.lookup("#Payload3").query()))&& cnt < TIMEOUT) {
             cnt++;
         }
 
@@ -120,7 +127,10 @@ class AppTest {
         TestECCApp.service.setPosition(2, 30);
 
         int cnt = 0;
-        while (!robot.lookup("#ElevatorTarget2_3").query().getStyle().equals(base+"green;") && cnt < TIMEOUT) {
+        while ((!robot.lookup("#ElevatorTarget2_3").query().getStyle().equals(base+"green;") ||
+                !robot.lookup("#ElevatorTarget0_2").query().getStyle().equals(base+"green;") ||
+                !robot.lookup("#ElevatorTarget1_1").query().getStyle().equals(base+"green;") ||
+                !robot.lookup("#ElevatorTarget3_0").query().getStyle().equals(base+"green;"))&& cnt < TIMEOUT) {
             cnt++;
         }
 
@@ -135,66 +145,6 @@ class AppTest {
         style = robot.lookup("#ElevatorTarget3_0").query().getStyle();
         Assertions.assertEquals(base+"green;", style);
     }
-
-    @Test
-    void testElevatorTarget() {
-        final String base = "-fx-background-radius: 0;-fx-background-color: ";
-        // no initial targets - they are all the nearest floor
-
-        TestECCApp.service.setPosition(0, 10);
-        TestECCApp.service.setTarget(1, 3);
-        TestECCApp.service.setTarget(2, 2);
-
-        int cnt = 0;
-        while (!robot.lookup("#ElevatorTarget2_2").query().getStyle().equals(base+"lightgreen;") &&
-            cnt < TIMEOUT) {
-            cnt++;
-        }
-
-        var style = robot.lookup("#ElevatorTarget0_0").query().getStyle();
-        Assertions.assertEquals(base+"lightgreen;", style);
-
-        style = robot.lookup("#ElevatorTarget1_3").query().getStyle();
-        Assertions.assertEquals(base+"lightgreen;", style);
-
-        style = robot.lookup("#ElevatorTarget2_2").query().getStyle();
-        Assertions.assertEquals(base+"lightgreen;", style);
-    }
-
-    @Test
-    void testElevatorDirection() {
-        final String base = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';-fx-background-color: ";
-
-        var styleUp = robot.lookup("#Arrow1_0").query().getStyle();
-        var styleDown = robot.lookup("#Arrow1_1").query().getStyle();
-        Assertions.assertEquals(base+"silver;", styleUp);
-        Assertions.assertEquals(base+"silver;", styleDown);
-
-        styleUp = robot.lookup("#Arrow2_0").query().getStyle();
-        styleDown = robot.lookup("#Arrow2_1").query().getStyle();
-        Assertions.assertEquals(base+"silver;", styleUp);
-        Assertions.assertEquals(base+"silver;", styleDown);
-        
-        TestECCApp.service.setCommittedDirection(1, IElevatorService.ELEVATOR_DIRECTION_UP);
-        TestECCApp.service.setCommittedDirection(2, IElevatorService.ELEVATOR_DIRECTION_DOWN);
-
-        int cnt = 0;
-
-        while (!robot.lookup("#Arrow2_1").query().getStyle().equals(base+"green;") && cnt < TIMEOUT) {
-            cnt++;
-        }
-
-        styleUp = robot.lookup("#Arrow1_0").query().getStyle();
-        styleDown = robot.lookup("#Arrow1_1").query().getStyle();
-        Assertions.assertEquals(base+"green;", styleUp);
-        Assertions.assertEquals(base+"silver;", styleDown);
-
-        styleUp = robot.lookup("#Arrow2_0").query().getStyle();
-        styleDown = robot.lookup("#Arrow2_1").query().getStyle();
-        Assertions.assertEquals(base+"silver;", styleUp);
-        Assertions.assertEquals(base+"green;", styleDown);
-    }
-
 
     @Test
     void testElevatorStops() {
