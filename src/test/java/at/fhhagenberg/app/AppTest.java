@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 @ExtendWith(ApplicationExtension.class)
 class AppTest {
 
-    static private int TIMEOUT = 50000;
+    static private final int TIMEOUT = 50000;
 
     FxRobot robot;
 
@@ -39,7 +39,7 @@ class AppTest {
     }
 
     @Test
-    void testElevatorDoors(FxRobot rob) {
+    void testElevatorDoors() {
         FxAssert.verifyThat("#Door0", LabeledMatchers.hasText("Closed"));
         FxAssert.verifyThat("#Door1", LabeledMatchers.hasText("Closed"));
         FxAssert.verifyThat("#Door2", LabeledMatchers.hasText("Closed"));
@@ -50,7 +50,9 @@ class AppTest {
         TestECCApp.service.setDoorStatus(2, IElevatorService.ELEVATOR_DOORS_OPEN);
         TestECCApp.service.setDoorStatus(3, IElevatorService.ELEVATOR_DOORS_OPENING);
 
-        while (!LabeledMatchers.hasText("Opening").matches(robot.lookup("#Door3").query())) {
+        int cnt = 0;
+        while (!LabeledMatchers.hasText("Opening").matches(robot.lookup("#Door3").query()) && cnt < TIMEOUT) {
+            cnt++;
         }
         
         FxAssert.verifyThat("#Door0", LabeledMatchers.hasText("Closed"));
@@ -71,7 +73,9 @@ class AppTest {
         TestECCApp.service.setWeight(2, 30);
         TestECCApp.service.setWeight(3, 40);
 
-        while (!LabeledMatchers.hasText("40").matches(robot.lookup("#Payload3").query())) {
+        int cnt = 0;
+        while (!LabeledMatchers.hasText("40").matches(robot.lookup("#Payload3").query()) && cnt < TIMEOUT) {
+            cnt++;
         }
 
         FxAssert.verifyThat("#Payload0", LabeledMatchers.hasText("10"));
@@ -441,5 +445,46 @@ class AppTest {
         Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
     }
 
-    // TODO: add test if opacity is set correctly
+    @Test
+    void testManualModeOpacity(){
+        robot.clickOn("#Manual0");
+
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_0").query().getOpacity());
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_3").query().getOpacity());
+
+        robot.clickOn("#ElevatorTarget0_3");
+
+        int cnt = 0;
+        while((robot.lookup("#ElevatorTarget0_0").query().getOpacity() != 0.7)  &&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        Assertions.assertEquals(0.7, robot.lookup("#ElevatorTarget0_0").query().getOpacity());
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_3").query().getOpacity());
+
+        robot.clickOn("#ElevatorTarget0_0");
+
+        cnt = 0;
+        while((robot.lookup("#ElevatorTarget0_0").query().getOpacity() != 1 ||
+                robot.lookup("#ElevatorTarget0_3").query().getOpacity() != 0.7)  &&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_0").query().getOpacity());
+        Assertions.assertEquals(0.7, robot.lookup("#ElevatorTarget0_3").query().getOpacity());
+
+        robot.clickOn("#Manual0");
+
+        cnt = 0;
+        while((robot.lookup("#ElevatorTarget0_3").query().getOpacity() != 1)  &&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_0").query().getOpacity());
+        Assertions.assertEquals(1, robot.lookup("#ElevatorTarget0_3").query().getOpacity());
+    }
+
 }
