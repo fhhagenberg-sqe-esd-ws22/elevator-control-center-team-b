@@ -137,6 +137,12 @@ public class ElevatorView {
                 if(mViewModel.getManualProp().get()){
                     baseStyle = ElevatorPressableStyle;
                 }
+                else{
+                    // if we are not in manual mode, set all buttons to normal
+                    for(var elevator : elevatorTarget.getChildren()){
+                        elevator.setOpacity(1);
+                    }
+                }
                 if(mViewModel.getNearestFloorProp().get() == floor){
                     return baseStyle + ElevatorCurrentPosColor;
                 }
@@ -151,14 +157,19 @@ public class ElevatorView {
                 }
             }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
             mViewModel.getTargetProp(), mViewModel.getServicedProp()));
-            /*mViewModel.getManualProp().bind(Bindings.createIntegerBinding(()->{
-                        btn.onActionProperty().
-                    }),
-                    btn.onActionProperty());*/
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     mViewModel.getManualFloorProp().setValue(floor);
+                    // grey out other buttons
+                    for(var elevator : elevatorTarget.getChildren()){
+                        if(elevator == btn){
+                            elevator.setOpacity(1);
+                        }
+                        else{
+                            elevator.setOpacity(0.7);
+                        }
+                    }
                 }
             });
             elevatorTarget.getChildren().add(btn);

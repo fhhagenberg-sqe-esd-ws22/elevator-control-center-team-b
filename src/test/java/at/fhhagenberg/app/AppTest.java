@@ -439,7 +439,7 @@ class AppTest {
         styleButton = robot.lookup("#ElevatorTarget1_0").query().getStyle();
         Assertions.assertEquals(baseArrow+"green;", styleArrow);
         Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
-
-
     }
+
+    // TODO: add test if opacity is set correctly
 }
