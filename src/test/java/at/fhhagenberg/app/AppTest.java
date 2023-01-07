@@ -392,7 +392,7 @@ class AppTest {
         robot.clickOn("#Manual1");
 
         int cnt = 0;
-        while(!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseArrow+"silver;") &&
+        while(!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseButton+"silver;") &&
                 cnt < TIMEOUT) {
             cnt++;
         }
@@ -404,8 +404,10 @@ class AppTest {
 
         robot.clickOn("#ElevatorTarget1_3");
 
+
         cnt = 0;
-        while(!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseArrow+"green;") &&
+        while((!robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseButton+"lightgreen;") ||
+                !robot.lookup("#Arrow1_0").query().getStyle().equals(baseArrow+"green;")) &&
                 cnt < TIMEOUT) {
             cnt++;
         }
@@ -414,5 +416,30 @@ class AppTest {
         styleButton = robot.lookup("#ElevatorTarget1_3").query().getStyle();
         Assertions.assertEquals(baseArrow+"green;", styleArrow);
         Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
+
+        TestECCApp.service.setPosition(1, 30);
+
+        robot.clickOn("#ElevatorTarget1_0");
+
+        cnt = 0;
+        while((!robot.lookup("#ElevatorTarget1_0").query().getStyle().equals(baseButton+"lightgreen;") ||
+                !robot.lookup("#Arrow1_0").query().getStyle().equals(baseArrow+"silver;") ||
+                !robot.lookup("#ElevatorTarget1_3").query().getStyle().equals(baseButton+"green;")||
+                !robot.lookup("#Arrow1_1").query().getStyle().equals(baseArrow+"green;"))&&
+                cnt < TIMEOUT) {
+            cnt++;
+        }
+
+        var styleOldArrow = robot.lookup("#Arrow1_0").query().getStyle();
+        var styleOldButton = robot.lookup("#ElevatorTarget1_3").query().getStyle();
+        Assertions.assertEquals(baseArrow+"silver;", styleOldArrow);
+        Assertions.assertEquals(baseButton+"green;", styleOldButton);
+
+        styleArrow = robot.lookup("#Arrow1_1").query().getStyle();
+        styleButton = robot.lookup("#ElevatorTarget1_0").query().getStyle();
+        Assertions.assertEquals(baseArrow+"green;", styleArrow);
+        Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
+
+
     }
 }
