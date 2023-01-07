@@ -25,7 +25,6 @@ public class BusinessLogic {
      */
     private boolean isOnTargetFloor(Elevator elevator){
         return elevator.getTarget() == elevator.getNearestFloor() &&
-                elevator.getDirection() == IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED &&
                 elevator.getAccel() == 0 && elevator.getSpeed() == 0;
     }
 
@@ -145,6 +144,17 @@ public class BusinessLogic {
                             }
                         }
                     }
+                }
+
+                // set direction based on the target
+                if(elevator.getTarget() == elevator.getNearestFloor()){
+                    elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED);
+                }
+                else if(elevator.getTarget() < elevator.getNearestFloor()){
+                    elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_DOWN);
+                }
+                else if(elevator.getTarget() > elevator.getNearestFloor()){
+                    elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
                 }
             }
         }
