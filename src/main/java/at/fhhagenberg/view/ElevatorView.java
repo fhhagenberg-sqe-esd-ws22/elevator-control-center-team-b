@@ -47,7 +47,7 @@ public class ElevatorView {
     private HBox createInfoLine(String identifierBase, String label, String unit, StringExpression binding){
         var infoLine = new HBox();
         Label payloadLbl = new Label();
-        payloadLbl.setId(String.format(identifierBase + "%d", mElevatorNr));
+        payloadLbl.setId(String.format("%s%d", identifierBase, mElevatorNr));
         payloadLbl.textProperty().bind(binding);
         infoLine.getChildren().add(new Label(String.format("%s: ", label)));
         infoLine.getChildren().add(payloadLbl);
