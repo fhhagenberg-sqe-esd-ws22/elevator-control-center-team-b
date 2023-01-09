@@ -1,8 +1,8 @@
 package at.fhhagenberg.view;
 
-import java.util.ArrayList;
-
 import at.fhhagenberg.viewmodels.BuildingViewModel;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -12,8 +12,36 @@ import javafx.scene.layout.VBox;
 public class BuildingView {
     private final HBox mView;
     private final BuildingViewModel mViewModel;
-    private final ArrayList<ElevatorView> mElevators;
-    private final ArrayList<FloorView> mFloors;
+
+    private static final int PADDING = 20;
+
+    /**
+     * creates all elevators
+     * @return all elevators in a HBox
+     */
+    private HBox createElevatorLayout(){
+        var elevatorLayout = new HBox();
+        var addElevators = elevatorLayout.getChildren();
+        for (var elevator : mViewModel.getElevatorViewModels()) {
+            addElevators.add((new ElevatorView(elevator)).getLayout());
+        }
+        return elevatorLayout;
+    }
+
+    /**
+     * creates all floors
+     * @return all floors in a VBox
+     */
+    private VBox createFloorLayout(){
+        var floorLayout = new VBox();
+        var addFloors = floorLayout.getChildren();
+        var lbl = new Label("Buttons on floors");
+        addFloors.add(lbl);
+        for (var floor : mViewModel.getFloorViewModels()) {
+            addFloors.add((new FloorView(floor)).getLayout());
+        }
+        return floorLayout;
+    }
 
     /**
      * Constructor of BuildingView
@@ -21,33 +49,10 @@ public class BuildingView {
      */
     public BuildingView(BuildingViewModel viewModel) {
         mViewModel = viewModel;
-        mElevators = new ArrayList<>();
-        mFloors = new ArrayList<>();
-        var elevatorLayout = new HBox(10);
-        var floorLayout = new VBox(2);
-
-        for (var elevator : mViewModel.getElevatorViewModels()) {
-            mElevators.add(new ElevatorView(elevator));
-        }
-
-        for (var elevator : mElevators) {
-            elevatorLayout.getChildren().add(elevator.getLayout());
-        }
-
-        for (var floor : mViewModel.getFloorViewModels()) {
-            mFloors.add(new FloorView(floor));
-        }
-
-        for (var floor : mFloors) {
-            floorLayout.getChildren().add(0, floor.getLayout());
-        }
-
-        elevatorLayout.setId("ElevatorLayout");
-        floorLayout.setId("FloorLayout");
-
-        mView = new HBox(20);
-        mView.getChildren().add(elevatorLayout);
-        mView.getChildren().add(floorLayout);
+        mView = new HBox(PADDING);
+        mView.setPadding(new Insets(PADDING));
+        mView.getChildren().add(createElevatorLayout());
+        mView.getChildren().add(createFloorLayout());
     }
 
     /**

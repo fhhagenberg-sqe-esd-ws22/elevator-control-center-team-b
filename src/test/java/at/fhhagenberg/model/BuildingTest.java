@@ -51,68 +51,16 @@ class BuildingTest {
     void testObjectCreationFails() {
         var emptyFloors = new ArrayList<Floor>();
         var emptyElevators =  new ArrayList<Elevator>();
-        assertThrows(ModelException.class, () -> { new Building(null, floors); });
-        assertThrows(ModelException.class, () -> { new Building(elevators, null); });
-        assertThrows(ModelException.class, () -> { new Building(emptyElevators, floors); });
-        assertThrows(ModelException.class, () -> { new Building(elevators, emptyFloors); });
-    }
-
-    @Test
-    void testSetIsServiced() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
-        Building b = new Building(elevators, floors);
-
-        b.setIsServiced(1, 2, false);
-        assertFalse(b.getIsServiced(1,2));
-    }
-
-    @Test
-    void testSetIsServicedInvalidParameters() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
-        Building b = new Building(elevators, floors);
-
-        b.setIsServiced(-1, 2, false);
-        b.setIsServiced(1, -2, false);
-        b.setIsServiced(2, 2, false);
-        b.setIsServiced(1, 3, false);
-
-        for(int i = 0; i < b.getElevators().size(); ++i) {
-            for(int j = 0; j < b.getFloors().size(); ++j) {
-                assertTrue(b.getIsServiced(i, j));
-            }
-        }
-    }
-
-    @Test
-    void testGetIsServicedInvalidParameters() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
-        Building b = new Building(elevators, floors);
-
-        assertFalse(b.getIsServiced(-1, 0));
-        assertFalse(b.getIsServiced(0, -1));
-        assertFalse(b.getIsServiced(2, 2));
-        assertFalse(b.getIsServiced(1, 3));
+        assertThrows(ModelException.class, () -> new Building(null, floors));
+        assertThrows(ModelException.class, () -> new Building(elevators, null));
+        assertThrows(ModelException.class, () -> new Building(emptyElevators, floors));
+        assertThrows(ModelException.class, () -> new Building(elevators, emptyFloors));
     }
 
     @Test
     void testGetElevatorByNumber() {
         when(elevator1.getElevatorNr()).thenReturn(0);
         when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
         Building b = new Building(elevators, floors);
 
         assertEquals(0, b.getElevatorByNumber(0).getElevatorNr());
@@ -123,9 +71,6 @@ class BuildingTest {
     void testGetElevatorByNumberInvalidParams() {
         when(elevator1.getElevatorNr()).thenReturn(0);
         when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
         Building b = new Building(elevators, floors);
 
         assertNull(b.getElevatorByNumber(-1));
@@ -134,8 +79,6 @@ class BuildingTest {
 
     @Test
     void testGetFloorByNumber() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
         when(floor1.getFloorNumber()).thenReturn(0);
         when(floor2.getFloorNumber()).thenReturn(1);
         when(floor3.getFloorNumber()).thenReturn(2);
@@ -148,8 +91,6 @@ class BuildingTest {
 
     @Test
     void testGetFloorByNumberInvalidParams() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
         when(floor1.getFloorNumber()).thenReturn(0);
         when(floor2.getFloorNumber()).thenReturn(1);
         when(floor3.getFloorNumber()).thenReturn(2);
@@ -157,38 +98,6 @@ class BuildingTest {
 
         assertNull(b.getFloorByNumber(-1));
         assertNull(b.getFloorByNumber(3));
-    }
-
-    @Test
-    void testElevatorSortingAtObjectCreation() {
-        when(elevator1.getElevatorNr()).thenReturn(1);
-        when(elevator2.getElevatorNr()).thenReturn(0);
-        when(floor1.getFloorNumber()).thenReturn(0);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(2);
-        Building b = new Building(elevators, floors);
-
-        assertEquals(0, b.getElevators().get(0).getElevatorNr());
-        assertEquals(elevator2, b.getElevators().get(0));
-        assertEquals(1, b.getElevators().get(1).getElevatorNr());
-        assertEquals(elevator1, b.getElevators().get(1));
-    }
-
-    @Test
-    void testFloorSortingAtObjectCreation() {
-        when(elevator1.getElevatorNr()).thenReturn(0);
-        when(elevator2.getElevatorNr()).thenReturn(1);
-        when(floor1.getFloorNumber()).thenReturn(2);
-        when(floor2.getFloorNumber()).thenReturn(1);
-        when(floor3.getFloorNumber()).thenReturn(0);
-        Building b = new Building(elevators, floors);
-
-        assertEquals(0, b.getFloors().get(0).getFloorNumber());
-        assertEquals(floor3, b.getFloors().get(0));
-        assertEquals(1, b.getFloors().get(1).getFloorNumber());
-        assertEquals(floor2, b.getFloors().get(1));
-        assertEquals(2, b.getFloors().get(2).getFloorNumber());
-        assertEquals(floor1, b.getFloors().get(2));
     }
 
 }

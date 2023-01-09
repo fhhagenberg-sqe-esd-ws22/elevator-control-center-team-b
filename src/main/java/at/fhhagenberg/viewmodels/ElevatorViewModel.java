@@ -1,18 +1,24 @@
 package at.fhhagenberg.viewmodels;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevator;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+import java.util.ArrayList;
+
 public class ElevatorViewModel {
     private final Elevator mModel;
-    private final BusinesLogic mLogic;
-    private final boolean[] mStops;
+    private final BusinessLogic mLogic;
+    // buttons pressed in the elevator
+    private final SimpleObjectProperty<ArrayList<Integer>> mStops;
+    // floors that are serviced by the elevator
+    private final SimpleObjectProperty<ArrayList<Integer>> mServiced;
     // speed of the elevator
     private final SimpleIntegerProperty mSpeed;
     // current acceleration of the elevator
@@ -31,20 +37,21 @@ public class ElevatorViewModel {
     private final SimpleStringProperty mDoorStatusString;
     // current direction of the elevator as a string
     private final SimpleStringProperty mDirectionString;
-    // string that contains all stops - temporary until a refined gui is developed
-    private final SimpleStringProperty mStopString;
     // boolean if the elevator is in manual mode
     private final SimpleBooleanProperty mManual;
+    // what floor was selected on manual mode
+    private final SimpleIntegerProperty mManualFloor;
 
     /**
      * Constructor of ElevatorViewModel
      * @param elevator elevator which's properties are copied
      * @param logic logic that controls the elevator
      */
-    public ElevatorViewModel(Elevator elevator, BusinesLogic logic) {
+    public ElevatorViewModel(Elevator elevator, BusinessLogic logic) {
         mModel = elevator;
         mLogic = logic;
-        mStops = new boolean[mModel.getNrOfFloors()];
+        mStops = new SimpleObjectProperty<>();
+        mServiced = new SimpleObjectProperty<>();
         mSpeed = new SimpleIntegerProperty();
         mAccel = new SimpleIntegerProperty();
         mTarget = new SimpleIntegerProperty();
@@ -54,8 +61,18 @@ public class ElevatorViewModel {
         mNearestFloor = new SimpleIntegerProperty();
         mDoorStatusString = new SimpleStringProperty();
         mDirectionString = new SimpleStringProperty();
-        mStopString = new SimpleStringProperty();
         mManual = new SimpleBooleanProperty(false);
+        mManualFloor = new SimpleIntegerProperty();
+
+
+
+
+        mManualFloor.addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> obj, Number oldVal, Number newVal) {
+                mLogic.setElevatorManualTarget(getElevatorNr(),newVal.intValue());
+            }
+        });
 
         mManual.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -85,14 +102,6 @@ public class ElevatorViewModel {
         return mDirection;
     }
 
-    public SimpleStringProperty getDirectionStringProp() {
-        return mDirectionString;
-    }
-
-    public SimpleIntegerProperty getDoorStatusProp() {
-        return mDoorStatus;
-    }
-
     public SimpleStringProperty getDoorStatusStringProp() {
         return mDoorStatusString;
     }
@@ -101,52 +110,20 @@ public class ElevatorViewModel {
         return mNearestFloor;
     }
 
-    public SimpleStringProperty getStopsProp() {
-        return mStopString;
+    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { return mStops; }
+
+    public SimpleObjectProperty<ArrayList<Integer>> getServicedProp() {
+        return mServiced;
     }
 
+    // TODO: test properly
     public SimpleBooleanProperty getManualProp() {
         return mManual;
     }
 
-    public final int getSpeed() {
-        return mSpeed.get();
-    }
-
-    public int getAccel() {
-        return mAccel.get();
-    }
-
-    public int getTarget() {
-        return mTarget.get();
-    }
-
-    public int getDirection() {
-        return mDirection.get();
-    }
-
-    public String getDirectionString() {
-        return mDirectionString.get();
-    }
-
-    public int getPayload() {
-        return mPayload.get();
-    }
-
-    public int getDoorStatus() {
-        return mDoorStatus.get();
-    }
-
-    public String getDoorStatusString() {
-        return mDoorStatusString.get();
-    }
-
-    public String getStops() {
-        return mStopString.get();
-    }
-
-    public int getNearestFloor() {
-        return mNearestFloor.get();
+    // TODO: test properly
+    public SimpleIntegerProperty getManualFloorProp() {
+        return mManualFloor;
     }
 
     public int getElevatorNr() {
@@ -167,17 +144,18 @@ public class ElevatorViewModel {
         mDoorStatus.set(mModel.getDoorStatus());
         mNearestFloor.set(mModel.getNearestFloor());
 
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < mStops.length; i++) {
-            mStops[i] = mModel.getStop(i);
-            if (mStops[i]) {
-                builder.append(Integer.toString(i));
-                builder.append(", ");
+        var stops = new ArrayList<Integer>();
+        var serviced = new ArrayList<Integer>();
+        for(int i = 0; i < mModel.getNrOfFloors(); ++i){
+            if(mModel.getStop(i)){
+                stops.add(i);
+            }
+            if(mModel.getServiced(i)){
+                serviced.add(i);
             }
         }
-
-        mStopString.set(builder.toString());
+        mStops.set(stops);
+        mServiced.set(serviced);
 
         switch(mDirection.get())
         {

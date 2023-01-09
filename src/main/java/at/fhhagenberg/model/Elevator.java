@@ -2,6 +2,8 @@ package at.fhhagenberg.model;
 
 import at.fhhagenberg.service.IElevatorService;
 
+import java.util.Arrays;
+
 // contains all information of a single elevator
 public class Elevator {
     // number of this elevator
@@ -24,6 +26,8 @@ public class Elevator {
     private int mDoorStatus;
     // nearest floor of this elevator
     private int mNearestFloor;
+    //which floors are serviced and not serviced by this elevator
+    private final boolean[] mServiced;
 
     /**
      * Constructor of an elevator
@@ -35,6 +39,8 @@ public class Elevator {
         mNrOfFloors = numberOfFloors;
         mElevatorNr = elevatorNr;
         mStops = new boolean[numberOfFloors];
+        mServiced = new boolean[numberOfFloors];
+        Arrays.fill(mServiced, true);
         mSpeed = 0;
         mAccel = 0;
         mTarget = 0;
@@ -42,6 +48,7 @@ public class Elevator {
         mDirection = IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED;
         mDoorStatus = IElevatorService.ELEVATOR_DOORS_CLOSED;
         mNearestFloor = 0;
+
     }
 
     /**
@@ -86,7 +93,6 @@ public class Elevator {
             System.out.println("Given door status is out of the valid range and will not be set!");
             return;
         }
-
         this.mDirection = direction;
     }
 
@@ -138,6 +144,19 @@ public class Elevator {
             return;
         }
         mStops[floorNr] = doStop;
+    }
+
+    /**
+     * Sets a flag if the elevator is servicing a certain floor
+     * @param floorNr identifies at which floor the flag should be set
+     * @param isServiced true if the elevator services that floor, false otherwise
+     */
+    public void setServiced(int floorNr, boolean isServiced) {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            System.out.println("Given floor is out of the valid range and will not be set!");
+            return;
+        }
+        mServiced[floorNr] = isServiced;
     }
 
     /**
@@ -222,5 +241,17 @@ public class Elevator {
             throw new ModelException(String.format("Floor %d is invalid!%nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
         }
         return mStops[floorNr];
+    }
+
+    /**
+     * Getter for the flag if the elevator is servicing a certain floor
+     * @param floorNr identifies the floor
+     * @return true if the elevator services that floor, false otherwise
+     */
+    public boolean getServiced(int floorNr) throws ModelException {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            throw new ModelException(String.format("Floor %d is invalid!%nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
+        }
+        return mServiced[floorNr];
     }
 }

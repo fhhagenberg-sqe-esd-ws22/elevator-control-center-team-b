@@ -5,18 +5,20 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.updater.BuildingUpdater;
+import javafx.application.Platform;
 
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
+    private final BusinessLogic mLogic;
     private final ArrayList<ElevatorViewModel> mElevators;
     private final ArrayList<FloorViewModel> mFloors;
     private final Timer mTimer;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 1000;
+    private static final int UPDATE_INTERVAL = 100;
 
     /**
      * Constructor of BuildingViewModel
@@ -24,11 +26,12 @@ public class BuildingViewModel {
      * @param building model of the building
      * @param logic BusinesLogic that is controling the elevators of this building
      */
-    public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
+    public BuildingViewModel(BuildingUpdater updater, Building building, BusinessLogic logic, Timer timer) {
         mUpdater = updater;
+        mLogic = logic;
         mElevators = new ArrayList<>();
         mFloors = new ArrayList<>();
-        mTimer = new Timer();
+        mTimer = timer;
 
         for (var elevator : building.getElevators()) {
             mElevators.add(new ElevatorViewModel(elevator, logic));
@@ -66,7 +69,12 @@ public class BuildingViewModel {
     private TimerTask getUpdateTask() {
         return new TimerTask() {
             public void run() {
-                update();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                });
             }
         };
     }
@@ -75,13 +83,18 @@ public class BuildingViewModel {
      * Updates all models and the ViewModels afterwards
      */
     private void update() {
+        // update building
         mUpdater.update();
+
+        // update view models for elevators and floors
         for (var elevator : mElevators) {
             elevator.update();
         }
         for (var floor : mFloors) {
             floor.update();
         }
+
+        mLogic.setNextTargets();
 
         mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);
     }
