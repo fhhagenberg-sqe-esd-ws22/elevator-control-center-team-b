@@ -1,10 +1,7 @@
 package at.fhhagenberg.view;
 
-import java.util.ArrayList;
-
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,7 +13,7 @@ public class BuildingView {
     private final HBox mView;
     private final BuildingViewModel mViewModel;
 
-    private final int Padding = 20;
+    private static final int PADDING = 20;
 
     /**
      * creates all elevators
@@ -52,8 +49,8 @@ public class BuildingView {
      */
     public BuildingView(BuildingViewModel viewModel) {
         mViewModel = viewModel;
-        mView = new HBox(Padding);
-        mView.setPadding(new Insets(Padding));
+        mView = new HBox(PADDING);
+        mView.setPadding(new Insets(PADDING));
         mView.getChildren().add(createElevatorLayout());
         mView.getChildren().add(createFloorLayout());
     }

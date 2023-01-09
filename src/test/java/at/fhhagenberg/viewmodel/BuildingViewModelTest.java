@@ -60,8 +60,6 @@ class BuildingViewModelTest {
         semaphore.acquire();
     }
 
-
-
     @Disabled
     void testUpdate() throws InterruptedException {
         assertEquals(0, model.getElevatorByNumber(0).getSpeed());

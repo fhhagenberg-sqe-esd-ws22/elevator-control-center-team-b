@@ -91,17 +91,16 @@ public class BusinessLogic {
 
                                 // if a floor is a requested stop by an inside or outside button it will get serviced
                                 // if requested outside, see that it is not already serviced by another elevator
-                                if ((upPressed[i] && !mUpTarget[i]) || stops[i])  {
-                                    if (elevator.getServiced(i)) {
-                                        elevator.setTarget(i);
-                                        if (upPressed[i]) {
+                                if (((upPressed[i] && !mUpTarget[i]) || stops[i]) &&
+                                        elevator.getServiced(i))  {
+                                    elevator.setTarget(i);
+                                    if (upPressed[i]) {
 
-                                            // if it was a press from an outside button, this floor is now serviced by
-                                            // this elevator and other elevators will no longer see the request here
-                                            mUpTarget[i] = true;
-                                        }
-                                        break;
+                                        // if it was a press from an outside button, this floor is now serviced by
+                                        // this elevator and other elevators will no longer see the request here
+                                        mUpTarget[i] = true;
                                     }
+                                    break;
                                 }
                             }
 
@@ -123,14 +122,13 @@ public class BusinessLogic {
 
                             int i = currentFloor - 1;
                             for (; i >= 0; --i) {
-                                if ((downPressed[i] && !mDownTarget[i]) || stops[i])  {
-                                    if (elevator.getServiced(i)) {
-                                        elevator.setTarget(i);
-                                        if (downPressed[i]) {
-                                            mDownTarget[i] = true;
-                                        }
-                                        break;
+                                if (((downPressed[i] && !mDownTarget[i]) || stops[i]) &&
+                                    elevator.getServiced(i))  {
+                                    elevator.setTarget(i);
+                                    if (downPressed[i]) {
+                                        mDownTarget[i] = true;
                                     }
+                                    break;
                                 }
                             }
                             if (i == -1) {

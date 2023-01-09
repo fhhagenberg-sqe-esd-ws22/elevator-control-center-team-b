@@ -1,14 +1,12 @@
 package at.fhhagenberg.model;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 // contains information about all elevators of a building
 public class Building {
-    private final ArrayList<Elevator> mElevators;
+    private final List<Elevator> mElevators;
 
-    private final ArrayList<Floor> mFloors;
+    private final List<Floor> mFloors;
 
 
     /**
@@ -16,7 +14,7 @@ public class Building {
      * @param elevators List of Elevator objects which represent all eleveators in the building
      * @param floors List of Floor objects which represent all floors in the building
      */
-    public Building(ArrayList<Elevator> elevators, ArrayList<Floor> floors) {
+    public Building(List<Elevator> elevators, List<Floor> floors) {
         if (floors == null || elevators == null || elevators.isEmpty() || floors.isEmpty()) {
             throw new ModelException("Could not create building, since either no elevators or no floors where given at construction!");
         }

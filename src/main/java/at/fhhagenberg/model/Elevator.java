@@ -2,8 +2,6 @@ package at.fhhagenberg.model;
 
 import at.fhhagenberg.service.IElevatorService;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 // contains all information of a single elevator

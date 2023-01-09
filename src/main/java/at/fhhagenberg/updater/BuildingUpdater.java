@@ -12,7 +12,6 @@ import java.util.List;
 
 public class BuildingUpdater extends UpdaterBase {
 
-    private final Building mModel;
     private final List<ElevatorUpdater> mElevatorUpdaters;
     private final List<FloorUpdater> mFloorUpdaters;
 
@@ -29,7 +28,6 @@ public class BuildingUpdater extends UpdaterBase {
 
         mElevatorUpdaters = elevatorUpdaters;
         mFloorUpdaters = floorUpdaters;
-        mModel = model;
     }
 
     /**

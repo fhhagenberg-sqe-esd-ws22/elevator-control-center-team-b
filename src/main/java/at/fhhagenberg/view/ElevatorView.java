@@ -2,7 +2,6 @@ package at.fhhagenberg.view;
 
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.event.ActionEvent;
@@ -12,9 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -25,19 +21,19 @@ public class ElevatorView {
     private final ElevatorViewModel mViewModel;
     private final VBox mView;
 
-    private final int padding = 10;
-    private final String ElevatorBorderStyle = "-fx-border-color: blue;-fx-border-insets: 3;-fx-border-width: 2;";
-    private final String ArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
-    private final String ElevatorPressableStyle = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;";
-    private final String ElevatorFloorStyle = "-fx-background-radius: 0;";
-    private final String ElevatorNormalColor = "-fx-background-color: silver;";
-    private final String ElevatorTargetColor = "-fx-background-color: lightgreen;";
-    private final String ElevatorCurrentPosColor = "-fx-background-color: green;";
-    private final String ElevatorButtonPressedColor = "-fx-background-color: yellow;";
-    private final String ElevatorNoServiceColor = "-fx-background-color: grey;";
-    private final String ElevatorArrowActiveColor = "-fx-background-color: green;";
-    private final String ElevatorArrowInactiveColor = "-fx-background-color: silver;";
-    private final int mFloorHeightPx = 40;
+    private static final int PADDING = 10;
+    private static final String ELEVATOR_BORDER_STYLE = "-fx-border-color: blue;-fx-border-insets: 3;-fx-border-width: 2;";
+    private static final String ARROW_STYLE = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
+    private static final String ELEVATOR_PRESSABLE_STYLE = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;";
+    private static final String ELEVATOR_FLOOR_STYLE = "-fx-background-radius: 0;";
+    private static final String ELEVATOR_NORMAL_COLOR = "-fx-background-color: silver;";
+    private static final String ELEVATOR_TARGET_COLOR = "-fx-background-color: lightgreen;";
+    private static final String ELEVATOR_CURRENT_POS_COLOR = "-fx-background-color: green;";
+    private static final String ELEVATOR_BUTTON_PRESSED_COLOR = "-fx-background-color: yellow;";
+    private static final String ELEVATOR_NO_SERVICE_COLOR = "-fx-background-color: grey;";
+    private static final String ELEVATOR_ARROW_ACTIVE_COLOR = "-fx-background-color: green;";
+    private static final String ELEVATOR_ARROW_INACTIVE_COLOR = "-fx-background-color: silver;";
+    private static final int FLOOR_HEIGHT_PX = 40;
     private final int mElevatorNr;
 
     /**
@@ -53,7 +49,7 @@ public class ElevatorView {
         Label payloadLbl = new Label();
         payloadLbl.setId(String.format(identifierBase + "%d", mElevatorNr));
         payloadLbl.textProperty().bind(binding);
-        infoLine.getChildren().add(new Label(label + ": "));
+        infoLine.getChildren().add(new Label(String.format("%s: ", label)));
         infoLine.getChildren().add(payloadLbl);
         infoLine.getChildren().add(new Label(unit));
         return infoLine;
@@ -83,10 +79,10 @@ public class ElevatorView {
      */
     private Button createElevatorFloor(String identifierBase, int i){
         var btn = new Button("Floor " + i);
-        btn.setId(String.format(identifierBase + "%d_%d", mElevatorNr, i));
+        btn.setId(String.format("%s%d_%d", identifierBase, mElevatorNr, i));
         btn.setDisable(true);
         btn.setOpacity(1);
-        btn.setPrefHeight(mFloorHeightPx);
+        btn.setPrefHeight(FLOOR_HEIGHT_PX);
         return btn;
     }
 
@@ -100,16 +96,15 @@ public class ElevatorView {
         var lbl = new Label("Pressed:");
         buttonPressedGraphic.getChildren().add(lbl);
 
-        var floors = buttonPressedGraphic.getChildren();
         for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
             var floor = i;
             var btn = createElevatorFloor("PressedInEle", floor);
             btn.styleProperty().bind(Bindings.createStringBinding(()->{
                 if(mViewModel.getStopsProp().get().contains(floor)){
-                    return ElevatorFloorStyle + ElevatorButtonPressedColor;
+                    return ELEVATOR_FLOOR_STYLE + ELEVATOR_BUTTON_PRESSED_COLOR;
                 }
                 else{
-                    return ElevatorFloorStyle + ElevatorNormalColor;
+                    return ELEVATOR_FLOOR_STYLE + ELEVATOR_NORMAL_COLOR;
                 }
             }, mViewModel.getStopsProp()));
             buttonPressedGraphic.getChildren().add(btn);
@@ -133,9 +128,9 @@ public class ElevatorView {
             var btn = createElevatorFloor("ElevatorTarget", floor);
             btn.disableProperty().bind(mViewModel.getManualProp().not());
             btn.styleProperty().bind(Bindings.createStringBinding(()->{
-                var baseStyle = ElevatorFloorStyle;
+                var baseStyle = ELEVATOR_FLOOR_STYLE;
                 if(mViewModel.getManualProp().get()){
-                    baseStyle = ElevatorPressableStyle;
+                    baseStyle = ELEVATOR_PRESSABLE_STYLE;
                 }
                 else{
                     // if we are not in manual mode, set all buttons to normal
@@ -144,16 +139,16 @@ public class ElevatorView {
                     }
                 }
                 if(mViewModel.getNearestFloorProp().get() == floor){
-                    return baseStyle + ElevatorCurrentPosColor;
+                    return baseStyle + ELEVATOR_CURRENT_POS_COLOR;
                 }
                 else if(mViewModel.getTargetProp().get() == floor){
-                    return baseStyle + ElevatorTargetColor;
+                    return baseStyle + ELEVATOR_TARGET_COLOR;
                 }
                 else if(mViewModel.getServicedProp().get().contains(floor)){
-                    return baseStyle + ElevatorNormalColor;
+                    return baseStyle + ELEVATOR_NORMAL_COLOR;
                 }
                 else{
-                    return baseStyle + ElevatorNoServiceColor;
+                    return baseStyle + ELEVATOR_NO_SERVICE_COLOR;
                 }
             }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
             mViewModel.getTargetProp(), mViewModel.getServicedProp()));
@@ -190,10 +185,10 @@ public class ElevatorView {
         arrow.setOpacity(1);
         arrow.styleProperty().bind(Bindings.createStringBinding(()-> {
             if(mViewModel.getDirectionProp().get() == direction) {
-                return ArrowStyle + ElevatorArrowActiveColor;
+                return ARROW_STYLE + ELEVATOR_ARROW_ACTIVE_COLOR;
             }
             else{
-                return ArrowStyle + ElevatorArrowInactiveColor;
+                return ARROW_STYLE + ELEVATOR_ARROW_INACTIVE_COLOR;
             }
         }, mViewModel.getDirectionProp()));
         arrow.setRotate(rotation);
@@ -238,7 +233,7 @@ public class ElevatorView {
         var information = new HBox();
         var graphics = createGraphics();
         var infoText = createInfoText();
-        HBox.setMargin(infoText,new Insets(padding));
+        HBox.setMargin(infoText,new Insets(PADDING));
         information.getChildren().add(graphics);
         information.getChildren().add(infoText);
 
@@ -269,7 +264,7 @@ public class ElevatorView {
         button.setId(String.format("Manual%d", mElevatorNr));
         mViewModel.getManualProp().bind(button.selectedProperty());
         btnBox.getChildren().add(button);
-        btnBox.setPadding(new Insets(padding));
+        btnBox.setPadding(new Insets(PADDING));
         return btnBox;
     }
 
@@ -282,9 +277,9 @@ public class ElevatorView {
         mView = new VBox();
         mElevatorNr = mViewModel.getElevatorNr();
 
-        mView.setStyle(ElevatorBorderStyle);
+        mView.setStyle(ELEVATOR_BORDER_STYLE);
 
-        mView.setPadding(new Insets(padding));
+        mView.setPadding(new Insets(PADDING));
         mView.getChildren().addAll(
                 createElevatorNameHeader(),
                 createInformation(),

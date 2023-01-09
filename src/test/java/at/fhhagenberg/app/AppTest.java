@@ -1,6 +1,5 @@
 package at.fhhagenberg.app;
 
-import at.fhhagenberg.mock_observable.MockElevatorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

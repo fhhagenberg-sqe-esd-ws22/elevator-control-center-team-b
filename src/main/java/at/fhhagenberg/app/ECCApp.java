@@ -2,22 +2,17 @@ package at.fhhagenberg.app;
 
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
-import at.fhhagenberg.model.Elevator;
-import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
-import at.fhhagenberg.updater.ElevatorUpdater;
-import at.fhhagenberg.updater.FloorUpdater;
+import at.fhhagenberg.updater.UpdaterFactory;
 import at.fhhagenberg.view.BuildingView;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 
 /**
@@ -43,19 +38,9 @@ public class ECCApp extends Application {
     private Scene createScene(IElevatorService service){
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
-        List<FloorUpdater> floorUpdaters = new ArrayList<>();
-        List<ElevatorUpdater> elevatorUpdaters = new ArrayList<>();
+        var updaterFactory = new UpdaterFactory(service);
 
-        for (Elevator elevator : building.getElevators()) {
-            elevatorUpdaters.add(new ElevatorUpdater(service, elevator));
-        }
-
-        for (Floor floor : building.getFloors()) {
-            floorUpdaters.add(new FloorUpdater(service, floor));
-        }
-
-        BuildingUpdater updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, building);
-
+        BuildingUpdater updater = updaterFactory.createBuildingUpdater(building);
         BusinessLogic logic = new BusinessLogic(building);
         BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic, new Timer());
         BuildingView buildingView = new BuildingView(buildingViewModel);

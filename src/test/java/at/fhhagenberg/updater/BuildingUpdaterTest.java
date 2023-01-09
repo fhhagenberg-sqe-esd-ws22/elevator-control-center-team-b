@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,6 +82,12 @@ class BuildingUpdaterTest {
         var building = factory.createBuilding();
         BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
         updater.update();
+
+        verify(elevators.get(0)).update();
+        verify(elevators.get(1)).update();
+        verify(floors.get(0)).update();
+        verify(floors.get(1)).update();
+        verify(floors.get(2)).update();
     }
 
     @Test

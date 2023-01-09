@@ -11,7 +11,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class ElevatorViewModel {
     private final Elevator mModel;
@@ -51,8 +50,8 @@ public class ElevatorViewModel {
     public ElevatorViewModel(Elevator elevator, BusinessLogic logic) {
         mModel = elevator;
         mLogic = logic;
-        mStops = new SimpleObjectProperty<ArrayList<Integer>>();
-        mServiced = new SimpleObjectProperty<ArrayList<Integer>>();
+        mStops = new SimpleObjectProperty<>();
+        mServiced = new SimpleObjectProperty<>();
         mSpeed = new SimpleIntegerProperty();
         mAccel = new SimpleIntegerProperty();
         mTarget = new SimpleIntegerProperty();

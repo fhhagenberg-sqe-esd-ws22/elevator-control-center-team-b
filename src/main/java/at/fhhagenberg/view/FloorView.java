@@ -9,7 +9,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 /**
  * View for a floor
@@ -18,13 +17,13 @@ public class FloorView {
     private final FloorViewModel mViewModel;
     private final HBox mView;
 
-    private final String ArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
-    private final String FloorStyle = "-fx-background-radius: 0;-fx-border-color: black;-fx-background-color: silver;";
-    private final String ButtonPressedColor = "-fx-background-color: yellow;";
-    private final String ButtonInactiveColor = "-fx-background-color: silver;";
-    private final int Height = 40;
-    private final int Width = 60;
-    private final int Padding = 10;
+    private static final String ARROW_STYLE = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
+    private static final String FLOOR_STYLE = "-fx-background-radius: 0;-fx-border-color: black;-fx-background-color: silver;";
+    private static final String BUTTON_PRESSED_COLOR = "-fx-background-color: yellow;";
+    private static final String BUTTON_INACTIVE_COLOR = "-fx-background-color: silver;";
+    private static final int HEIGHT = 40;
+    private static final int WIDTH = 60;
+    private static final int PADDING = 10;
     private int mFloorNumber;
 
     /**
@@ -41,10 +40,10 @@ public class FloorView {
         arrow.setOpacity(1);
         arrow.styleProperty().bind(Bindings.createStringBinding(()-> {
             if(binding.get()) {
-                return ArrowStyle + ButtonPressedColor;
+                return ARROW_STYLE + BUTTON_PRESSED_COLOR;
             }
             else{
-                return ArrowStyle + ButtonInactiveColor;
+                return ARROW_STYLE + BUTTON_INACTIVE_COLOR;
             }
         }, binding));
         arrow.setRotate(rotation);
@@ -57,12 +56,12 @@ public class FloorView {
      */
     private HBox createFloorGraphic(){
         var floorGraphic = new HBox();
-        floorGraphic.setStyle(FloorStyle);
+        floorGraphic.setStyle(FLOOR_STYLE);
         var arrUp = createArrow(IElevatorService.ELEVATOR_DIRECTION_UP,270, mViewModel.getWantUpProp());
         var arrDown = createArrow(IElevatorService.ELEVATOR_DIRECTION_DOWN, 90, mViewModel.getWantDownProp());
         floorGraphic.getChildren().addAll(arrUp, arrDown);
         floorGraphic.setAlignment(Pos.CENTER);
-        floorGraphic.setPrefSize(Width, Height);
+        floorGraphic.setPrefSize(WIDTH, HEIGHT);
         return floorGraphic;
     }
 
@@ -72,7 +71,7 @@ public class FloorView {
      */
     private Label createFloorLabel(){
         var lbl = new Label(Integer.toString(mFloorNumber));
-        lbl.setPadding(new Insets(Padding));
+        lbl.setPadding(new Insets(PADDING));
         return lbl;
     }
 
