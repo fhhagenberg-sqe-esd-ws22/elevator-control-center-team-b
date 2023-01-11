@@ -147,6 +147,8 @@ class ElevatorTest {
     @Test 
     void testInvalidFloorStops() {
         Elevator elevator = new Elevator(0, 1);
+        assertFalse(elevator.getStop(0));
+
         elevator.setStop(0, true);
         assertTrue(elevator.getStop(0));
 

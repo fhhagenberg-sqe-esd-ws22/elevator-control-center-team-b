@@ -35,8 +35,6 @@ public class ElevatorViewModel {
     private final SimpleIntegerProperty mNearestFloor;
     // status of the doors - open/closing/closed as a string
     private final SimpleStringProperty mDoorStatusString;
-    // current direction of the elevator as a string
-    private final SimpleStringProperty mDirectionString;
     // boolean if the elevator is in manual mode
     private final SimpleBooleanProperty mManual;
     // what floor was selected on manual mode
@@ -60,7 +58,6 @@ public class ElevatorViewModel {
         mDoorStatus = new SimpleIntegerProperty();
         mNearestFloor = new SimpleIntegerProperty();
         mDoorStatusString = new SimpleStringProperty();
-        mDirectionString = new SimpleStringProperty();
         mManual = new SimpleBooleanProperty(false);
         mManualFloor = new SimpleIntegerProperty();
 
@@ -157,21 +154,6 @@ public class ElevatorViewModel {
         mStops.set(stops);
         mServiced.set(serviced);
 
-        switch(mDirection.get())
-        {
-            case IElevator.ELEVATOR_DIRECTION_UP:
-                mDirectionString.set("Up");
-                break;
-            case IElevator.ELEVATOR_DIRECTION_DOWN:
-                mDirectionString.set("Down");
-                break;
-            case IElevator.ELEVATOR_DIRECTION_UNCOMMITTED:
-                mDirectionString.set("Uncommited");
-                break;
-            default:
-                mDirectionString.set("Invalid");
-        }
-
         switch(mDoorStatus.get())
         {
             case IElevator.ELEVATOR_DOORS_CLOSED:
@@ -186,8 +168,6 @@ public class ElevatorViewModel {
             case IElevator.ELEVATOR_DOORS_OPENING:
                 mDoorStatusString.set("Opening");
                 break;
-            default:
-                mDoorStatusString.set("Invalid");
         }
     }
 }

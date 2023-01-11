@@ -140,6 +140,9 @@ class ElevatorUpdaterTest {
                 Arguments.of(15, 2),
                 Arguments.of(14, 1),
                 Arguments.of(5, 1),
+                Arguments.of(100, 2),
+                Arguments.of(30, 2),
+                Arguments.of(35, 2),
                 Arguments.of(4, 0)
         );
     }

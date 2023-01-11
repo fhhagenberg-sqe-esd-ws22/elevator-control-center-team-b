@@ -60,7 +60,7 @@ public class BusinessLogic {
                 if (mManual[nr]) {
                     elevator.setTarget(mManualTarget[nr]);
                 }
-                else{ //automatic mode
+                else { //automatic mode
 
                     // we don't need to stop on the floor we are currently standing on
                     var currentFloor= elevator.getNearestFloor();

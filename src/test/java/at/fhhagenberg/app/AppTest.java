@@ -2,6 +2,7 @@ package at.fhhagenberg.app;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxAssert;
@@ -9,8 +10,15 @@ import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.matcher.control.LabeledMatchers;
-import at.fhhagenberg.service.IElevatorService;
+import org.testfx.service.query.EmptyNodeQueryException;
 
+import at.fhhagenberg.service.IElevatorService;
+import javafx.scene.control.Button;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.TimeoutException;
@@ -36,6 +44,73 @@ class AppTest {
         FxAssert.verifyThat("#Header1", LabeledMatchers.hasText("1"));
         FxAssert.verifyThat("#Header2", LabeledMatchers.hasText("2"));
         FxAssert.verifyThat("#Header3", LabeledMatchers.hasText("3"));
+    }
+
+    @Test 
+    void testCosmeticMembersOfPressedInEleButtons() {
+        var node = robot.lookup("#PressedInEle0_0").query();
+        assertTrue(node instanceof Button);
+        var button = (Button)node;
+        assertTrue(button.isDisabled());
+        assertEquals(1, button.opacityProperty().get());
+        assertEquals(40, button.prefHeightProperty().get());
+    }
+
+    @Test 
+    void testCosmeticMembersOfElevatorDirectionUpArrow() {
+        var node = robot.lookup(String.format("#Arrow0_%d", IElevatorService.ELEVATOR_DIRECTION_UP)).query();
+        assertTrue(node instanceof Button);
+        var button = (Button)node;
+        assertTrue(button.isDisabled());
+        assertEquals(1, button.opacityProperty().get());
+        assertEquals(270, button.rotateProperty().get());
+    }
+
+    @Test 
+    void testCosmeticMembersOfElevatorDirectionDownArrow() {
+        var node = robot.lookup(String.format("#Arrow0_%d", IElevatorService.ELEVATOR_DIRECTION_DOWN)).query();
+        assertTrue(node instanceof Button);
+        var button = (Button)node;
+        assertTrue(button.isDisabled());
+        assertEquals(1, button.opacityProperty().get());
+        assertEquals(90, button.rotateProperty().get());
+    }
+
+    @Test 
+    void testCosmeticMembersOfFloorUpArrow() {
+        var node = robot.lookup(String.format("#FloorArrow0_%d", IElevatorService.ELEVATOR_DIRECTION_UP)).query();
+        assertTrue(node instanceof Button);
+        var button = (Button)node;
+        assertTrue(button.isDisabled());
+        assertEquals(1, button.opacityProperty().get());
+        assertEquals(270, button.rotateProperty().get());
+    }
+
+    @Test 
+    void testCosmeticMembersOfFloorDownArrow() {
+        var node = robot.lookup(String.format("#FloorArrow0_%d", IElevatorService.ELEVATOR_DIRECTION_DOWN)).query();
+        assertTrue(node instanceof Button);
+        var button = (Button)node;
+        assertTrue(button.isDisabled());
+        assertEquals(1, button.opacityProperty().get());
+        assertEquals(90, button.rotateProperty().get());
+    }
+
+    @Test
+    void testElevatorButtonCountAndElevatorTargetButtonCountElevator0() {
+        for(int i = 0; i < TestECCApp.service.getFloorNum(); i++) {
+            assertNotNull(robot.lookup(String.format("#PressedInEle0_%d", i)).query());
+            assertNotNull(robot.lookup(String.format("#ElevatorTarget0_%d", i)).query());
+        }
+
+        assertThrows(EmptyNodeQueryException.class, () -> 
+            { robot.lookup(String.format("#PressedInEle0_%d", 
+                TestECCApp.service.getFloorNum())).query(); 
+            });
+        assertThrows(EmptyNodeQueryException.class, () ->
+            { robot.lookup(String.format("#ElevatorTarget0_%d", 
+                TestECCApp.service.getFloorNum())).query();
+            });
     }
 
     @Test

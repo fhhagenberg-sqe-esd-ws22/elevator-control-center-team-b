@@ -48,7 +48,7 @@ class ModelFactoryTest {
         when(service.getFloorNum()).thenThrow(ElevatorServiceException.class);
         ModelFactory factory = new ModelFactory(service);
 
-        assertThrows(ModelException.class, factory::createBuilding);
+        assertThrows(ElevatorServiceException.class, factory::createBuilding);
     }
 
     @Test
@@ -57,7 +57,7 @@ class ModelFactoryTest {
         when(service.getElevatorNum()).thenThrow(ElevatorServiceException.class);
         ModelFactory factory = new ModelFactory(service);
 
-        assertThrows(ModelException.class, factory::createBuilding);
+        assertThrows(ElevatorServiceException.class, factory::createBuilding);
     }
 
 }

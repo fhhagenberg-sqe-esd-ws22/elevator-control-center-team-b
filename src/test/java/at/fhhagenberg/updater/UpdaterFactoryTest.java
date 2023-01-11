@@ -9,6 +9,7 @@ import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.IElevatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,6 +35,13 @@ class UpdaterFactoryTest {
     @Test
     void testObjectCreationServiceIsNull() {
         assertThrows(UpdaterException.class, () -> { new UpdaterFactory(null); });
+    }
+
+    @Test
+    void testCreateBuildingUpdaterWithNullBuilding() {
+        UpdaterFactory updaterFactory = new UpdaterFactory(service);
+
+        assertThrows(UpdaterException.class, () -> { updaterFactory.createBuildingUpdater(null); });
     }
 
     @Test

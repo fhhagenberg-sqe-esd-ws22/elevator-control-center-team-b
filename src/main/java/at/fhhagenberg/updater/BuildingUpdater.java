@@ -34,14 +34,9 @@ public class BuildingUpdater extends UpdaterBase {
      * Performs all necessary API calls on a service object in order to update a referenced model object.
      */
     @Override
-    public void update() {
-        try {
-            updateFloors();
-            updateElevators();
-        }
-        catch(ElevatorServiceException ex) {
-            throw new UpdaterException("An error occurred during updating the building!\nError message: " + ex.getMessage());
-        }
+    public void update() throws ElevatorServiceException {
+        updateFloors();
+        updateElevators();
     }
 
     /**

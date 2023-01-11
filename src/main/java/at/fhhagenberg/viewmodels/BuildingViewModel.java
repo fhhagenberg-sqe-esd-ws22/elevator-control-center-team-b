@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
+import at.fhhagenberg.model.ModelException;
+import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.updater.BuildingUpdater;
+import at.fhhagenberg.updater.UpdaterException;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
@@ -16,6 +23,7 @@ public class BuildingViewModel {
     private final ArrayList<ElevatorViewModel> mElevators;
     private final ArrayList<FloorViewModel> mFloors;
     private final Timer mTimer;
+    private boolean mShowedError;
 
     // update interval in [ms]
     private static final int UPDATE_INTERVAL = 100;
@@ -32,6 +40,7 @@ public class BuildingViewModel {
         mElevators = new ArrayList<>();
         mFloors = new ArrayList<>();
         mTimer = timer;
+        mShowedError = false;
 
         for (var elevator : building.getElevators()) {
             mElevators.add(new ElevatorViewModel(elevator, logic));
@@ -83,18 +92,40 @@ public class BuildingViewModel {
      * Updates all models and the ViewModels afterwards
      */
     private void update() {
-        // update building
-        mUpdater.update();
+        try {
+            // update building
+            mUpdater.update();
 
-        // update view models for elevators and floors
-        for (var elevator : mElevators) {
-            elevator.update();
-        }
-        for (var floor : mFloors) {
-            floor.update();
-        }
+            // update view models for elevators and floors
+            for (var elevator : mElevators) {
+                elevator.update();
+            }
+            for (var floor : mFloors) {
+                floor.update();
+            }
 
-        mLogic.setNextTargets();
+            mLogic.setNextTargets();
+            if (mShowedError) {
+                Alert info = new Alert(AlertType.INFORMATION);
+                info.setTitle("Connection re-established");
+                info.setContentText("The connection was re-established");
+                mShowedError = false;
+            }
+        }
+        catch (ElevatorServiceException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Critical Error Occurred");
+            alert.setContentText(ex.getMessage());
+            alert.show();
+            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+            mShowedError = true;
+        }
+        catch (ModelException ex) {
+            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+        }
+        catch (UpdaterException ex) {
+            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+        }
 
         mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);
     }

@@ -12,6 +12,16 @@ import at.fhhagenberg.model.ModelFactory;
 
 class BusinessLogicTest {
     @Test
+    void testObjectConstruction() {
+        ModelFactory factory = new ModelFactory(new MockElevatorService(2, 2, 10));
+        BusinessLogic logic = new BusinessLogic(factory.createBuilding());
+
+        for (int i = 0; i < 2; i++) {
+            assertFalse(logic.getManual(i));
+        }
+    }
+
+    @Test
     void testSetGetManual() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 2, 10));
         BusinessLogic logic = new BusinessLogic(factory.createBuilding());
@@ -420,5 +430,54 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
+    }
+
+    @Test
+    void testAutomaticModeTwoIdleElevatorsAndFloorButtonPressed() {
+        ModelFactory factory = new ModelFactory(new MockElevatorService(2, 3, 10));
+        var building = factory.createBuilding();
+        BusinessLogic logic = new BusinessLogic(building);
+        var elevator0 = building.getElevatorByNumber(0);
+        var elevator1 = building.getElevatorByNumber(1);
+        var floors = building.getFloors();
+
+        floors.get(1).setWantDown(true);
+        logic.setNextTargets();
+        assertEquals(1, elevator0.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
+        assertEquals(0, elevator1.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED, elevator1.getDirection());
+
+        floors.get(2).setWantDown(true);
+        logic.setNextTargets();
+        assertEquals(1, elevator0.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
+        assertEquals(2, elevator1.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator1.getDirection());
+    }
+
+    @Test
+    void testAutomaticModeElevatorGoesToTopFloorAndFloorBetweenIsPressed() {
+        ModelFactory factory = new ModelFactory(new MockElevatorService(2, 4, 10));
+        var building = factory.createBuilding();
+        BusinessLogic logic = new BusinessLogic(building);
+        var elevator0 = building.getElevatorByNumber(0);
+        var elevator1 = building.getElevatorByNumber(1);
+        var floors = building.getFloors();
+
+        elevator0.setStop(3, true);
+        logic.setNextTargets();
+        assertEquals(3, elevator0.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
+        assertEquals(0, elevator1.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED, elevator1.getDirection());
+
+        elevator0.setNearestFloor(1);
+        floors.get(2).setWantUp(true);
+        logic.setNextTargets();
+        assertEquals(3, elevator0.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
+        assertEquals(2, elevator1.getTarget());
+        assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator1.getDirection());
     }
 }

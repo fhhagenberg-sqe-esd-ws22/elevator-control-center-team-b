@@ -38,38 +38,28 @@ public class ModelFactory {
      * Creates floor objects which represent the floors of a building.
      * @return List of floor objects which represent the floors of a building.
      */
-    private ArrayList<Floor> createFloors() {
-        try{
-            ArrayList<Floor> floors = new ArrayList<>();
-            int nrOfFloors = mElevatorService.getFloorNum();
-            for(int i = 0; i < nrOfFloors; ++i) {
-                floors.add(new Floor(i));
-            }
+    private ArrayList<Floor> createFloors() throws ElevatorServiceException {
+        ArrayList<Floor> floors = new ArrayList<>();
+        int nrOfFloors = mElevatorService.getFloorNum();
+        for(int i = 0; i < nrOfFloors; ++i) {
+            floors.add(new Floor(i));
+        }
 
-            return floors;
-        }
-        catch(ElevatorServiceException ex) {
-            throw new ModelException("Could not create floor objects, the following error occurred: \n" + ex.getMessage());
-        }
+        return floors;
     }
 
     /**
      * Creates elevator objects which represent the elevators of a building.
      * @return List of elevator objects which represent the elevators of a building.
      */
-    private ArrayList<Elevator> createElevators() {
-        try{
-            ArrayList<Elevator> elevators = new ArrayList<>();
-            int nrOfFloors = mElevatorService.getFloorNum();
-            int nrOfElevators = mElevatorService.getElevatorNum();
-            for(int i = 0; i < nrOfElevators; ++i) {
-                elevators.add(new Elevator(i, nrOfFloors));
-            }
+    private ArrayList<Elevator> createElevators() throws ElevatorServiceException {
+        ArrayList<Elevator> elevators = new ArrayList<>();
+        int nrOfFloors = mElevatorService.getFloorNum();
+        int nrOfElevators = mElevatorService.getElevatorNum();
+        for(int i = 0; i < nrOfElevators; ++i) {
+            elevators.add(new Elevator(i, nrOfFloors));
+        }
 
-            return elevators;
-        }
-        catch(ElevatorServiceException ex) {
-            throw new ModelException("Could not create floor objects, the following error occurred: \n" + ex.getMessage());
-        }
+        return elevators;
     }
 }

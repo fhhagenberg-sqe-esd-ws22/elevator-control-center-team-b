@@ -57,6 +57,7 @@ public class ElevatorUpdater extends UpdaterBase{
         checkForStops(elevatorNr);
         checkServiced(elevatorNr);
         calcNearestFloor(elevatorNr);
+        //mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
     }
 
     /**
@@ -74,8 +75,8 @@ public class ElevatorUpdater extends UpdaterBase{
             floor++;
         }
 
-        if (floor > mModel.getNrOfFloors()) {
-            floor = mModel.getNrOfFloors();
+        if (floor >= mModel.getNrOfFloors()) {
+            floor = mModel.getNrOfFloors() - 1;
         }
 
         mModel.setNearestFloor(floor);
