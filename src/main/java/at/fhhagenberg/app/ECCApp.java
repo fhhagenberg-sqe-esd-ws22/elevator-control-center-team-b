@@ -57,21 +57,7 @@ public class ECCApp extends Application {
         }
         // display the errors to the user and throw the exception again since
         // they cannot be handled in this function
-        catch(ElevatorServiceException ex) {
-            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
-                Arrays.toString(ex.getStackTrace())));
-            showError(ex.getMessage());
-            throw ex;
-        }
-        catch(UpdaterException ex) {
-            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
-                Arrays.toString(ex.getStackTrace())));
-            showError(ex.getMessage());
-            throw ex;
-        }
-        catch(ModelException ex) {
-            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
-                Arrays.toString(ex.getStackTrace())));
+        catch(ElevatorServiceException | UpdaterException | ModelException ex) {
             showError(ex.getMessage());
             throw ex;
         }

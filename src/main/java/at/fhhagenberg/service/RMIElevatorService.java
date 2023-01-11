@@ -12,13 +12,14 @@ import at.fhhagenberg.logging.Logging;
 public class RMIElevatorService implements IElevatorService{
     private final IElevator mApi;
 
+    private static final String CLASS_NAME = "RMIElevatorService";
     private static final String ERROR_MESSAGE_LITERAL = "! \nError message: ";
 
     public RMIElevatorService(IElevator api) {
         if (api == null) {
             String errorMsg = "Could not create RMIElevatorService, the given IElevator object is null!";
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
-                "RMIElevatorService", errorMsg);
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
+                CLASS_NAME, errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
         mApi = api;
@@ -31,7 +32,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the committed direction for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getCommittedDirection", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -44,7 +45,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the acceleration for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorAccel", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -57,7 +58,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the state of the button for elevator " + elevatorNumber + "on floor" + floor + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorButton", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -70,7 +71,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorDoorStatus", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -83,7 +84,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the door status for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorFloor", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -96,7 +97,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the number of elevators!" + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorNum", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -109,7 +110,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the position for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService", 
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME, 
                 "getElevatorPosition", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -122,7 +123,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the speed for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorSpeed", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -135,7 +136,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the weight for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorWeight", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -148,7 +149,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the capacity for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getElevatorCapacity", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -161,7 +162,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the state of the down button for floor " + floor + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getFloorButtonDown", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -174,7 +175,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the state of the up button for floor " + floor + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getFloorButtonUp", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -187,7 +188,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the height of the floors!\nError message: " +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getFloorHeight", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -200,7 +201,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the number of floors!\nError message: " +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService", 
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME, 
                 "getFloorNum", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -213,7 +214,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the state of service for " + floor + " by elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL +  ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getServicesFloors", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -226,7 +227,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to retrieve the state of the target floor for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getTarget", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -239,7 +240,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to set the committed direction for elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "setCommittedDirection", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -252,7 +253,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to set the service state for floor" + floor + " on elevator " + elevatorNumber + "to " + service + ERROR_MESSAGE_LITERAL + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "setServicesFloors", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -265,7 +266,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to set the target floor to" + target + " on elevator " + elevatorNumber + ERROR_MESSAGE_LITERAL + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "setTarget", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
@@ -278,7 +279,7 @@ public class RMIElevatorService implements IElevatorService{
         }
         catch(RemoteException ex) {
             String errorMsg = "An error occurred while trying to receive the clock tick!\nError message: " + ex.getMessage();
-            Logging.getLogger().logp(Level.SEVERE, "RMIElevatorService",
+            Logging.GET_LOGGER().logp(Level.SEVERE, CLASS_NAME,
                 "getClockTick", errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }

@@ -168,6 +168,9 @@ public class ElevatorViewModel {
             case IElevator.ELEVATOR_DOORS_OPENING:
                 mDoorStatusString.set("Opening");
                 break;
+            default:
+                mDoorStatusString.set("Invalid");
+                break;
         }
     }
 }

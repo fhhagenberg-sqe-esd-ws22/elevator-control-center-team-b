@@ -5,14 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 public class Logging {
     private static final String LOGGER_NAME = "ECCLogger";
-    private static Logger mLogger = null;
-    
-    private static void Init() {
+    private static Logging mLogging = null;
+    private final Logger mLogger;
+
+    private Logging() {
         mLogger = Logger.getLogger(LOGGER_NAME);
         try {
             String loggingDirectory = "./Logs/";
@@ -25,14 +27,14 @@ public class Logging {
             handler = new FileHandler(loggingDirectory + fileName);
             mLogger.addHandler(handler);
         }
-        catch (SecurityException e) {}
-        catch (IOException e) {}
+        catch (SecurityException | IOException e) {
+        }
     }
 
-    public static Logger getLogger() {
-        if (mLogger == null) {
-            Init();
+    public static Logger GET_LOGGER() {
+        if (mLogging == null) {
+            mLogging = new Logging();
         }
-        return mLogger;
+        return mLogging.mLogger;
     }
 }
