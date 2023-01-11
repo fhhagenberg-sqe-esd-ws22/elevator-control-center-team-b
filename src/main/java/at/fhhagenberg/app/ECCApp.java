@@ -1,5 +1,6 @@
 package at.fhhagenberg.app;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
@@ -18,16 +19,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.Timer;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * JavaFX App
@@ -37,31 +30,12 @@ public class ECCApp extends Application {
     @Override
     public void start(Stage stage) {
         var scene = createScene(createService());
-        setupLogging();
 
         // TODO: set stage minimum height as nrFloors*floorHeight + minimum elevator height
         // TODO: set stage minimum width as nrElevators*eleWidth + floorWidth
         stage.setTitle("Elevator Control");
         stage.setScene(scene);
         stage.show();
-    }
-
-    private void setupLogging() {
-        try {
-            String loggingDirectory = "./Logs/";
-            String fileName = String.format("%s.log", new SimpleDateFormat("yyyy_MM_dd_HH_mm").format(new Date()));
-            if (!Files.exists(Paths.get(loggingDirectory))) {
-                Files.createDirectory(Paths.get(loggingDirectory));
-            }
-
-            FileHandler handler;
-            handler = new FileHandler(loggingDirectory + fileName);
-            Logger.getGlobal().addHandler(handler);
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -84,20 +58,20 @@ public class ECCApp extends Application {
         // display the errors to the user and throw the exception again since
         // they cannot be handled in this function
         catch(ElevatorServiceException ex) {
-            Logger.getGlobal().severe(String.format("%s\n%s", ex.getMessage(), 
-                ex.getStackTrace().toString()));
+            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
+                Arrays.toString(ex.getStackTrace())));
             showError(ex.getMessage());
             throw ex;
         }
         catch(UpdaterException ex) {
-            Logger.getGlobal().severe(String.format("%s\n%s", ex.getMessage(), 
-                ex.getStackTrace().toString()));
+            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
+                Arrays.toString(ex.getStackTrace())));
             showError(ex.getMessage());
             throw ex;
         }
         catch(ModelException ex) {
-            Logger.getGlobal().severe(String.format("%s\n%s", ex.getMessage(), 
-                ex.getStackTrace().toString()));
+            Logging.getLogger().severe(String.format("%s\n%s", ex.getMessage(), 
+                Arrays.toString(ex.getStackTrace())));
             showError(ex.getMessage());
             throw ex;
         }

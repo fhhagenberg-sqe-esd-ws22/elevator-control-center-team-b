@@ -1,13 +1,12 @@
 package at.fhhagenberg.app;
 
 import java.util.logging.ConsoleHandler;
-import java.util.logging.Logger;
-
+import at.fhhagenberg.logging.Logging;
 import javafx.application.Application;
 
 public class TestLauncher {
     public static void main(String[] args) {
-        var logger = Logger.getGlobal();
+        var logger = Logging.getLogger();
 
         // remove all existing handlers (no need for logfiles in tests)
         for (var handler : logger.getHandlers()) {

@@ -1,10 +1,10 @@
 package at.fhhagenberg.model;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.service.IElevatorService;
 
 import java.util.Arrays;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 // contains all information of a single elevator
 public class Elevator {
@@ -76,7 +76,7 @@ public class Elevator {
      */
     public void setTarget(int target) {
         if (target >= mNrOfFloors || target < 0) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setTarget",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setTarget",
                 String.format("Given target floor %d is out of the valid range [%d - %d[ and will not be set!",
                         target, 0, mNrOfFloors));
             return;
@@ -90,7 +90,7 @@ public class Elevator {
      */
     public void setDirection(int direction) {
         if (direction < IElevatorService.ELEVATOR_DIRECTION_UP || direction > IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setDirection",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setDirection",
                 String.format("Given direction %d is out of the valid range [%d - %d] and will not be set!",
                         direction, IElevatorService.ELEVATOR_DIRECTION_UP, IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED));
             return;
@@ -104,7 +104,7 @@ public class Elevator {
      */
     public void setPayload(int payload) {
         if (payload < 0) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setPayload",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setPayload",
             String.format("Negative payload is invalid - payload %d will not be set!", payload));
             return;
         }
@@ -117,7 +117,7 @@ public class Elevator {
      */
     public void setDoorStatus(int doorStatus) {
         if (doorStatus < IElevatorService.ELEVATOR_DOORS_OPEN || doorStatus > IElevatorService.ELEVATOR_DOORS_CLOSING) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setDoorStatus", 
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setDoorStatus", 
                 String.format("Given door status %d is out of the valid range [%d - %d] and will not be set!!", 
                     doorStatus, IElevatorService.ELEVATOR_DOORS_OPEN, IElevatorService.ELEVATOR_DOORS_CLOSING));
             return;
@@ -132,7 +132,7 @@ public class Elevator {
      */
     public void setNearestFloor(int nearestFloor) {
         if (nearestFloor < 0 || nearestFloor >= mNrOfFloors) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setNearestFloor",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setNearestFloor",
                 String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
                             nearestFloor, 0, mNrOfFloors));
             return;
@@ -147,7 +147,7 @@ public class Elevator {
      */
     public void setStop(int floorNr, boolean doStop) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setStop",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setStop",
                 String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
                             floorNr, 0, mNrOfFloors));
             return;
@@ -162,7 +162,7 @@ public class Elevator {
      */
     public void setServiced(int floorNr, boolean isServiced) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            Logger.getGlobal().logp(Level.WARNING, "Elevator", "setServiced",
+            Logging.getLogger().logp(Level.WARNING, "Elevator", "setServiced",
                 String.format("Given floor %d is out of the valid range %d - %d and will not be set!",
                                 floorNr, 0, mNrOfFloors));
             return;
