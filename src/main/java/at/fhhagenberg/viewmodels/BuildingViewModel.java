@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
@@ -117,14 +116,14 @@ public class BuildingViewModel {
             alert.setTitle("Critical Error Occurred");
             alert.setContentText(ex.getMessage());
             alert.show();
-            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+            Logging.getLogger().log(Level.SEVERE, ex.getMessage());
             mShowedError = true;
         }
         catch (ModelException ex) {
-            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+            Logging.getLogger().log(Level.SEVERE, ex.getMessage());
         }
         catch (UpdaterException ex) {
-            Logger.getGlobal().log(Level.SEVERE, ex.getMessage());
+            Logging.getLogger().log(Level.SEVERE, ex.getMessage());
         }
 
         mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);
