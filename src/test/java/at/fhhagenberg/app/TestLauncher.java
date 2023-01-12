@@ -6,7 +6,7 @@ import javafx.application.Application;
 
 public class TestLauncher {
     public static void main(String[] args) {
-        var logger = Logging.GET_LOGGER();
+        var logger = Logging.getLogger();
 
         // remove all existing handlers (no need for logfiles in tests)
         for (var handler : logger.getHandlers()) {

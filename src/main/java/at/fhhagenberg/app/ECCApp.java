@@ -1,6 +1,5 @@
 package at.fhhagenberg.app;
 
-import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
@@ -19,7 +18,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-import java.util.Arrays;
 import java.util.Timer;
 
 /**
@@ -66,7 +64,7 @@ public class ECCApp extends Application {
     private static void showError(String reason) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Critical Error Occurred");
-        alert.setContentText(String.format("The app could not be started!\nReason: %s", reason));
+        alert.setContentText(String.format("The app could not be started!%nReason: %s", reason));
         alert.showAndWait();
     }
 

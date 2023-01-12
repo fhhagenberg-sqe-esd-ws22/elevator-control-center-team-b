@@ -116,11 +116,11 @@ public class BuildingViewModel {
             alert.setTitle("Critical Error Occurred");
             alert.setContentText(ex.getMessage());
             alert.show();
-            Logging.GET_LOGGER().log(Level.SEVERE, ex.getMessage());
+            Logging.getLogger().log(Level.SEVERE, ex.getMessage());
             mShowedError = true;
         }
         catch (ModelException | UpdaterException ex) {
-            Logging.GET_LOGGER().log(Level.SEVERE, ex.getMessage());
+            Logging.getLogger().log(Level.SEVERE, ex.getMessage());
         }
 
         mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);

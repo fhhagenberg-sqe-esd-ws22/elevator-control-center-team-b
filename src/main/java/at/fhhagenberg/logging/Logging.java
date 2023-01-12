@@ -25,13 +25,13 @@ public class Logging {
 
             FileHandler handler;
             handler = new FileHandler(loggingDirectory + fileName);
-            mLogger.addHandler(handler);
+            mLogger.addHandler(new ConsoleHandler());
         }
         catch (SecurityException | IOException e) {
         }
     }
 
-    public static Logger GET_LOGGER() {
+    public static Logger getLogger() {
         if (mLogging == null) {
             mLogging = new Logging();
         }

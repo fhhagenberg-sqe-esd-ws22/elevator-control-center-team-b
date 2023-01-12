@@ -78,7 +78,7 @@ public class Elevator {
      */
     public void setTarget(int target) {
         if (target >= mNrOfFloors || target < 0) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setTarget",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setTarget",
                 String.format("Given target floor %d is out of the valid range [%d - %d[ and will not be set!",
                         target, 0, mNrOfFloors));
             return;
@@ -92,7 +92,7 @@ public class Elevator {
      */
     public void setDirection(int direction) {
         if (direction < IElevatorService.ELEVATOR_DIRECTION_UP || direction > IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setDirection",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setDirection",
                 String.format("Given direction %d is out of the valid range [%d - %d] and will not be set!",
                         direction, IElevatorService.ELEVATOR_DIRECTION_UP, IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED));
             return;
@@ -106,7 +106,7 @@ public class Elevator {
      */
     public void setPayload(int payload) {
         if (payload < 0) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setPayload",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setPayload",
             String.format("Negative payload is invalid - payload %d will not be set!", payload));
             return;
         }
@@ -119,7 +119,7 @@ public class Elevator {
      */
     public void setDoorStatus(int doorStatus) {
         if (doorStatus < IElevatorService.ELEVATOR_DOORS_OPEN || doorStatus > IElevatorService.ELEVATOR_DOORS_CLOSING) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setDoorStatus", 
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setDoorStatus", 
                 String.format("Given door status %d is out of the valid range [%d - %d] and will not be set!!", 
                     doorStatus, IElevatorService.ELEVATOR_DOORS_OPEN, IElevatorService.ELEVATOR_DOORS_CLOSING));
             return;
@@ -134,7 +134,7 @@ public class Elevator {
      */
     public void setNearestFloor(int nearestFloor) {
         if (nearestFloor < 0 || nearestFloor >= mNrOfFloors) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setNearestFloor",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setNearestFloor",
                 String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
                             nearestFloor, 0, mNrOfFloors));
             return;
@@ -149,7 +149,7 @@ public class Elevator {
      */
     public void setStop(int floorNr, boolean doStop) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setStop",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setStop",
                 String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
                             floorNr, 0, mNrOfFloors));
             return;
@@ -164,7 +164,7 @@ public class Elevator {
      */
     public void setServiced(int floorNr, boolean isServiced) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            Logging.GET_LOGGER().logp(Level.WARNING, CLASS_NAME, "setServiced",
+            Logging.getLogger().logp(Level.WARNING, CLASS_NAME, "setServiced",
                 String.format("Given floor %d is out of the valid range %d - %d and will not be set!",
                                 floorNr, 0, mNrOfFloors));
             return;
