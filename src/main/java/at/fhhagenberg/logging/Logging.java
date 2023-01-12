@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Logging {
     private static final String LOGGER_NAME = "ECCLogger";
@@ -24,8 +25,9 @@ public class Logging {
             }
 
             FileHandler handler;
-            handler = new FileHandler(loggingDirectory + fileName);
-            mLogger.addHandler(new ConsoleHandler());
+            handler = new FileHandler(loggingDirectory + fileName, 100000000, 1, true);
+            handler.setFormatter(new SimpleFormatter());
+            mLogger.addHandler(handler);
         }
         catch (SecurityException | IOException e) {
         }

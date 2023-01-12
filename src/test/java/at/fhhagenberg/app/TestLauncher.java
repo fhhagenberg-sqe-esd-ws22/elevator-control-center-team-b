@@ -1,6 +1,8 @@
 package at.fhhagenberg.app;
 
 import java.util.logging.ConsoleHandler;
+import java.util.logging.SimpleFormatter;
+
 import at.fhhagenberg.logging.Logging;
 import javafx.application.Application;
 
@@ -14,7 +16,9 @@ public class TestLauncher {
         }
 
         // add a console handler, so all logs are printed to the console
-        logger.addHandler(new ConsoleHandler());
+        var handler = new ConsoleHandler();
+        handler.setFormatter(new SimpleFormatter());
+        logger.addHandler(handler);
         Application.launch(TestECCApp.class, args);
     }
 }
