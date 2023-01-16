@@ -56,30 +56,7 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
         checkForStops(elevatorNr);
         checkServiced(elevatorNr);
-        calcNearestFloor(elevatorNr);
-        //mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
-    }
-
-    /**
-     * Calculates the nearest floor with the current position and average floor height
-     * @param elevatorNr identifier for the elevator
-     */
-    private void calcNearestFloor(int elevatorNr)
-    {
-        int height = mElevatorService.getElevatorPosition(elevatorNr);
-        int floorHeight = mElevatorService.getFloorHeight();
-
-        int floor = height / floorHeight;
-        if (height % floorHeight >= floorHeight / 2)
-        {
-            floor++;
-        }
-
-        if (floor >= mModel.getNrOfFloors()) {
-            floor = mModel.getNrOfFloors() - 1;
-        }
-
-        mModel.setNearestFloor(floor);
+        mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
     }
 
     /**

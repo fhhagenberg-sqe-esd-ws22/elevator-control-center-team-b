@@ -194,9 +194,9 @@ class AppTest {
         style = robot.lookup("#ElevatorTarget3_0").query().getStyle();
         Assertions.assertEquals(base+"green;", style);
 
-        TestECCApp.service.setPosition(0, 20);
-        TestECCApp.service.setPosition(1, 5);
-        TestECCApp.service.setPosition(2, 30);
+        TestECCApp.service.setElevatorFloor(0, 2);
+        TestECCApp.service.setElevatorFloor(1, 1);
+        TestECCApp.service.setElevatorFloor(2, 3);
 
         int cnt = 0;
         while ((!robot.lookup("#ElevatorTarget2_3").query().getStyle().equals(base+"green;") ||
@@ -443,7 +443,7 @@ class AppTest {
         Assertions.assertEquals(baseArrow+"green;", styleArrow);
         Assertions.assertEquals(baseButton+"lightgreen;", styleButton);
 
-        TestECCApp.service.setPosition(1, 30);
+        TestECCApp.service.setElevatorFloor(1, 3);
 
         robot.clickOn("#ElevatorTarget1_0");
 
