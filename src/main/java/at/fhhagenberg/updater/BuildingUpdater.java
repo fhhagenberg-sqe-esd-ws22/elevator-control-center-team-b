@@ -12,7 +12,6 @@ import java.util.List;
 
 public class BuildingUpdater extends UpdaterBase {
 
-    private final Building mModel;
     private final List<ElevatorUpdater> mElevatorUpdaters;
     private final List<FloorUpdater> mFloorUpdaters;
 
@@ -29,36 +28,15 @@ public class BuildingUpdater extends UpdaterBase {
 
         mElevatorUpdaters = elevatorUpdaters;
         mFloorUpdaters = floorUpdaters;
-        mModel = model;
     }
 
     /**
      * Performs all necessary API calls on a service object in order to update a referenced model object.
      */
     @Override
-    public void update() {
-        try {
-            updateFloors();
-            updateElevators();
-            updateBuilding();
-        }
-        catch(ElevatorServiceException ex) {
-            throw new UpdaterException("An error occurred during updating the building!\nError message: " + ex.getMessage());
-        }
-    }
-
-    /**
-     * Updates the Building object.
-     */
-    private void updateBuilding() {
-        var elevators = mModel.getElevators();
-        var floors = mModel.getFloors();
-        for (var e : elevators) {
-            for (var f : floors) {
-                boolean isServiced = mElevatorService.getServicesFloors(e.getElevatorNr(), f.getFloorNumber());
-                mModel.setIsServiced(e.getElevatorNr(), f.getFloorNumber(), isServiced);
-            }
-        }
+    public void update() throws ElevatorServiceException {
+        updateFloors();
+        updateElevators();
     }
 
     /**

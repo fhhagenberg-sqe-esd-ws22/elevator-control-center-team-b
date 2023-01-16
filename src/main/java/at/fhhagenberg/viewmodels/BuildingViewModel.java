@@ -4,19 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import at.fhhagenberg.logic.BusinesLogic;
+import at.fhhagenberg.logging.Logging;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
+import at.fhhagenberg.model.ModelException;
+import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.updater.BuildingUpdater;
+import at.fhhagenberg.updater.UpdaterException;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
+    private final BusinessLogic mLogic;
     private final ArrayList<ElevatorViewModel> mElevators;
     private final ArrayList<FloorViewModel> mFloors;
     private final Timer mTimer;
+    private boolean mShowedError;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 1000;
+    private static final int UPDATE_INTERVAL = 100;
 
     /**
      * Constructor of BuildingViewModel
@@ -24,11 +32,13 @@ public class BuildingViewModel {
      * @param building model of the building
      * @param logic BusinesLogic that is controling the elevators of this building
      */
-    public BuildingViewModel(BuildingUpdater updater, Building building, BusinesLogic logic) {
+    public BuildingViewModel(BuildingUpdater updater, Building building, BusinessLogic logic, Timer timer) {
         mUpdater = updater;
+        mLogic = logic;
         mElevators = new ArrayList<>();
         mFloors = new ArrayList<>();
-        mTimer = new Timer();
+        mTimer = timer;
+        mShowedError = false;
 
         for (var elevator : building.getElevators()) {
             mElevators.add(new ElevatorViewModel(elevator, logic));
@@ -66,7 +76,12 @@ public class BuildingViewModel {
     private TimerTask getUpdateTask() {
         return new TimerTask() {
             public void run() {
-                update();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        update();
+                    }
+                });
             }
         };
     }
@@ -75,12 +90,36 @@ public class BuildingViewModel {
      * Updates all models and the ViewModels afterwards
      */
     private void update() {
-        mUpdater.update();
-        for (var elevator : mElevators) {
-            elevator.update();
+        try {
+            // update building
+            mUpdater.update();
+
+            // update view models for elevators and floors
+            for (var elevator : mElevators) {
+                elevator.update();
+            }
+            for (var floor : mFloors) {
+                floor.update();
+            }
+
+            mLogic.setNextTargets();
+            if (mShowedError) {
+                Alert info = new Alert(AlertType.INFORMATION);
+                info.setTitle("Connection re-established");
+                info.setContentText("The connection was re-established");
+                mShowedError = false;
+            }
         }
-        for (var floor : mFloors) {
-            floor.update();
+        catch (ElevatorServiceException ex) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Critical Error Occurred");
+            alert.setContentText(ex.getMessage());
+            alert.show();
+            Logging.getLogger().error(ex.getMessage());
+            mShowedError = true;
+        }
+        catch (ModelException | UpdaterException ex) {
+            Logging.getLogger().error(ex.getMessage());
         }
 
         mTimer.schedule(getUpdateTask(), UPDATE_INTERVAL);

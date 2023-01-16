@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sqelevator.IElevator;
 
 import java.rmi.RemoteException;
 
@@ -17,7 +18,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RMIElevatorServiceTest {
-    @Mock IElevator api;
+    @Mock
+    IElevator api;
 
     RMIElevatorService service;
 
@@ -58,7 +60,9 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorButton() throws RemoteException {
         when(api.getElevatorButton(0, 0)).thenReturn(true);
+        when(api.getElevatorButton(0, 1)).thenReturn(false);
         assertTrue(service.getElevatorButton(0, 0));
+        assertFalse(service.getElevatorButton(0, 1));
     }
 
     @Test
@@ -81,14 +85,16 @@ class RMIElevatorServiceTest {
 
     @Test
     void testGetElevatorFloor() throws RemoteException {
-        when(api.getElevatorAccel(0)).thenReturn(17);
-        assertEquals(17, service.getElevatorAccel(0));
+        when(api.getElevatorFloor(0)).thenReturn(0);
+        when(api.getElevatorFloor(1)).thenReturn(1);
+        assertEquals(0, service.getElevatorFloor(0));
+        assertEquals(1, service.getElevatorFloor(1));
     }
 
     @Test
     void testGetElevatorFloorFails() throws RemoteException {
-        when(api.getElevatorAccel(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorAccel(0); });
+        when(api.getElevatorFloor(0)).thenThrow(RemoteException.class);
+        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorFloor(0); });
     }
 
     @Test
@@ -154,7 +160,9 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorButtonDown() throws RemoteException {
         when(api.getFloorButtonDown(0)).thenReturn(true);
+        when(api.getFloorButtonDown(1)).thenReturn(false);
         assertTrue(service.getFloorButtonDown(0));
+        assertFalse(service.getFloorButtonDown(1));
     }
 
     @Test
@@ -166,7 +174,9 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorButtonUp() throws RemoteException {
         when(api.getFloorButtonUp(0)).thenReturn(true);
+        when(api.getFloorButtonUp(1)).thenReturn(false);
         assertTrue(service.getFloorButtonUp(0));
+        assertFalse(service.getFloorButtonUp(1));
     }
 
     @Test
@@ -202,7 +212,9 @@ class RMIElevatorServiceTest {
     @Test
     void testGetServicesFloors() throws RemoteException {
         when(api.getServicesFloors(0, 0)).thenReturn(true);
+        when(api.getServicesFloors(0, 1)).thenReturn(false);
         assertTrue(service.getServicesFloors(0, 0));
+        assertFalse(service.getServicesFloors(0, 1));
     }
 
     @Test

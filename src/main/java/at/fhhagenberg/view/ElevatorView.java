@@ -1,9 +1,13 @@
 package at.fhhagenberg.view;
 
-import at.fhhagenberg.service.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
@@ -17,9 +21,252 @@ public class ElevatorView {
     private final ElevatorViewModel mViewModel;
     private final VBox mView;
 
-    private final String mArrowStyle = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
-    private final String mElevatorStyle = "-fx-background-radius: 0;";
-    private final int mFloorHeightPx = 40;
+    private static final int PADDING = 10;
+    private static final String ELEVATOR_BORDER_STYLE = "-fx-border-color: blue;-fx-border-insets: 3;-fx-border-width: 2;";
+    private static final String ARROW_STYLE = "-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';";
+    private static final String ELEVATOR_PRESSABLE_STYLE = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;";
+    private static final String ELEVATOR_FLOOR_STYLE = "-fx-background-radius: 0;";
+    private static final String ELEVATOR_NORMAL_COLOR = "-fx-background-color: silver;";
+    private static final String ELEVATOR_TARGET_COLOR = "-fx-background-color: lightgreen;";
+    private static final String ELEVATOR_CURRENT_POS_COLOR = "-fx-background-color: green;";
+    private static final String ELEVATOR_BUTTON_PRESSED_COLOR = "-fx-background-color: yellow;";
+    private static final String ELEVATOR_NO_SERVICE_COLOR = "-fx-background-color: grey;";
+    private static final String ELEVATOR_ARROW_ACTIVE_COLOR = "-fx-background-color: green;";
+    private static final String ELEVATOR_ARROW_INACTIVE_COLOR = "-fx-background-color: silver;";
+    private static final int FLOOR_HEIGHT_PX = 40;
+    private final int mElevatorNr;
+
+    /**
+     * creates one line of elevator information
+     * @param identifierBase String to create a unique ID for the information
+     * @param label what the information should be labeled
+     * @param unit what the unit of the information should be (empty String if it doesn't need a unit)
+     * @param binding property/binding of the information value
+     * @return a line of information in a HBox
+     */
+    private HBox createInfoLine(String identifierBase, String label, String unit, StringExpression binding){
+        var infoLine = new HBox();
+        Label payloadLbl = new Label();
+        payloadLbl.setId(String.format("%s%d", identifierBase, mElevatorNr));
+        payloadLbl.textProperty().bind(binding);
+        infoLine.getChildren().add(new Label(String.format("%s: ", label)));
+        infoLine.getChildren().add(payloadLbl);
+        infoLine.getChildren().add(new Label(unit));
+        return infoLine;
+    }
+
+    /**
+     * creates the info text of an elevator
+     * @return the entire info text for an elevator (payload, acceleration, speed, door status) in a VBox
+     */
+    private VBox createInfoText(){
+        var infoText = new VBox();
+
+        infoText.getChildren().addAll(
+                createInfoLine("Payload", "Payload", "mass", mViewModel.getPayloadProp().asString()),
+                createInfoLine("Speed", "Speed", "x/y", mViewModel.getSpeedProp().asString()),
+                createInfoLine("Accel", "Accel", "x/y^2", mViewModel.getAccelProp().asString()),
+                createInfoLine("Door", "Door", "", mViewModel.getDoorStatusStringProp()));
+
+        return infoText;
+    }
+
+    /**
+     * creates one button representing an elevator floor
+     * @param identifierBase String to create a unique ID for the floor
+     * @param i floor number
+     * @return button representing an elevator floor
+     */
+    private Button createElevatorFloor(String identifierBase, int i){
+        var btn = new Button("Floor " + i);
+        btn.setId(String.format("%s%d_%d", identifierBase, mElevatorNr, i));
+        btn.setDisable(true);
+        btn.setOpacity(1);
+        btn.setPrefHeight(FLOOR_HEIGHT_PX);
+        return btn;
+    }
+
+    /**
+     * creates a graphic for all the buttons pressed inside an elevator
+     * @return graphic for all the buttons pressed inside an elevator in a VBox
+     */
+    private VBox createPressedInElevatorGraphic(){
+        var buttonPressedGraphic = new VBox(0);
+
+        var lbl = new Label("Pressed:");
+        buttonPressedGraphic.getChildren().add(lbl);
+
+        for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
+            var floor = i;
+            var btn = createElevatorFloor("PressedInEle", floor);
+            btn.styleProperty().bind(Bindings.createStringBinding(()->{
+                if(mViewModel.getStopsProp().get().contains(floor)){
+                    return ELEVATOR_FLOOR_STYLE + ELEVATOR_BUTTON_PRESSED_COLOR;
+                }
+                else{
+                    return ELEVATOR_FLOOR_STYLE + ELEVATOR_NORMAL_COLOR;
+                }
+            }, mViewModel.getStopsProp()));
+            buttonPressedGraphic.getChildren().add(btn);
+        }
+        return buttonPressedGraphic;
+    }
+
+    /**
+     * creates a graphic for the current position and target of the elevator; in manual mode the buttons can be pressed
+     * to set new targets
+     * @return graphic for the current position and target of the elevator in a VBox
+     */
+    private VBox createElevatorTargetGraphic(){
+        var elevatorTarget = new VBox(0);
+
+        var lbl = new Label("Status:");
+        elevatorTarget.getChildren().add(lbl);
+
+        for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
+            var floor = i;
+            var btn = createElevatorFloor("ElevatorTarget", floor);
+            btn.disableProperty().bind(mViewModel.getManualProp().not());
+            btn.styleProperty().bind(Bindings.createStringBinding(()->{
+                var baseStyle = ELEVATOR_FLOOR_STYLE;
+                if(mViewModel.getManualProp().get()){
+                    baseStyle = ELEVATOR_PRESSABLE_STYLE;
+                }
+                else{
+                    // if we are not in manual mode, set all buttons to normal
+                    for(var elevator : elevatorTarget.getChildren()){
+                        elevator.setOpacity(1);
+                    }
+                }
+                if(mViewModel.getNearestFloorProp().get() == floor){
+                    return baseStyle + ELEVATOR_CURRENT_POS_COLOR;
+                }
+                else if(mViewModel.getTargetProp().get() == floor){
+                    return baseStyle + ELEVATOR_TARGET_COLOR;
+                }
+                else if(mViewModel.getServicedProp().get().contains(floor)){
+                    return baseStyle + ELEVATOR_NORMAL_COLOR;
+                }
+                else{
+                    return baseStyle + ELEVATOR_NO_SERVICE_COLOR;
+                }
+            }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
+            mViewModel.getTargetProp(), mViewModel.getServicedProp()));
+            btn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    mViewModel.getManualFloorProp().setValue(floor);
+                    // grey out other buttons
+                    for(var elevator : elevatorTarget.getChildren()){
+                        if(elevator == btn){
+                            elevator.setOpacity(1);
+                        }
+                        else{
+                            elevator.setOpacity(0.7);
+                        }
+                    }
+                }
+            });
+            elevatorTarget.getChildren().add(btn);
+        }
+        return elevatorTarget;
+    }
+
+    /**
+     * creates an arrow
+     * @param direction does the arrow go up or down
+     * @param rotation rotation from a right pointing arrow in degrees (90 for down, 270 for up)
+     * @return an arrow as a disabled button
+     */
+    private Button createArrow(int direction, int rotation){
+        var arrow = new Button();
+        arrow.setId(String.format("Arrow%d_%d",mElevatorNr, direction));
+        arrow.setDisable(true);
+        arrow.setOpacity(1);
+        arrow.styleProperty().bind(Bindings.createStringBinding(()-> {
+            if(mViewModel.getDirectionProp().get() == direction) {
+                return ARROW_STYLE + ELEVATOR_ARROW_ACTIVE_COLOR;
+            }
+            else{
+                return ARROW_STYLE + ELEVATOR_ARROW_INACTIVE_COLOR;
+            }
+        }, mViewModel.getDirectionProp()));
+        arrow.setRotate(rotation);
+        return arrow;
+    }
+
+    /**
+     * creates arrows for up and down
+     * @return arrows for up and down in a HBox
+     */
+    private HBox createArrows(){
+        var arrows = new HBox();
+        var arrUp = createArrow(IElevatorService.ELEVATOR_DIRECTION_UP,270);
+        var arrDown = createArrow(IElevatorService.ELEVATOR_DIRECTION_DOWN, 90);
+        arrows.getChildren().addAll(arrUp, arrDown);
+        arrows.setAlignment(Pos.CENTER);
+        return arrows;
+    }
+
+    /**
+     * creates graphics for the up/down arrows and the elevator status and pressed buttons
+     * @return all graphics the elevator contains in a VBox
+     */
+    private VBox createGraphics(){
+        var graphics = new VBox();
+        graphics.getChildren().add(createArrows());
+
+        var elevatorGraphics = new HBox(10);
+        elevatorGraphics.getChildren().add(createElevatorTargetGraphic());
+        elevatorGraphics.getChildren().add(createPressedInElevatorGraphic());
+
+        graphics.getChildren().add(elevatorGraphics);
+
+        return graphics;
+    }
+
+    /**
+     * creates all information (including graphics) that describes an elevator
+     * @return all information of an elevator in a HBox
+     */
+    private HBox createInformation(){
+        var information = new HBox();
+        var graphics = createGraphics();
+        var infoText = createInfoText();
+        HBox.setMargin(infoText,new Insets(PADDING));
+        information.getChildren().add(graphics);
+        information.getChildren().add(infoText);
+
+        return information;
+    }
+
+    /**
+     * creates the name for an elevator
+     * @return name of the elevator in a HBox
+     */
+    private HBox createElevatorNameHeader(){
+        var header = new HBox();
+        Label headerLbl = new Label(Integer.toString(mElevatorNr));
+        headerLbl.setId(String.format("Header%d", mElevatorNr));
+        header.getChildren().add(new Label("Elevator "));
+        header.getChildren().add(headerLbl);
+        return header;
+    }
+
+
+    /**
+     * creates a button to activate the manual mode
+     * @return ToggleButton for enabling the manual mode in a HBox
+     */
+    private HBox createManualModeButton(){
+        var btnBox = new HBox();
+        var button = new ToggleButton("Manual Mode");
+        button.setId(String.format("Manual%d", mElevatorNr));
+        mViewModel.getManualProp().bind(button.selectedProperty());
+        btnBox.getChildren().add(button);
+        btnBox.setPadding(new Insets(PADDING));
+        return btnBox;
+    }
 
     /**
      * Constructor of ElevatorView
@@ -27,130 +274,16 @@ public class ElevatorView {
      */
     public ElevatorView(ElevatorViewModel viewModel) {
         mViewModel = viewModel;
-        mView = new VBox(4);
-        int elevatorNr = mViewModel.getElevatorNr();
+        mView = new VBox();
+        mElevatorNr = mViewModel.getElevatorNr();
 
-        var header = new HBox();
-        Label headerLbl = new Label(Integer.toString(elevatorNr));
-        headerLbl.setId(String.format("Header%d", elevatorNr));
-        header.getChildren().add(new Label("Elevator "));
-        header.getChildren().add(headerLbl);
-        mView.getChildren().add(header);
-        
-        var payload = new HBox();
-        Label payloadLbl = new Label();
-        payloadLbl.setId(String.format("Payload%d", elevatorNr));
-        payloadLbl.textProperty().bind(mViewModel.getPayloadProp().asString());
-        payload.getChildren().add(new Label("Payload: "));
-        payload.getChildren().add(payloadLbl);
-        mView.getChildren().add(payload);
+        mView.setStyle(ELEVATOR_BORDER_STYLE);
 
-        var speed = new HBox();
-        Label speedLbl = new Label();
-        speedLbl.setId(String.format("Speed%d", elevatorNr));
-        speedLbl.textProperty().bind(mViewModel.getSpeedProp().asString());
-        speed.getChildren().add(new Label("Speed: "));
-        speed.getChildren().add(speedLbl);
-        mView.getChildren().add(speed);
-
-        var accel = new HBox();
-        Label accelLbl = new Label();
-        accelLbl.setId(String.format("Accel%d", elevatorNr));
-        accelLbl.textProperty().bind(mViewModel.getAccelProp().asString());
-        accel.getChildren().add(new Label("Accel: "));
-        accel.getChildren().add(accelLbl);
-        mView.getChildren().add(accel);
-
-        var target = new HBox();
-        Label targetLbl = new Label();
-        targetLbl.setId(String.format("Target%d", elevatorNr));
-        targetLbl.textProperty().bind(mViewModel.getTargetProp().asString());
-        target.getChildren().add(new Label("Next stop: "));
-        target.getChildren().add(targetLbl);
-        mView.getChildren().add(target);
-
-        var door = new HBox();
-        Label doorLbl = new Label();
-        doorLbl.setId(String.format("Door%d", elevatorNr));
-        doorLbl.textProperty().bind(mViewModel.getDoorStatusStringProp());
-        door.getChildren().add(new Label("Door: "));
-        door.getChildren().add(doorLbl);
-        mView.getChildren().add(door);
-
-        var nearest = new HBox();
-        Label nearestLbl = new Label();
-        nearestLbl.setId(String.format("Nearest%d", elevatorNr));
-        nearestLbl.textProperty().bind(mViewModel.getNearestFloorProp().asString());
-        nearest.getChildren().add(new Label("Nearest floor: "));
-        nearest.getChildren().add(nearestLbl);
-        mView.getChildren().add(nearest);
-
-        var dir = new HBox();
-        Label dirLbl = new Label();
-        dirLbl.setId(String.format("Dir%d", elevatorNr));
-        dirLbl.textProperty().bind(mViewModel.getDirectionStringProp());
-        dir.getChildren().add(new Label("Direction: "));
-        dir.getChildren().add(dirLbl);
-        mView.getChildren().add(dir);
-
-        var stops = new HBox();
-        Label stopsLbl = new Label();
-        stopsLbl.setId(String.format("Stops%d", elevatorNr));
-        stopsLbl.textProperty().bind(mViewModel.getStopsProp());
-        stops.getChildren().add(new Label("Stops: "));
-        stops.getChildren().add(stopsLbl);
-        mView.getChildren().add(stops);
-
-        var stopsNewVis = new VBox(0);
-        for(int i = mViewModel.getNrFloors()-1; i >= 0 ; --i){
-            var btn = new Button("Floor "+i);
-            btn.setDisable(true);
-            btn.setOpacity(1);
-            btn.setPrefHeight(mFloorHeightPx);
-            int floor = i; //effectively final for lambda
-            btn.styleProperty().bind(Bindings.createStringBinding(()->{
-                if(mViewModel.getNearestFloorProp().get() == floor){
-                    return mElevatorStyle + "-fx-background-color: green;";
-                }
-                else if(mViewModel.getTargetProp().get() == floor){
-                    return mElevatorStyle + "-fx-background-color: red;";
-                }
-                else{
-                    return mElevatorStyle + "-fx-background-color: grey;";
-                }
-            }));
-            stopsNewVis.getChildren().add(btn);
-        }
-        mView.getChildren().add(stopsNewVis);
-
-        var arrows = new HBox();
-        var arrUp = new Button();
-        arrUp.setDisable(true);
-        arrUp.styleProperty().bind(Bindings.createStringBinding(()->
-        {if(mViewModel.getDirectionProp().get() == IElevatorService.ELEVATOR_DIRECTION_UP)
-        {return mArrowStyle + "-fx-background-color: green;";}
-        else{return mArrowStyle + "-fx-background-color: grey;";}}));
-        arrUp.setOpacity(1);
-        //arrUp.setStyle(mArrowStyle);
-        arrUp.setRotate(270);
-        arrows.getChildren().add(arrUp);
-
-        var arrDown= new Button();
-        arrDown.styleProperty().bind(Bindings.createStringBinding(()->
-        {if(mViewModel.getDirectionProp().get() == IElevatorService.ELEVATOR_DIRECTION_DOWN)
-        {return mArrowStyle + "-fx-background-color: green;";}
-        else{return mArrowStyle + "-fx-background-color: grey;";}}));
-        arrDown.setDisable(true);
-        arrDown.setOpacity(1);
-        arrDown.setRotate(90);
-        arrows.getChildren().add(arrDown);
-
-        mView.getChildren().add(arrows);
-
-        var button = new ToggleButton("Manual Mode");
-        button.setId(String.format("Manual%d", elevatorNr));
-        mViewModel.getManualProp().bind(button.selectedProperty());
-        mView.getChildren().add(button);
+        mView.setPadding(new Insets(PADDING));
+        mView.getChildren().addAll(
+                createElevatorNameHeader(),
+                createInformation(),
+                createManualModeButton());
     }
     
     /**

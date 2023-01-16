@@ -1,6 +1,9 @@
 package at.fhhagenberg.model;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.service.IElevatorService;
+
+import java.util.Arrays;
 
 // contains all information of a single elevator
 public class Elevator {
@@ -24,6 +27,8 @@ public class Elevator {
     private int mDoorStatus;
     // nearest floor of this elevator
     private int mNearestFloor;
+    //which floors are serviced and not serviced by this elevator
+    private final boolean[] mServiced;
 
     /**
      * Constructor of an elevator
@@ -35,6 +40,8 @@ public class Elevator {
         mNrOfFloors = numberOfFloors;
         mElevatorNr = elevatorNr;
         mStops = new boolean[numberOfFloors];
+        mServiced = new boolean[numberOfFloors];
+        Arrays.fill(mServiced, true);
         mSpeed = 0;
         mAccel = 0;
         mTarget = 0;
@@ -42,6 +49,7 @@ public class Elevator {
         mDirection = IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED;
         mDoorStatus = IElevatorService.ELEVATOR_DOORS_CLOSED;
         mNearestFloor = 0;
+
     }
 
     /**
@@ -50,11 +58,7 @@ public class Elevator {
      */
     public void setSpeed(int speed) {
         // we have a direction - no negative speeds needed
-        if (speed < 0) {
-            speed *= -1;
-        }
-
-        this.mSpeed = speed;
+        this.mSpeed = Math.abs(speed);
     }
 
     /**
@@ -71,7 +75,8 @@ public class Elevator {
      */
     public void setTarget(int target) {
         if (target >= mNrOfFloors || target < 0) {
-            System.out.println("Given target is out of the valid range and will not be set!");
+            Logging.getLogger().warn(String.format("Given target floor %d is out of the valid range [%d - %d[ and will not be set!",
+                        target, 0, mNrOfFloors));
             return;
         }
         this.mTarget = target;
@@ -83,10 +88,10 @@ public class Elevator {
      */
     public void setDirection(int direction) {
         if (direction < IElevatorService.ELEVATOR_DIRECTION_UP || direction > IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED) {
-            System.out.println("Given door status is out of the valid range and will not be set!");
+            Logging.getLogger().warn(String.format("Given direction %d is out of the valid range [%d - %d] and will not be set!",
+                        direction, IElevatorService.ELEVATOR_DIRECTION_UP, IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED));
             return;
         }
-
         this.mDirection = direction;
     }
 
@@ -96,7 +101,7 @@ public class Elevator {
      */
     public void setPayload(int payload) {
         if (payload < 0) {
-            System.out.println("A negative payload for the elevator is invalid and will not be set!");
+            Logging.getLogger().warn(String.format("Negative payload is invalid - payload %d will not be set!", payload));
             return;
         }
         this.mPayload = payload;
@@ -108,7 +113,8 @@ public class Elevator {
      */
     public void setDoorStatus(int doorStatus) {
         if (doorStatus < IElevatorService.ELEVATOR_DOORS_OPEN || doorStatus > IElevatorService.ELEVATOR_DOORS_CLOSING) {
-            System.out.println("Given door status is out of the valid range and will not be set!");
+            Logging.getLogger().warn(String.format("Given door status %d is out of the valid range [%d - %d] and will not be set!!", 
+                    doorStatus, IElevatorService.ELEVATOR_DOORS_OPEN, IElevatorService.ELEVATOR_DOORS_CLOSING));
             return;
         }
 
@@ -121,7 +127,8 @@ public class Elevator {
      */
     public void setNearestFloor(int nearestFloor) {
         if (nearestFloor < 0 || nearestFloor >= mNrOfFloors) {
-            System.out.println("Given nearest floor is out of the valid range and will not be set!");
+            Logging.getLogger().warn(String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
+                            nearestFloor, 0, mNrOfFloors));
             return;
         }
         this.mNearestFloor = nearestFloor;
@@ -134,10 +141,25 @@ public class Elevator {
      */
     public void setStop(int floorNr, boolean doStop) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
-            System.out.println("Given floor is out of the valid range and will not be set!");
+            Logging.getLogger().warn(String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
+                            floorNr, 0, mNrOfFloors));
             return;
         }
         mStops[floorNr] = doStop;
+    }
+
+    /**
+     * Sets a flag if the elevator is servicing a certain floor
+     * @param floorNr identifies at which floor the flag should be set
+     * @param isServiced true if the elevator services that floor, false otherwise
+     */
+    public void setServiced(int floorNr, boolean isServiced) {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            Logging.getLogger().warn(String.format("Given floor %d is out of the valid range %d - %d and will not be set!",
+                                floorNr, 0, mNrOfFloors));
+            return;
+        }
+        mServiced[floorNr] = isServiced;
     }
 
     /**
@@ -222,5 +244,17 @@ public class Elevator {
             throw new ModelException(String.format("Floor %d is invalid!%nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
         }
         return mStops[floorNr];
+    }
+
+    /**
+     * Getter for the flag if the elevator is servicing a certain floor
+     * @param floorNr identifies the floor
+     * @return true if the elevator services that floor, false otherwise
+     */
+    public boolean getServiced(int floorNr) throws ModelException {
+        if (floorNr < 0 || floorNr >= mNrOfFloors) {
+            throw new ModelException(String.format("Floor %d is invalid!%nFloor must be >= 0 and < amount of floors (%d)", floorNr, mNrOfFloors));
+        }
+        return mServiced[floorNr];
     }
 }

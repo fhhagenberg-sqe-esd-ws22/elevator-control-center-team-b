@@ -37,6 +37,13 @@ class UpdaterFactoryTest {
     }
 
     @Test
+    void testCreateBuildingUpdaterWithNullBuilding() {
+        UpdaterFactory updaterFactory = new UpdaterFactory(service);
+
+        assertThrows(UpdaterException.class, () -> { updaterFactory.createBuildingUpdater(null); });
+    }
+
+    @Test
     void testCreateBuildingUpdater() {
         UpdaterFactory updaterFactory = new UpdaterFactory(service);
 

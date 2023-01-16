@@ -32,38 +32,31 @@ public class ElevatorUpdater extends UpdaterBase{
     @Override
     public void update() {
         int elevatorNr = mModel.getElevatorNr();
+
+        var target = mElevatorService.getTarget(elevatorNr);
+        var direction = mElevatorService.getCommittedDirection(elevatorNr);
+        if(direction != mModel.getDirection()){
+            mElevatorService.setCommittedDirection(elevatorNr, mModel.getDirection());
+
+            // model gets updated with gotten direction, new direction
+            // will take one update cycle to propagate
+            mModel.setDirection(direction);
+        }
+
+        if(target != mModel.getTarget()){
+            mElevatorService.setTarget(elevatorNr, mModel.getTarget());
+            mModel.setTarget(target);
+        }
+
         mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
-        // negative accelleration in upwards speed is possible - no need for abs
+        // negative acceleration in upwards speed is possible - no need for abs
         mModel.setAccel(mElevatorService.getElevatorAccel(elevatorNr));
-        mModel.setTarget(mElevatorService.getTarget(elevatorNr));
-        mModel.setDirection(mElevatorService.getCommittedDirection(elevatorNr));
         // no max weight specified
         mModel.setPayload(mElevatorService.getElevatorWeight(elevatorNr));
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
         checkForStops(elevatorNr);
-        calcNearestFloor(elevatorNr);
-    }
-
-    /**
-     * Calculates the nearest floor with the current position and average floor height
-     * @param elevatorNr identifier for the elevator
-     */
-    private void calcNearestFloor(int elevatorNr)
-    {
-        int height = mElevatorService.getElevatorPosition(elevatorNr);
-        int floorHeight = mElevatorService.getFloorHeight();
-
-        int floor = height / floorHeight;
-        if (height % floorHeight >= floorHeight / 2)
-        {
-            floor++;
-        }
-
-        if (floor > mModel.getNrOfFloors()) {
-            floor = mModel.getNrOfFloors();
-        }
-
-        mModel.setNearestFloor(floor);
+        checkServiced(elevatorNr);
+        mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
     }
 
     /**
@@ -75,6 +68,18 @@ public class ElevatorUpdater extends UpdaterBase{
         
         for (int i = 0; i < floors; i++) {
             mModel.setStop(i, mElevatorService.getElevatorButton(elevatorNr, i));
+        }
+    }
+
+    /**
+     * Checks which floors are serviced
+     * @param elevatorNr identifies the elevator
+     */
+    private void checkServiced(int elevatorNr) {
+        int floors = mElevatorService.getFloorNum();
+
+        for (int i = 0; i < floors; i++) {
+            mModel.setServiced(i, mElevatorService.getServicesFloors(elevatorNr, i));
         }
     }
 }
