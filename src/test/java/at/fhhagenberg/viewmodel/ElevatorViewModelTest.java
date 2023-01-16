@@ -8,7 +8,7 @@ import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.ModelFactory;
-import at.fhhagenberg.service.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import org.junit.jupiter.api.extension.ExtendWith;

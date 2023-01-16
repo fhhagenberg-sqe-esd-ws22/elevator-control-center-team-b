@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 
 import at.fhhagenberg.logging.Logging;
+import sqelevator.IElevator;
 
 public class RMIElevatorService implements IElevatorService{
     private final IElevator mApi;

@@ -5,7 +5,7 @@ import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
-import at.fhhagenberg.service.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
