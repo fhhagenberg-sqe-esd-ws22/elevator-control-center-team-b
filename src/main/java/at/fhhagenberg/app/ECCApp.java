@@ -5,6 +5,7 @@ import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
+import sqelevator.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
@@ -18,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
+import java.rmi.Naming;
 import java.util.Timer;
 
 /**
@@ -73,6 +75,16 @@ public class ECCApp extends Application {
      * @return elevator service
      */
     protected IElevatorService createService() {
-        return new RMIElevatorService(null);
+        IElevator controller = null;
+        try {
+           controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            // TODO: add proper error handling
+            throw new RuntimeException("RMI Fuck-Up");
+        }
+
+        return new RMIElevatorService(controller);
     }
 }

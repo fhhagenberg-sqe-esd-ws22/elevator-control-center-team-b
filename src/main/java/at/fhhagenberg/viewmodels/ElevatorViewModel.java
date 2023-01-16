@@ -2,7 +2,7 @@ package at.fhhagenberg.viewmodels;
 
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Elevator;
-import at.fhhagenberg.service.IElevator;
+import sqelevator.IElevator;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;

@@ -7,6 +7,7 @@ package at.fhhagenberg.service;
 import java.rmi.RemoteException;
 
 import at.fhhagenberg.logging.Logging;
+import sqelevator.IElevator;
 
 public class RMIElevatorService implements IElevatorService{
     private final IElevator mApi;
