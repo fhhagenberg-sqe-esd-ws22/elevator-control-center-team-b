@@ -25,8 +25,8 @@ public class Elevator {
     private int mPayload;
     // status of the doors - open/closing/closed
     private int mDoorStatus;
-    // nearest floor of this elevator
-    private int mNearestFloor;
+    // current floor of this elevator
+    private int mFloor;
     //which floors are serviced and not serviced by this elevator
     private final boolean[] mServiced;
 
@@ -48,7 +48,7 @@ public class Elevator {
         mPayload = 0;
         mDirection = IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED;
         mDoorStatus = IElevatorService.ELEVATOR_DOORS_CLOSED;
-        mNearestFloor = 0;
+        mFloor = 0;
 
     }
 
@@ -122,16 +122,16 @@ public class Elevator {
     }
 
     /**
-     * Setter for the currently nearest floor.
-     * @param nearestFloor Currently nearest floor.
+     * Setter for the current  floor.
+     * @param floor Current floor.
      */
-    public void setNearestFloor(int nearestFloor) {
-        if (nearestFloor < 0 || nearestFloor >= mNrOfFloors) {
+    public void setFloor(int floor) {
+        if (floor < 0 || floor >= mNrOfFloors) {
             Logging.getLogger().warn(String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
-                            nearestFloor, 0, mNrOfFloors));
+                            floor, 0, mNrOfFloors));
             return;
         }
-        this.mNearestFloor = nearestFloor;
+        this.mFloor = floor;
     }
 
     /**
@@ -227,11 +227,11 @@ public class Elevator {
     }
 
     /**
-     * Getter for the nearest floor of the elevator
-     * @return nearest floor of the elevator
+     * Getter for the floor where the elevator is at
+     * @return floor where the elevator is at
      */
-    public int getNearestFloor() {
-        return mNearestFloor;
+    public int getFloor() {
+        return mFloor;
     }
 
     /**

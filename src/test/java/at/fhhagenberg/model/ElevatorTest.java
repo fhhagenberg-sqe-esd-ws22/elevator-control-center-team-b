@@ -102,15 +102,15 @@ class ElevatorTest {
     }
 
     @Test
-    void testInvalidNearestFloor() {
+    void testInvalidFloor() {
         Elevator elevator = new Elevator(0, 1);
-        elevator.setNearestFloor(0);
-        assertEquals(0, elevator.getNearestFloor());
+        elevator.setFloor(0);
+        assertEquals(0, elevator.getFloor());
 
-        elevator.setNearestFloor(-1);
-        assertEquals(0, elevator.getNearestFloor());
-        elevator.setNearestFloor(1);
-        assertEquals(0, elevator.getNearestFloor());
+        elevator.setFloor(-1);
+        assertEquals(0, elevator.getFloor());
+        elevator.setFloor(1);
+        assertEquals(0, elevator.getFloor());
     }
 
     @Test

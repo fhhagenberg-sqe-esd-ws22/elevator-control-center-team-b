@@ -74,7 +74,6 @@ class BuildingViewModelTest {
         service.setSpeed(1, 20);
         service.setFloorUp(0, true);
 
-        // TODO: ask during lesson what is wrong here
         // passes individually, but fails if run with other tests
         // needed so the platform is initialized, as we call platform.runLater in the Thread
         Platform.startup(()->{});

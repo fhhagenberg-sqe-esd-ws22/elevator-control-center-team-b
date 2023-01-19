@@ -56,7 +56,7 @@ public class ElevatorUpdater extends UpdaterBase{
         mModel.setDoorStatus(mElevatorService.getElevatorDoorStatus(elevatorNr));
         checkForStops(elevatorNr);
         checkServiced(elevatorNr);
-        mModel.setNearestFloor(mElevatorService.getElevatorFloor(elevatorNr));
+        mModel.setFloor(mElevatorService.getElevatorFloor(elevatorNr));
     }
 
     /**

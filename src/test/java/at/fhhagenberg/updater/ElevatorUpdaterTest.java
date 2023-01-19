@@ -55,7 +55,7 @@ class ElevatorUpdaterTest {
         verify(elevator).setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
         verify(elevator).setPayload(100);
         verify(elevator).setDoorStatus(IElevatorService.ELEVATOR_DOORS_CLOSED);
-        verify(elevator).setNearestFloor(0);
+        verify(elevator).setFloor(0);
     }
 
     // these calls are all made in update() and expected to bring correct results,

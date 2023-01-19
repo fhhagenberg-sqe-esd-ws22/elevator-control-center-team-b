@@ -2,6 +2,7 @@ package at.fhhagenberg.logic;
 
 import java.util.Arrays;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevatorService;
@@ -24,7 +25,7 @@ public class BusinessLogic {
      * @return true if standing on the target floor, false otherwise
      */
     private boolean isOnTargetFloor(Elevator elevator){
-        return elevator.getTarget() == elevator.getNearestFloor() &&
+        return elevator.getTarget() == elevator.getFloor() &&
                 elevator.getAccel() == 0 && elevator.getSpeed() == 0;
     }
 
@@ -63,7 +64,7 @@ public class BusinessLogic {
                 else { //automatic mode
 
                     // we don't need to stop on the floor we are currently standing on
-                    var currentFloor= elevator.getNearestFloor();
+                    var currentFloor= elevator.getFloor();
                     stops[currentFloor] = false;
                     downPressed[currentFloor] = false;
                     upPressed[currentFloor] = false;
@@ -145,13 +146,13 @@ public class BusinessLogic {
                 }
 
                 // set direction based on the target
-                if(elevator.getTarget() == elevator.getNearestFloor()){
+                if(elevator.getTarget() == elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED);
                 }
-                else if(elevator.getTarget() < elevator.getNearestFloor()){
+                else if(elevator.getTarget() < elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_DOWN);
                 }
-                else if(elevator.getTarget() > elevator.getNearestFloor()){
+                else if(elevator.getTarget() > elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
                 }
             }
@@ -205,7 +206,10 @@ public class BusinessLogic {
      * @param floor to which floor to set the target
      */
     public void setElevatorManualTarget(int elevatorNr, int floor) {
-        // TODO: check if floor is in range??
+        if (floor < 0 || floor >= mModel.getFloors().size()) {
+            Logging.getLogger().warn("Attempt to set floor %d manual to %b!", floor);
+            return;
+        }
         mManualTarget[elevatorNr] = floor;
     }
 }
