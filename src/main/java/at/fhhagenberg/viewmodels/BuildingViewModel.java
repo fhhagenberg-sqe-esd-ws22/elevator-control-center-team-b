@@ -24,7 +24,7 @@ public class BuildingViewModel {
     private boolean mShowedError;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 100;
+    private static final int UPDATE_INTERVAL = 1000;
 
     /**
      * Constructor of BuildingViewModel
@@ -111,12 +111,14 @@ public class BuildingViewModel {
             }
         }
         catch (ElevatorServiceException ex) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Critical Error Occurred");
-            alert.setContentText(ex.getMessage());
-            alert.show();
-            Logging.getLogger().error(ex.getMessage());
-            mShowedError = true;
+            if (!mShowedError) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Critical Error Occurred");
+                alert.setContentText(ex.getMessage());
+                alert.show();
+                Logging.getLogger().error(ex.getMessage());
+                mShowedError = true;
+            }
         }
         catch (ModelException | UpdaterException ex) {
             Logging.getLogger().error(ex.getMessage());

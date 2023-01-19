@@ -40,12 +40,12 @@ public class ElevatorUpdater extends UpdaterBase{
 
             // model gets updated with gotten direction, new direction
             // will take one update cycle to propagate
-            mModel.setDirection(direction);
+            //mModel.setDirection(mElevatorService.getCommittedDirection(elevatorNr));
         }
 
         if(target != mModel.getTarget()){
             mElevatorService.setTarget(elevatorNr, mModel.getTarget());
-            mModel.setTarget(target);
+            //mModel.setTarget(mElevatorService.getTarget(elevatorNr));
         }
 
         mModel.setSpeed(mElevatorService.getElevatorSpeed(elevatorNr));
