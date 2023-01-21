@@ -1,10 +1,13 @@
 package at.fhhagenberg.view;
 
 import at.fhhagenberg.viewmodels.BuildingViewModel;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.Collections;
 
 /**
  * Class that views a building
@@ -40,6 +43,7 @@ public class BuildingView {
         for (var floor : mViewModel.getFloorViewModels()) {
             addFloors.add((new FloorView(floor)).getLayout());
         }
+        FXCollections.reverse(addFloors);
         return floorLayout;
     }
 
