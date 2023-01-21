@@ -51,6 +51,7 @@ public class ElevatorView {
         payloadLbl.textProperty().bind(binding);
         infoLine.getChildren().add(new Label(String.format("%s: ", label)));
         infoLine.getChildren().add(payloadLbl);
+        infoLine.getChildren().add(new Label(" "));
         infoLine.getChildren().add(new Label(unit));
         return infoLine;
     }
@@ -63,9 +64,9 @@ public class ElevatorView {
         var infoText = new VBox();
 
         infoText.getChildren().addAll(
-                createInfoLine("Payload", "Payload", "mass", mViewModel.getPayloadProp().asString()),
-                createInfoLine("Speed", "Speed", "x/y", mViewModel.getSpeedProp().asString()),
-                createInfoLine("Accel", "Accel", "x/y^2", mViewModel.getAccelProp().asString()),
+                createInfoLine("Payload", "Payload", "kg", mViewModel.getPayloadProp().asString()),
+                createInfoLine("Speed", "Speed", "ft/s", mViewModel.getSpeedProp().asString()),
+                createInfoLine("Accel", "Accel", "ft/s^2", mViewModel.getAccelProp().asString()),
                 createInfoLine("Door", "Door", "", mViewModel.getDoorStatusStringProp()));
 
         return infoText;
@@ -138,7 +139,7 @@ public class ElevatorView {
                         elevator.setOpacity(1);
                     }
                 }
-                if(mViewModel.getNearestFloorProp().get() == floor){
+                if(mViewModel.getFloorProp().get() == floor){
                     return baseStyle + ELEVATOR_CURRENT_POS_COLOR;
                 }
                 else if(mViewModel.getTargetProp().get() == floor){
@@ -150,7 +151,7 @@ public class ElevatorView {
                 else{
                     return baseStyle + ELEVATOR_NO_SERVICE_COLOR;
                 }
-            }, mViewModel.getManualProp(), mViewModel.getNearestFloorProp(), 
+            }, mViewModel.getManualProp(), mViewModel.getFloorProp(), 
             mViewModel.getTargetProp(), mViewModel.getServicedProp()));
             btn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override

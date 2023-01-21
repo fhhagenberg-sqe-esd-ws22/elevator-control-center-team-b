@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorViewModelTest {
@@ -35,7 +36,7 @@ class ElevatorViewModelTest {
         model.setAccel(0);
         model.setDirection(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
         model.setDoorStatus(IElevator.ELEVATOR_DOORS_CLOSED);
-        model.setNearestFloor(0);
+        model.setFloor(0);
         model.setPayload(0);
         model.setSpeed(0);
         model.setTarget(0);
@@ -147,10 +148,30 @@ class ElevatorViewModelTest {
     }
 
     @Test
-    void testNearestFloorProp() {
-        model.setNearestFloor(1);
+    void testSetManualProp() {
+        viewModel.getManualProp().set(false);
+        assertFalse(viewModel.getManualProp().get());
+        
+        viewModel.getManualProp().set(true);
+        assertTrue(viewModel.getManualProp().get());
+        verify(logic).setManual(viewModel.getElevatorNr(), true);
+    }
+
+    @Test
+    void testManualModeSetTarget() {
+        viewModel.getManualProp().set(true);
+        viewModel.getManualFloorProp().set(1);
+        verify(logic).setElevatorManualTarget(viewModel.getElevatorNr(), 1);
+
+        viewModel.getManualFloorProp().set(0);
+        verify(logic).setElevatorManualTarget(viewModel.getElevatorNr(), 0);
+    }
+
+    @Test
+    void testFloorProp() {
+        model.setFloor(1);
         viewModel.update();
-        assertEquals(1, viewModel.getNearestFloorProp().get());
+        assertEquals(1, viewModel.getFloorProp().get());
     }
 
     @Test

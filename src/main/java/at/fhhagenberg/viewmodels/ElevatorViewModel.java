@@ -31,8 +31,8 @@ public class ElevatorViewModel {
     private final SimpleIntegerProperty mPayload;
     // status of the doors - open/closing/closed
     private final SimpleIntegerProperty mDoorStatus;
-    // nearest floor of this elevator
-    private final SimpleIntegerProperty mNearestFloor;
+    // floor where this elevator is at
+    private final SimpleIntegerProperty mFloor;
     // status of the doors - open/closing/closed as a string
     private final SimpleStringProperty mDoorStatusString;
     // boolean if the elevator is in manual mode
@@ -56,7 +56,7 @@ public class ElevatorViewModel {
         mDirection = new SimpleIntegerProperty();
         mPayload = new SimpleIntegerProperty();
         mDoorStatus = new SimpleIntegerProperty();
-        mNearestFloor = new SimpleIntegerProperty();
+        mFloor = new SimpleIntegerProperty();
         mDoorStatusString = new SimpleStringProperty();
         mManual = new SimpleBooleanProperty(false);
         mManualFloor = new SimpleIntegerProperty();
@@ -103,8 +103,8 @@ public class ElevatorViewModel {
         return mDoorStatusString;
     }
 
-    public SimpleIntegerProperty getNearestFloorProp() {
-        return mNearestFloor;
+    public SimpleIntegerProperty getFloorProp() {
+        return mFloor;
     }
 
     public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { return mStops; }
@@ -113,12 +113,10 @@ public class ElevatorViewModel {
         return mServiced;
     }
 
-    // TODO: test properly
     public SimpleBooleanProperty getManualProp() {
         return mManual;
     }
 
-    // TODO: test properly
     public SimpleIntegerProperty getManualFloorProp() {
         return mManualFloor;
     }
@@ -139,7 +137,7 @@ public class ElevatorViewModel {
         mDirection.set(mModel.getDirection());
         mPayload.set(mModel.getPayload());
         mDoorStatus.set(mModel.getDoorStatus());
-        mNearestFloor.set(mModel.getNearestFloor());
+        mFloor.set(mModel.getFloor());
 
         var stops = new ArrayList<Integer>();
         var serviced = new ArrayList<Integer>();

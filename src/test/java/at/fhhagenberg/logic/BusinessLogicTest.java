@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import at.fhhagenberg.service.IElevatorService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.mock_observable.MockElevatorService;
@@ -70,7 +69,7 @@ class BusinessLogicTest {
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
 
-        elevator0.setNearestFloor(1); //reached original target floor
+        elevator0.setFloor(1); //reached original target floor
         logic.setElevatorManualTarget(0, 0);
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
@@ -92,7 +91,7 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
     }
@@ -111,35 +110,35 @@ class BusinessLogicTest {
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         elevator0.setStop(2, true);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
         elevator0.setStop(1, false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         elevator0.setStop(1, true);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
         elevator0.setStop(2, false);
 
-        elevator0.setNearestFloor(3);
+        elevator0.setFloor(3);
         elevator0.setStop(2, true);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
         elevator0.setStop(3, false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         elevator0.setStop(3, true);
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
         elevator0.setStop(2, false);
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
@@ -159,20 +158,20 @@ class BusinessLogicTest {
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         floors.get(2).setWantDown(true);
         floors.get(3).setWantUp(true);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
 
-        elevator0.setNearestFloor(3);
+        elevator0.setFloor(3);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
         floors.get(3).setWantUp(false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
@@ -192,19 +191,19 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         floors.get(2).setWantDown(true);
         elevator0.setStop(3, true);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         elevator0.setStop(1, false);
 
-        elevator0.setNearestFloor(3);
+        elevator0.setFloor(3);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         elevator0.setStop(3, false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         elevator0.setStop(1, true);
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
@@ -225,20 +224,20 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         floors.get(2).setWantDown(true);
         elevator0.setStop(3, true);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         elevator0.setStop(1, false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         elevator0.setStop(0, true);
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
         floors.get(2).setWantDown(true);
 
-        elevator0.setNearestFloor(0);
+        elevator0.setFloor(0);
         floors.get(3).setWantDown(true);
         floors.get(2).setWantDown(true);
         logic.setNextTargets();
@@ -261,22 +260,22 @@ class BusinessLogicTest {
         assertEquals(1, elevator0.getTarget());
         assertEquals(2, elevator1.getTarget());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         elevator0.setStop(2, true);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         elevator0.setStop(1, false);
 
-        elevator1.setNearestFloor(2);
+        elevator1.setFloor(2);
         elevator1.setStop(1, true);
         elevator1.setStop(0, true);
         logic.setNextTargets();
         assertEquals(1, elevator1.getTarget());
         elevator1.setStop(2, false);
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         elevator0.setStop(1, true);
-        elevator1.setNearestFloor(1);
+        elevator1.setFloor(1);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
@@ -303,8 +302,8 @@ class BusinessLogicTest {
         assertEquals(3, elevator1.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator1.getDirection());
 
-        elevator0.setNearestFloor(2);
-        elevator1.setNearestFloor(3);
+        elevator0.setFloor(2);
+        elevator1.setFloor(3);
         floors.get(4).setWantUp(true);
         logic.setNextTargets();
         assertEquals(4, elevator0.getTarget());
@@ -314,7 +313,7 @@ class BusinessLogicTest {
         floors.get(2).setWantUp(false);
         floors.get(3).setWantDown(false);
 
-        elevator0.setNearestFloor(4);
+        elevator0.setFloor(4);
         floors.get(1).setWantDown(true);
         floors.get(1).setWantUp(true);
         floors.get(0).setWantUp(true);
@@ -346,8 +345,8 @@ class BusinessLogicTest {
         assertEquals(2, elevator1.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator1.getDirection());
 
-        elevator0.setNearestFloor(1);
-        elevator1.setNearestFloor(2);
+        elevator0.setFloor(1);
+        elevator1.setFloor(2);
         floors.get(4).setWantUp(true);
         elevator0.setStop(3, true);
         elevator1.setStop(0, true);
@@ -359,8 +358,8 @@ class BusinessLogicTest {
         elevator0.setStop(1, false);
         floors.get(2).setWantUp(false);
 
-        elevator0.setNearestFloor(3);
-        elevator1.setNearestFloor(4);
+        elevator0.setFloor(3);
+        elevator1.setFloor(4);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED, elevator0.getDirection());
@@ -390,8 +389,8 @@ class BusinessLogicTest {
         assertEquals(3, elevator1.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator1.getDirection());
 
-        elevator0.setNearestFloor(1);
-        elevator1.setNearestFloor(3);
+        elevator0.setFloor(1);
+        elevator1.setFloor(3);
         floors.get(4).setWantUp(true);
         elevator1.setStop(0, true);
         logic.setNextTargets();
@@ -402,8 +401,8 @@ class BusinessLogicTest {
         elevator0.setStop(1, false);
         floors.get(3).setWantUp(false);
 
-        elevator0.setNearestFloor(2);
-        elevator1.setNearestFloor(4);
+        elevator0.setFloor(2);
+        elevator1.setFloor(4);
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED, elevator0.getDirection());
@@ -432,7 +431,7 @@ class BusinessLogicTest {
         assertEquals(2, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
 
-        elevator0.setNearestFloor(2);
+        elevator0.setFloor(2);
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
@@ -443,7 +442,7 @@ class BusinessLogicTest {
         assertEquals(0, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
 
-        elevator0.setNearestFloor(0);
+        elevator0.setFloor(0);
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UP, elevator0.getDirection());
@@ -493,7 +492,7 @@ class BusinessLogicTest {
         assertEquals(0, elevator1.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED, elevator1.getDirection());
 
-        elevator0.setNearestFloor(1);
+        elevator0.setFloor(1);
         floors.get(2).setWantUp(true);
         logic.setNextTargets();
         assertEquals(3, elevator0.getTarget());

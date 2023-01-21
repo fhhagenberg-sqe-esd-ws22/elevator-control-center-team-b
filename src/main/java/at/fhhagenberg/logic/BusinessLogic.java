@@ -2,6 +2,7 @@ package at.fhhagenberg.logic;
 
 import java.util.Arrays;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevatorService;
@@ -24,7 +25,7 @@ public class BusinessLogic {
      * @return true if standing on the target floor, false otherwise
      */
     private boolean isOnTargetFloor(Elevator elevator){
-        return elevator.getTarget() == elevator.getNearestFloor() && elevator.getSpeed() == 0 && elevator.getDoorStatus() == IElevatorService.ELEVATOR_DOORS_OPEN;
+        return elevator.getTarget() == elevator.getFloor() && elevator.getSpeed() == 0 && elevator.getDoorStatus() == IElevatorService.ELEVATOR_DOORS_OPEN;
     }
 
     /**
@@ -54,7 +55,7 @@ public class BusinessLogic {
 
             // if the elevator is standing at its current floor
             if(isOnTargetFloor(elevator)) {
-                var currentFloor= elevator.getNearestFloor();
+                var currentFloor= elevator.getFloor();
                 // check if this floor was blocked as upwards/downwards target by this elevator
                 if(mUp[nr] && mUpTarget[currentFloor]){
                     mUpTarget[currentFloor] = false;
@@ -143,13 +144,13 @@ public class BusinessLogic {
                 }
 
                 // set direction based on the target
-                if(elevator.getTarget() == elevator.getNearestFloor()){
+                if(elevator.getTarget() == elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED);
                 }
-                else if(elevator.getTarget() < elevator.getNearestFloor()){
+                else if(elevator.getTarget() < elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_DOWN);
                 }
-                else if(elevator.getTarget() > elevator.getNearestFloor()){
+                else if(elevator.getTarget() > elevator.getFloor()){
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
                 }
             }
@@ -203,7 +204,10 @@ public class BusinessLogic {
      * @param floor to which floor to set the target
      */
     public void setElevatorManualTarget(int elevatorNr, int floor) {
-        // TODO: check if floor is in range??
+        if (floor < 0 || floor >= mModel.getFloors().size()) {
+            Logging.getLogger().warn("Attempt to set floor %d manual to %b!", floor);
+            return;
+        }
         mManualTarget[elevatorNr] = floor;
     }
 }

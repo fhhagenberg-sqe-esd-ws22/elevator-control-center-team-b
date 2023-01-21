@@ -183,7 +183,7 @@ class AppTest {
     }
 
     @Test
-    void testElevatorNearest() {
+    void testElevatorFloor() {
         final String base = "-fx-background-radius: 0;-fx-background-color: ";
         var style = robot.lookup("#ElevatorTarget0_0").query().getStyle();
         Assertions.assertEquals(base+"green;", style);
