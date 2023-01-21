@@ -4,11 +4,8 @@ import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.util.Collections;
 
 /**
  * Class that views a building
@@ -21,9 +18,10 @@ public class BuildingView {
 
     /**
      * creates all elevators
+     *
      * @return all elevators in a HBox
      */
-    private HBox createElevatorLayout(){
+    private HBox createElevatorLayout() {
         var elevatorLayout = new HBox();
         var addElevators = elevatorLayout.getChildren();
         for (var elevator : mViewModel.getElevatorViewModels()) {
@@ -34,9 +32,10 @@ public class BuildingView {
 
     /**
      * creates all floors
+     *
      * @return all floors in a VBox
      */
-    private VBox createFloorLayout(){
+    private VBox createFloorLayout() {
         var floorLayout = new VBox();
         var addFloors = floorLayout.getChildren();
         for (var floor : mViewModel.getFloorViewModels()) {
@@ -52,6 +51,7 @@ public class BuildingView {
 
     /**
      * Constructor of BuildingView
+     *
      * @param viewModel view model with the data of the building to be viewed
      */
     public BuildingView(BuildingViewModel viewModel) {
@@ -64,6 +64,7 @@ public class BuildingView {
 
     /**
      * Getter for the layout
+     *
      * @return layout
      */
     public HBox getLayout() {

@@ -24,25 +24,25 @@ public class FloorView {
     private static final int HEIGHT = 40;
     private static final int WIDTH = 60;
     private static final int PADDING = 10;
-    private int mFloorNumber;
+    private final int FloorNumber;
 
     /**
      * creates an arrow for going up/down
+     *
      * @param direction does the arrow go up or down
-     * @param rotation rotation from a right pointing arrow in degrees (90 for down, 270 for up)
-     * @param binding property that the arrow is bound to
+     * @param rotation  rotation from a right pointing arrow in degrees (90 for down, 270 for up)
+     * @param binding   property that the arrow is bound to
      * @return disabled button that depicts an arrow
      */
-    private Button createArrow(int direction, int rotation, SimpleBooleanProperty binding){
+    private Button createArrow(int direction, int rotation, SimpleBooleanProperty binding) {
         var arrow = new Button();
-        arrow.setId(String.format("FloorArrow%d_%d",mFloorNumber,direction));
+        arrow.setId(String.format("FloorArrow%d_%d", FloorNumber, direction));
         arrow.setDisable(true);
         arrow.setOpacity(1);
-        arrow.styleProperty().bind(Bindings.createStringBinding(()-> {
-            if(binding.get()) {
+        arrow.styleProperty().bind(Bindings.createStringBinding(() -> {
+            if (binding.get()) {
                 return ARROW_STYLE + BUTTON_PRESSED_COLOR;
-            }
-            else{
+            } else {
                 return ARROW_STYLE + BUTTON_INACTIVE_COLOR;
             }
         }, binding));
@@ -52,12 +52,13 @@ public class FloorView {
 
     /**
      * creates the graphic for a single floor
+     *
      * @return graphic for a single floor in an HBox
      */
-    private HBox createFloorGraphic(){
+    private HBox createFloorGraphic() {
         var floorGraphic = new HBox();
         floorGraphic.setStyle(FLOOR_STYLE);
-        var arrUp = createArrow(IElevatorService.ELEVATOR_DIRECTION_UP,270, mViewModel.getWantUpProp());
+        var arrUp = createArrow(IElevatorService.ELEVATOR_DIRECTION_UP, 270, mViewModel.getWantUpProp());
         var arrDown = createArrow(IElevatorService.ELEVATOR_DIRECTION_DOWN, 90, mViewModel.getWantDownProp());
         floorGraphic.getChildren().addAll(arrUp, arrDown);
         floorGraphic.setAlignment(Pos.CENTER);
@@ -67,10 +68,11 @@ public class FloorView {
 
     /**
      * creates a label for a floor
+     *
      * @return floor number as a label
      */
-    private Label createFloorLabel(){
-        var lbl = new Label(String.format("%" + 2 + "s", mFloorNumber).replace(' ', '0'));
+    private Label createFloorLabel() {
+        var lbl = new Label(String.format("%" + 2 + "s", FloorNumber).replace(' ', '0'));
         lbl.setPadding(new Insets(PADDING));
         return lbl;
     }
@@ -78,11 +80,12 @@ public class FloorView {
 
     /**
      * Constructor of FloorView
+     *
      * @param viewModel view model of the floor to be viewed
      */
     public FloorView(FloorViewModel viewModel) {
         mViewModel = viewModel;
-        mFloorNumber = mViewModel.getFloorNumber();
+        FloorNumber = mViewModel.getFloorNumber();
         mView = new HBox();
 
         mView.setAlignment(Pos.CENTER_LEFT);
@@ -91,6 +94,7 @@ public class FloorView {
 
     /**
      * Getter for the layout
+     *
      * @return layout
      */
     public HBox getLayout() {

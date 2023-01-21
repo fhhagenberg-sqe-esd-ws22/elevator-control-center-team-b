@@ -9,7 +9,7 @@ import at.fhhagenberg.service.IElevatorService;
 @ExtendWith(ApplicationExtension.class)
 public class TestECCApp extends ECCApp {
 
-    private IElevatorService service;
+    private final IElevatorService service;
 
     public
     TestECCApp(IElevatorService service) {
