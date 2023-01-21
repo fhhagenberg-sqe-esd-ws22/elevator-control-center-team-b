@@ -40,46 +40,33 @@ public class BuildingUpdater extends UpdaterBase {
     }
 
     /**
+     * Function to retrieve the number of failed update cycles. The counter will be reset to 0
+     * after one successful update cycle.
+     * @return Number of failed update cycles.
+     */
+    public int getFailureCnt() { return mFailureCnt; }
+
+    /**
      * Performs all necessary API calls on a service object in order to update a referenced model object.
      */
     @Override
-    public void update() throws ElevatorServiceException {
+    public void update() {
         try {
             updateFloors();
             updateElevators();
-            if (mShowedError) {
-                resetErrorState();
-            }
+
+            mFailureCnt = 0;
         }
         catch (ElevatorServiceException ex) {
             handleUpdateError(ex.getMessage());
         }
     }
 
-    private void resetErrorState() {
-        mFailureCnt = 0;
-        Alert info = new Alert(Alert.AlertType.INFORMATION);
-        info.setTitle("Connection re-established");
-        info.setContentText("The connection was re-established");
-        mShowedError = false;
-    }
-
     private void handleUpdateError(String message) {
+        Logging.getLogger().error(message);
         mFailureCnt++;
-        if (!mShowedError) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Critical Error Occurred");
-            alert.setContentText(message);
-            alert.show();
-            Logging.getLogger().error(message);
-            mShowedError = true;
-        }
         if (mFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Critical Error Occurred");
-            alert.setContentText("The last " + mFailureCnt + " update cycles have failed! Please check your internet connection and maybe restart the application.");
-            alert.show();
-            Logging.getLogger().error(message);
+            throw new UpdaterException("The last " + mFailureCnt + " update cycles have failed! Please check your internet connection and restart the application.");
         }
     }
 

@@ -104,7 +104,14 @@ public class BuildingViewModel {
 
             mLogic.setNextTargets();
         }
-        catch (ModelException | UpdaterException ex) {
+        catch(UpdaterException ex) {
+            Logging.getLogger().error(ex.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Critical Error Occurred");
+            alert.setContentText(ex.getMessage());
+            alert.show();
+        }
+        catch (ModelException ex) {
             Logging.getLogger().error(ex.getMessage());
         }
 

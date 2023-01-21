@@ -100,7 +100,9 @@ class BuildingUpdaterTest {
         var building = factory.createBuilding();
         BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
 
-        assertThrows(ElevatorServiceException.class, updater::update);
+        updater.update();
+
+        assertEquals(1, updater.getFailureCnt());
     }
 
     @Test
@@ -113,6 +115,8 @@ class BuildingUpdaterTest {
         var building = factory.createBuilding();
         BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
 
-        assertThrows(ElevatorServiceException.class, updater::update);
+        updater.update();
+
+        assertEquals(1, updater.getFailureCnt());
     }
 }
