@@ -33,7 +33,7 @@ public class ECCApp extends Application {
 
     // constants for width of the window
     private static final int ELEVATOR_WIDTH = 250;
-    private static final int FLOOR_WIDTH = 165;
+    private static final int FLOOR_WIDTH = 185;
 
     @Override
     public void start(Stage stage) {
