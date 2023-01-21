@@ -24,7 +24,7 @@ public class BuildingViewModel {
     private boolean mShowedError;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 1000;
+    private static final int UPDATE_INTERVAL = 500;
 
     /**
      * Constructor of BuildingViewModel

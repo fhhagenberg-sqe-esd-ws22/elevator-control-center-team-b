@@ -24,7 +24,7 @@ public class BusinessLogic {
      * @return true if standing on the target floor, false otherwise
      */
     private boolean isOnTargetFloor(Elevator elevator){
-        return elevator.getTarget() == elevator.getNearestFloor() && elevator.getSpeed() == 0;
+        return elevator.getTarget() == elevator.getNearestFloor() && elevator.getSpeed() == 0 && elevator.getDoorStatus() == IElevatorService.ELEVATOR_DOORS_OPEN;
     }
 
     /**
