@@ -1,17 +1,18 @@
 package at.fhhagenberg.app.exception_handling;
 
-import java.util.concurrent.TimeoutException;
-
+import javafx.scene.text.Text;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.matcher.base.NodeMatchers;
-import org.testfx.service.query.EmptyNodeQueryException;
 
-import javafx.scene.Node;
-import javafx.scene.text.Text;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import static org.testfx.util.WaitForAsyncUtils.waitFor;
 
 public class ExceptionTest {
     FxRobot robot;
@@ -25,18 +26,10 @@ public class ExceptionTest {
     @Test
     void testServiceNull() throws TimeoutException {
         FxToolkit.setupApplication(ECCAppNullServiceTest.class);
-        
-        int cnt = 0;
-        Node dialogPane = null;
-        // todo @Kargl check timeout
-        do
-        {
-            try {
-                dialogPane = robot.lookup(".dialog-pane").query();
-            } catch (EmptyNodeQueryException ex) {}
-            cnt = cnt + 1;
-        } while (dialogPane == null && cnt < 1000000);
-        
+
+        waitFor(10, TimeUnit.SECONDS, () -> robot.lookup(".dialog-pane").query().isVisible());
+
+        var dialogPane = robot.lookup(".dialog-pane").query();
         FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
 
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
@@ -47,17 +40,9 @@ public class ExceptionTest {
     void testCannotCreateScene() throws TimeoutException {
         FxToolkit.setupApplication(ECCAppExceptionTest.class);
 
-        int cnt = 0;
-        Node dialogPane = robot.lookup(".dialog-pane").query();
-        // todo @Kargl check timeout
-        do
-        {
-            try {
-                dialogPane = robot.lookup(".dialog-pane").query();
-            } catch (EmptyNodeQueryException ex) {}
-            cnt = cnt + 1;
-        } while (dialogPane == null && cnt < 1000000);
+        waitFor(10, TimeUnit.SECONDS, () -> robot.lookup(".dialog-pane").query().isVisible());
 
+        var dialogPane = robot.lookup(".dialog-pane").query();
         FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
         
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
