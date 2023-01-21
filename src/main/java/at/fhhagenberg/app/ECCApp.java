@@ -40,12 +40,14 @@ public class ECCApp extends Application {
         var service = createService();
         
         if (service == null) {
+            showError("The service could not be created!\nThe application will now shut down");
             return;
         }
         
         var scene = createScene(service);
 
         if (scene == null) {
+            showError("The app could not be started!\nThe application will now shut down");
             return;
         }
 
@@ -81,16 +83,15 @@ public class ECCApp extends Application {
         // display the errors to the user and throw the exception again since
         // they cannot be handled in this function
         catch(ElevatorServiceException | UpdaterException | ModelException ex) {
-            showError(ex.getMessage());
             return null;
         }
     }
 
-    private static void showError(String reason) {
+    private static void showError(String context) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Critical Error Occurred");
-        alert.setContentText(String.format("The app could not be started!%nThe application will now shut down", reason));
-        alert.showAndWait();
+        alert.setContentText(context);
+        alert.show();
     }
 
     /**
@@ -104,14 +105,8 @@ public class ECCApp extends Application {
         }
         catch (Exception e){
             // if the service is not available, there is no saving the program
-            Logging.getLogger().error("Failed to create the service!%n%s", 
-                e.getMessage());
-                
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Critical Error Occurred");
-            alert.setContentText(String.format("The service could not be created!%nThe application will now shut down",
-                 e.getMessage()));
-            alert.showAndWait();
+            Logging.getLogger().error(String.format("Failed to create the service!%n%s", 
+                e.getMessage()));
             return null;
         }
 

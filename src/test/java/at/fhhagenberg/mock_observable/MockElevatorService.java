@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import at.fhhagenberg.service.IElevatorService;
 
-public class MockElevatorService implements IElevatorService{
+public class MockElevatorService implements IElevatorService {
 
     private final int elevatorNum;
     private final int floorNum;

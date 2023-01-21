@@ -12,14 +12,17 @@ import sqelevator.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorViewModelTest {
     Elevator model;
     ElevatorViewModel viewModel;
+    @Mock
     BusinessLogic logic;
 
     @BeforeEach
@@ -28,7 +31,6 @@ class ElevatorViewModelTest {
         ModelFactory factory = new ModelFactory(service);
         Building building = factory.createBuilding();
         model = building.getElevatorByNumber(0);
-        logic = new BusinessLogic(building);
         viewModel = new ElevatorViewModel(model, logic);
 
         model.setAccel(0);
@@ -149,24 +151,20 @@ class ElevatorViewModelTest {
     void testSetManualProp() {
         viewModel.getManualProp().set(false);
         assertFalse(viewModel.getManualProp().get());
-        assertFalse(logic.getManual(viewModel.getElevatorNr()));
-
+        
         viewModel.getManualProp().set(true);
         assertTrue(viewModel.getManualProp().get());
-        assertTrue(logic.getManual(viewModel.getElevatorNr()));
+        verify(logic).setManual(viewModel.getElevatorNr(), true);
     }
 
     @Test
     void testManualModeSetTarget() {
         viewModel.getManualProp().set(true);
         viewModel.getManualFloorProp().set(1);
-        logic.setNextTargets();
-        assertEquals(1, model.getTarget());
+        verify(logic).setElevatorManualTarget(viewModel.getElevatorNr(), 1);
 
-        model.setFloor(1);
         viewModel.getManualFloorProp().set(0);
-        logic.setNextTargets();
-        assertEquals(0, model.getTarget());
+        verify(logic).setElevatorManualTarget(viewModel.getElevatorNr(), 0);
     }
 
     @Test
