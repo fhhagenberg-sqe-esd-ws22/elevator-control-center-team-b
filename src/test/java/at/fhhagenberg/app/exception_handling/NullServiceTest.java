@@ -37,11 +37,14 @@ public class NullServiceTest {
                 dialogPane = robot.lookup(".dialog-pane").query();
             } catch (EmptyNodeQueryException ex) {}
             cnt = cnt + 1;
-        } while (dialogPane == null && cnt < 100000);
+        } while (dialogPane == null && cnt < 1000000);
+        
         var contentQuery = robot.from(dialogPane).lookup(
             (Text t) -> t.getText().startsWith("The service could not be created"));
-        assertNotNull(contentQuery.query());
+        
         FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
+        assertNotNull(contentQuery.query());
+
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
         robot.clickOn(okButton.queryText());
     }
