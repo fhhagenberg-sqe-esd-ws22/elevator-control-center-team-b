@@ -56,7 +56,15 @@ public class BusinessLogic {
             // if the elevator is standing at its current floor
             if(isOnTargetFloor(elevator)) {
                 var currentFloor= elevator.getFloor();
+
                 // check if this floor was blocked as upwards/downwards target by this elevator
+                // this introduces special behavior in manual mode, where this could lead to
+                // multiple elevators in automatic mode servicing the same button press outside
+                // as these ifs might clear the target status. -> This is not a problem, rather a
+                // minor inefficiency.
+                // This has to be here, outside the automatic mode, because the last automatic mode target
+                // when switching into manual mode has to be cleared, as not to block servicing of a button
+                // indefinitely.
                 if(mUp[nr] && mUpTarget[currentFloor]){
                     mUpTarget[currentFloor] = false;
                 }
