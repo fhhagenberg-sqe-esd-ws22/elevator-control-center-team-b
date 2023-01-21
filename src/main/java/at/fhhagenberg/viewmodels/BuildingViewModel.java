@@ -103,22 +103,6 @@ public class BuildingViewModel {
             }
 
             mLogic.setNextTargets();
-            if (mShowedError) {
-                Alert info = new Alert(AlertType.INFORMATION);
-                info.setTitle("Connection re-established");
-                info.setContentText("The connection was re-established");
-                mShowedError = false;
-            }
-        }
-        catch (ElevatorServiceException ex) {
-            if (!mShowedError) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Critical Error Occurred");
-                alert.setContentText(ex.getMessage());
-                alert.show();
-                Logging.getLogger().error(ex.getMessage());
-                mShowedError = true;
-            }
         }
         catch (ModelException | UpdaterException ex) {
             Logging.getLogger().error(ex.getMessage());

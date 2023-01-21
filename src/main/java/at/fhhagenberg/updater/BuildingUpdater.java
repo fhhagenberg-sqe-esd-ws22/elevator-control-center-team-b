@@ -4,9 +4,11 @@
  */
 package at.fhhagenberg.updater;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
+import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -14,6 +16,11 @@ public class BuildingUpdater extends UpdaterBase {
 
     private final List<ElevatorUpdater> mElevatorUpdaters;
     private final List<FloorUpdater> mFloorUpdaters;
+
+    private boolean mShowedError;
+
+    private int mFailureCnt;
+    private static final int DISPLAY_MESSAGE_FAILURE_CNT = 100;
 
     /**
      * Constructor for the BuildingUpdater
@@ -28,6 +35,8 @@ public class BuildingUpdater extends UpdaterBase {
 
         mElevatorUpdaters = elevatorUpdaters;
         mFloorUpdaters = floorUpdaters;
+        mShowedError = false;
+        mFailureCnt = 0;
     }
 
     /**
@@ -35,8 +44,43 @@ public class BuildingUpdater extends UpdaterBase {
      */
     @Override
     public void update() throws ElevatorServiceException {
-        updateFloors();
-        updateElevators();
+        try {
+            updateFloors();
+            updateElevators();
+            if (mShowedError) {
+                resetErrorState();
+            }
+        }
+        catch (ElevatorServiceException ex) {
+            handleUpdateError(ex.getMessage());
+        }
+    }
+
+    private void resetErrorState() {
+        mFailureCnt = 0;
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle("Connection re-established");
+        info.setContentText("The connection was re-established");
+        mShowedError = false;
+    }
+
+    private void handleUpdateError(String message) {
+        mFailureCnt++;
+        if (!mShowedError) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Critical Error Occurred");
+            alert.setContentText(message);
+            alert.show();
+            Logging.getLogger().error(message);
+            mShowedError = true;
+        }
+        if (mFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Critical Error Occurred");
+            alert.setContentText("The last " + mFailureCnt + " update cycles have failed! Please check your internet connection and maybe restart the application.");
+            alert.show();
+            Logging.getLogger().error(message);
+        }
     }
 
     /**
