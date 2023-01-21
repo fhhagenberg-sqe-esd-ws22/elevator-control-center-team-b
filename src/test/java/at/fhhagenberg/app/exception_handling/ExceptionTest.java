@@ -21,12 +21,38 @@ public class ExceptionTest {
     @BeforeEach
     public void setup() throws TimeoutException {
         FxToolkit.registerPrimaryStage();
-        FxToolkit.setupApplication(ECCAppExceptionTest.class);
         robot = new FxRobot();
+    }
+
+    @Test
+    void testServiceNull() throws TimeoutException {
+        FxToolkit.setupApplication(ECCAppNullServiceTest.class);
+        
+        int cnt = 0;
+        Node dialogPane = null;
+        // todo @Kargl check timeout
+        do
+        {
+            try {
+                dialogPane = robot.lookup(".dialog-pane").query();
+            } catch (EmptyNodeQueryException ex) {}
+            cnt = cnt + 1;
+        } while (dialogPane == null && cnt < 1000000);
+        
+        var contentQuery = robot.from(dialogPane).lookup(
+            (Text t) -> t.getText().startsWith("The service could not be created"));
+        
+        FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
+        assertNotNull(contentQuery.query());
+
+        var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
+        robot.clickOn(okButton.queryText());
     }
     
     @Test
-    void testCannotCreateScene() {
+    void testCannotCreateScene() throws TimeoutException {
+        FxToolkit.setupApplication(ECCAppExceptionTest.class);
+
         int cnt = 0;
         Node dialogPane = robot.lookup(".dialog-pane").query();
         // todo @Kargl check timeout
@@ -41,7 +67,7 @@ public class ExceptionTest {
         var contentQuery = robot.from(dialogPane).lookup(
             (Text t) -> t.getText().startsWith("The app could not be started"));
         FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
-        //assertNotNull(contentQuery.query());
+        assertNotNull(contentQuery.query());
         
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
         robot.clickOn(okButton.queryText());
