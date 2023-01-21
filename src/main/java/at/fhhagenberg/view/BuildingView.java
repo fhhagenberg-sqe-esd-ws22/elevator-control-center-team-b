@@ -43,6 +43,7 @@ public class BuildingView {
         for (var floor : mViewModel.getFloorViewModels()) {
             addFloors.add((new FloorView(floor)).getLayout());
         }
+        // reverse the floors, so they are shown in an intuitive order
         FXCollections.reverse(addFloors);
         return floorLayout;
     }
