@@ -10,6 +10,8 @@ import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.matcher.base.NodeMatchers;
+import org.testfx.service.query.EmptyNodeQueryException;
+
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 
@@ -25,7 +27,16 @@ public class ExceptionTest {
     
     @Test
     void testCannotCreateScene() {
+        int cnt = 0;
         Node dialogPane = robot.lookup(".dialog-pane").query();
+        // todo @Kargl check timeout
+        do
+        {
+            try {
+                dialogPane = robot.lookup(".dialog-pane").query();
+            } catch (EmptyNodeQueryException ex) {}
+            cnt = cnt + 1;
+        } while (dialogPane == null && cnt < 100000);
         var contentQuery = robot.from(dialogPane).lookup(
             (Text t) -> t.getText().startsWith("The app could not be started"));
         assertNotNull(contentQuery.query());
