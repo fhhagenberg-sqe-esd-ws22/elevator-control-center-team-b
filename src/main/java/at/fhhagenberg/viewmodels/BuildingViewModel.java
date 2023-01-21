@@ -24,7 +24,7 @@ public class BuildingViewModel {
     private boolean mShowedError;
 
     // update interval in [ms]
-    private static final int UPDATE_INTERVAL = 100;
+    private static final int UPDATE_INTERVAL = 500;
 
     /**
      * Constructor of BuildingViewModel
@@ -103,22 +103,15 @@ public class BuildingViewModel {
             }
 
             mLogic.setNextTargets();
-            if (mShowedError) {
-                Alert info = new Alert(AlertType.INFORMATION);
-                info.setTitle("Connection re-established");
-                info.setContentText("The connection was re-established");
-                mShowedError = false;
-            }
         }
-        catch (ElevatorServiceException ex) {
-            Alert alert = new Alert(AlertType.ERROR);
+        catch(UpdaterException ex) {
+            Logging.getLogger().error(ex.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Critical Error Occurred");
             alert.setContentText(ex.getMessage());
             alert.show();
-            Logging.getLogger().error(ex.getMessage());
-            mShowedError = true;
         }
-        catch (ModelException | UpdaterException ex) {
+        catch (ModelException ex) {
             Logging.getLogger().error(ex.getMessage());
         }
 

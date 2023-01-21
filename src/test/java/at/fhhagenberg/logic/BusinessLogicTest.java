@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import at.fhhagenberg.service.IElevatorService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import at.fhhagenberg.mock_observable.MockElevatorService;
@@ -43,6 +44,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         elevator0.setTarget(1);
 
         logic.setManual(0, true);
@@ -57,6 +59,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
 
         elevator0.setStop(1, true);
         logic.setNextTargets();
@@ -80,6 +83,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         elevator0.setServiced(1,false);
         elevator0.setTarget(1);
 
@@ -99,6 +103,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
 
         elevator0.setStop(1, true);
         elevator0.setStop(3, true);
@@ -146,6 +151,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         floors.get(1).setWantUp(true);
@@ -178,6 +184,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         elevator0.setStop(1, true);
@@ -210,6 +217,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
         elevator0.setServiced(3,false);
 
@@ -242,7 +250,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
 
         elevator0.setStop(1, true);
         elevator0.setStop(3, true);
@@ -280,7 +290,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         floors.get(2).setWantUp(true);
@@ -320,7 +332,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         floors.get(2).setWantUp(true);
@@ -360,7 +374,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
         elevator0.setServiced(3,false);
         elevator1.setServiced(2,false);
@@ -401,6 +417,7 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         floors.get(1).setWantDown(true);
@@ -438,7 +455,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         floors.get(1).setWantDown(true);
@@ -462,7 +481,9 @@ class BusinessLogicTest {
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
+        elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var elevator1 = building.getElevatorByNumber(1);
+        elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
 
         elevator0.setStop(3, true);

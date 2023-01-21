@@ -4,9 +4,11 @@
  */
 package at.fhhagenberg.updater;
 
+import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
+import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -14,6 +16,11 @@ public class BuildingUpdater extends UpdaterBase {
 
     private final List<ElevatorUpdater> mElevatorUpdaters;
     private final List<FloorUpdater> mFloorUpdaters;
+
+    private boolean mShowedError;
+
+    private int mFailureCnt;
+    private static final int DISPLAY_MESSAGE_FAILURE_CNT = 100;
 
     /**
      * Constructor for the BuildingUpdater
@@ -28,15 +35,39 @@ public class BuildingUpdater extends UpdaterBase {
 
         mElevatorUpdaters = elevatorUpdaters;
         mFloorUpdaters = floorUpdaters;
+        mShowedError = false;
+        mFailureCnt = 0;
     }
+
+    /**
+     * Function to retrieve the number of failed update cycles. The counter will be reset to 0
+     * after one successful update cycle.
+     * @return Number of failed update cycles.
+     */
+    public int getFailureCnt() { return mFailureCnt; }
 
     /**
      * Performs all necessary API calls on a service object in order to update a referenced model object.
      */
     @Override
-    public void update() throws ElevatorServiceException {
-        updateFloors();
-        updateElevators();
+    public void update() {
+        try {
+            updateFloors();
+            updateElevators();
+
+            mFailureCnt = 0;
+        }
+        catch (ElevatorServiceException ex) {
+            handleUpdateError(ex.getMessage());
+        }
+    }
+
+    private void handleUpdateError(String message) {
+        Logging.getLogger().error(message);
+        mFailureCnt++;
+        if (mFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
+            throw new UpdaterException("The last " + mFailureCnt + " update cycles have failed! Please check your internet connection and restart the application.");
+        }
     }
 
     /**
