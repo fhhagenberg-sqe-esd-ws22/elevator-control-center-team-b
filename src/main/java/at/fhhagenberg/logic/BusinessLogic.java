@@ -24,8 +24,7 @@ public class BusinessLogic {
      * @return true if standing on the target floor, false otherwise
      */
     private boolean isOnTargetFloor(Elevator elevator){
-        return elevator.getTarget() == elevator.getNearestFloor() &&
-                elevator.getAccel() == 0 && elevator.getSpeed() == 0;
+        return elevator.getTarget() == elevator.getNearestFloor() && elevator.getSpeed() == 0 && elevator.getDoorStatus() == IElevatorService.ELEVATOR_DOORS_OPEN;
     }
 
     /**
@@ -55,6 +54,14 @@ public class BusinessLogic {
 
             // if the elevator is standing at its current floor
             if(isOnTargetFloor(elevator)) {
+                var currentFloor= elevator.getNearestFloor();
+                // check if this floor was blocked as upwards/downwards target by this elevator
+                if(mUp[nr] && mUpTarget[currentFloor]){
+                    mUpTarget[currentFloor] = false;
+                }
+                if(!mUp[nr] && mDownTarget[currentFloor]){
+                    mDownTarget[currentFloor] = false;
+                }
 
                 // if we are in manual mode, we set the last entered manual target
                 if (mManual[nr]) {
@@ -63,18 +70,9 @@ public class BusinessLogic {
                 else { //automatic mode
 
                     // we don't need to stop on the floor we are currently standing on
-                    var currentFloor= elevator.getNearestFloor();
                     stops[currentFloor] = false;
                     downPressed[currentFloor] = false;
                     upPressed[currentFloor] = false;
-
-                    // check if this floor was blocked as upwards/downwards target by this elevator
-                    if(mUp[nr] && mUpTarget[currentFloor]){
-                        mUpTarget[currentFloor] = false;
-                    }
-                    if(!mUp[nr] && mDownTarget[currentFloor]){
-                        mDownTarget[currentFloor] = false;
-                    }
 
                     // if we search for stops that are on the way down, but find none we must look again for stops
                     // on the way up, for this we have to loop once, therefore this loop variable

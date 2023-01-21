@@ -414,7 +414,7 @@ class AppTest {
     void testManualMode(){
         var baseArrow ="-fx-shape: 'M 0 -3.5 v 7 l 4 -3.5 z';-fx-background-color: ";
         var baseButton = "-fx-background-radius: 30;-fx-border-radius: 20;-fx-border-color: lightblue;-fx-background-color: ";
-
+        TestECCApp.service.setDoorStatus(1, IElevatorService.ELEVATOR_DOORS_OPEN);
         robot.clickOn("#Manual1");
 
         int cnt = 0;
