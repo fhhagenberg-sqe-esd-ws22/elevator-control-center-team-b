@@ -79,7 +79,7 @@ public class ElevatorView {
      * @return button representing an elevator floor
      */
     private Button createElevatorFloor(String identifierBase, int i){
-        var btn = new Button("Floor " + i);
+        var btn = new Button("Floor " + String.format("%" + 2 + "s", i).replace(' ', '0'));
         btn.setId(String.format("%s%d_%d", identifierBase, mElevatorNr, i));
         btn.setDisable(true);
         btn.setOpacity(1);

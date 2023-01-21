@@ -70,7 +70,7 @@ public class FloorView {
      * @return floor number as a label
      */
     private Label createFloorLabel(){
-        var lbl = new Label(Integer.toString(mFloorNumber));
+        var lbl = new Label(String.format("%" + 2 + "s", mFloorNumber).replace(' ', '0'));
         lbl.setPadding(new Insets(PADDING));
         return lbl;
     }

@@ -4,6 +4,7 @@ import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -38,13 +39,14 @@ public class BuildingView {
     private VBox createFloorLayout(){
         var floorLayout = new VBox();
         var addFloors = floorLayout.getChildren();
-        var lbl = new Label("Buttons on floors");
-        addFloors.add(lbl);
         for (var floor : mViewModel.getFloorViewModels()) {
             addFloors.add((new FloorView(floor)).getLayout());
         }
         // reverse the floors, so they are shown in an intuitive order
         FXCollections.reverse(addFloors);
+
+        //add the heading on top
+        addFloors.add(0, new Label("Buttons on floors"));
         return floorLayout;
     }
 
