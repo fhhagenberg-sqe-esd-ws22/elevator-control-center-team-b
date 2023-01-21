@@ -1,5 +1,8 @@
 package at.fhhagenberg.model;
 
+/**
+ * Model of a floor - contains all information of that floor
+ */
 public class Floor {
     // number which represents the floor - 0 is ground floor; 1 ist first floor, etc.
     private final int mFloorNr;

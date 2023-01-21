@@ -2,6 +2,7 @@ package at.fhhagenberg.viewmodels;
 
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Elevator;
+import at.fhhagenberg.view.ElevatorView;
 import sqelevator.IElevator;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,6 +13,9 @@ import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel of an {@link Elevator} that contains properties which are used by an {@link ElevatorView}
+ */
 public class ElevatorViewModel {
     private final Elevator mModel;
     private final BusinessLogic mLogic;
@@ -79,53 +83,109 @@ public class ElevatorViewModel {
         });
     }
 
+    /**
+     * Getter for the payload property
+     * @return payload property
+     */
     public SimpleIntegerProperty getPayloadProp() {
         return mPayload;
     }
 
+    /**
+     * Getter for the speed property
+     * @return speed property
+     */
     public final SimpleIntegerProperty getSpeedProp() {
         return mSpeed;
     }
 
+    /**
+     * Getter for the acceleration property
+     * @return acceleration property
+     */
     public SimpleIntegerProperty getAccelProp() {
         return mAccel;
     }
 
+    /**
+     * Getter for the target property
+     * @return target property
+     */
     public SimpleIntegerProperty getTargetProp() {
         return mTarget;
     }
 
+    /**
+     * Getter for the direction property
+     * @return direction property
+     */
     public SimpleIntegerProperty getDirectionProp() {
         return mDirection;
     }
 
+    /**
+     * Getter for the door status property
+     * @return status property
+     */
     public SimpleStringProperty getDoorStatusStringProp() {
         return mDoorStatusString;
     }
 
+    /**
+     * Getter for the current floor property
+     * @return current floor property
+     */
     public SimpleIntegerProperty getFloorProp() {
         return mFloor;
     }
 
-    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { return mStops; }
+    /**
+     * Getter for the requested stops property
+     * @return requested stops property
+     */
+    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { 
+        return mStops; 
+    }
 
+    /**
+     * Getter for the serviced floors property
+     * @return serviced floors property
+     */
     public SimpleObjectProperty<ArrayList<Integer>> getServicedProp() {
         return mServiced;
     }
 
+    /**
+     * Getter for the manual mode property
+     * @return manual mode property
+     */
     public SimpleBooleanProperty getManualProp() {
         return mManual;
     }
 
+    /**
+     * Getter for the manual floor request property
+     * @return floor request property
+     */
     public SimpleIntegerProperty getManualFloorProp() {
         return mManualFloor;
     }
 
+    /**
+     * Getter for the identifying elevator number
+     * @return identifying elevator number
+     */
     public int getElevatorNr() {
         return mModel.getElevatorNr();
     }
 
-    public int getNrFloors(){ return mModel.getNrOfFloors(); }
+    /**
+     * Getter for the number of floors
+     * @return number of floors
+     */
+    public int getNrFloors() {
+        return mModel.getNrOfFloors(); 
+    }
     
     /**
      * Updates all properties of this

@@ -5,7 +5,9 @@ import at.fhhagenberg.service.IElevatorService;
 
 import java.util.Arrays;
 
-// contains all information of a single elevator
+/**
+ * Model of an elevator - contains all information of that elevator
+ */
 public class Elevator {
     // number of this elevator
     private final int mElevatorNr;

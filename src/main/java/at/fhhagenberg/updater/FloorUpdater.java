@@ -7,6 +7,9 @@ package at.fhhagenberg.updater;
 import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.service.IElevatorService;
 
+/**
+ * Updater for a {@link Floor} which updates all members of that floor
+ */
 public class FloorUpdater extends UpdaterBase{
     private final Floor mModel;
 

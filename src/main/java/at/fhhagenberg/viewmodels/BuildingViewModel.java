@@ -8,13 +8,14 @@ import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
-import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.updater.BuildingUpdater;
 import at.fhhagenberg.updater.UpdaterException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
+/**
+ * Class that holds all viewmodels and the {@link BusinessLogic} in order to update them
+ */
 public class BuildingViewModel {
     private final BuildingUpdater mUpdater;
     private final BusinessLogic mLogic;
@@ -28,9 +29,10 @@ public class BuildingViewModel {
 
     /**
      * Constructor of BuildingViewModel
-     * @param updater updater for the building
-     * @param building model of the building
-     * @param logic BusinesLogic that is controling the elevators of this building
+     * @param updater {@link BuildingUpdater} for the building
+     * @param building {@link Building} model of the physical building
+     * @param logic {@link BusinessLogic} that is controling the elevators of this building
+     * @param timer The {@link Timer} responsible for triggering an update task
      */
     public BuildingViewModel(BuildingUpdater updater, Building building, BusinessLogic logic, Timer timer) {
         mUpdater = updater;

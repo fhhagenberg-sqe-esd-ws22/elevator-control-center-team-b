@@ -2,8 +2,10 @@ package at.fhhagenberg.model;
 
 import java.util.List;
 
-// contains information about all elevators of a building
-public class Building {
+/**
+ * Model of a building - contains information of all elevators of that building
+ */
+ public class Building {
     private final List<Elevator> mElevators;
 
     private final List<Floor> mFloors;

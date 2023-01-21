@@ -9,11 +9,18 @@ import java.rmi.RemoteException;
 import at.fhhagenberg.logging.Logging;
 import sqelevator.IElevator;
 
+/**
+ * RMI-Service for the control of an elevator
+ */
 public class RMIElevatorService implements IElevatorService{
     private final IElevator mApi;
 
     private static final String ERROR_MESSAGE_LITERAL = "! \nError message: ";
 
+    /**
+     * Constructor of an {@link RMIElevatorService}
+     * @param api api used for making calls to the service
+     */
     public RMIElevatorService(IElevator api) {
         if (api == null) {
             String errorMsg = "Could not create RMIElevatorService, the given IElevator object is null!";

@@ -9,6 +9,9 @@ import at.fhhagenberg.service.IElevatorService;
 
 import java.util.ArrayList;
 
+/**
+ * Factory that creates all objects of a building via a {@link IElevatorService}
+ */
 public class ModelFactory {
     private final IElevatorService mElevatorService;
 
@@ -26,8 +29,6 @@ public class ModelFactory {
 
     /**
      * Creates a building objects wih the given floors and elevators.
-     * @param elevators Elevators of the building.
-     * @param floors Floors of the building.
      * @return Building object.
      */
     public Building createBuilding() {

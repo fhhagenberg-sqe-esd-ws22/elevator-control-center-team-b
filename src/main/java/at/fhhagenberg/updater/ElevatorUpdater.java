@@ -7,6 +7,9 @@ package at.fhhagenberg.updater;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevatorService;
 
+/**
+ * Updater that updates all members of an {@link Elevator}
+ */
 public class ElevatorUpdater extends UpdaterBase{
 
     private final Elevator mModel;

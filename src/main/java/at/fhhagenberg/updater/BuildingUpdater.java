@@ -8,10 +8,11 @@ import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
-import javafx.scene.control.Alert;
-
 import java.util.List;
 
+/**
+ * Class responsible for updating all objects of a building
+ */
 public class BuildingUpdater extends UpdaterBase {
 
     private final List<ElevatorUpdater> mElevatorUpdaters;
@@ -25,6 +26,8 @@ public class BuildingUpdater extends UpdaterBase {
     /**
      * Constructor for the BuildingUpdater
      * @param service IElevatorService object to retrieve the necessary information for an update on a building object.
+     * @param elevatorUpdaters List of all {@link ElevatorUpdater}s of the building
+     * @param floorUpdaters List of all {@link FloorUpdater}s of the building
      * @param model The to be updated Building object.
      */
     public BuildingUpdater(IElevatorService service, List<ElevatorUpdater> elevatorUpdaters, List<FloorUpdater> floorUpdaters, Building model) {

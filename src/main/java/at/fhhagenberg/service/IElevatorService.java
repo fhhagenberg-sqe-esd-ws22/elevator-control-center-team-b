@@ -4,6 +4,9 @@
  */
 package at.fhhagenberg.service;
 
+/**
+ * Service for the control of an elevator
+ */
 public interface IElevatorService {
     /** State variable for elevator doors open.	 */
     public static final int ELEVATOR_DOORS_OPEN = 1;

@@ -12,6 +12,9 @@ import at.fhhagenberg.service.IElevatorService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Factory that creates all updaters of a building via a {@link IElevatorService}
+ */
 public class UpdaterFactory {
     private final IElevatorService mElevatorService;
 
