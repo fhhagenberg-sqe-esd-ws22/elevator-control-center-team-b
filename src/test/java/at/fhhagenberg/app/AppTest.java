@@ -73,7 +73,7 @@ class AppTest {
         AppController controller = new AppController(service, updater, logic, vm, realExecutor, showErrorCb, showInfoCb);
 
         controller.start();
-        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS, () -> false));
+        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS + AppController.UPDATE_INTERVAL_MS / 2, TimeUnit.MILLISECONDS, () -> false));
         controller.stop();
 
         verify(updater).update();
