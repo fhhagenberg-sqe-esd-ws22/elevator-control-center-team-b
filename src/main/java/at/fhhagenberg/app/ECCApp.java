@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 
 import java.rmi.Naming;
 import java.util.Timer;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 /**
@@ -91,7 +92,7 @@ public class ECCApp extends Application {
             BuildingViewModel buildingViewModel = new BuildingViewModel(building, logic);
             BuildingView buildingView = new BuildingView(buildingViewModel);
 
-            mController = new AppController(service, updater, logic, buildingViewModel, ECCApp::showError, ECCApp::showInfo);
+            mController = new AppController(service, updater, logic, buildingViewModel, Executors.newSingleThreadScheduledExecutor(), ECCApp::showError, ECCApp::showInfo);
 
             return new Scene(buildingView.getLayout(), 1200, 480);
         }

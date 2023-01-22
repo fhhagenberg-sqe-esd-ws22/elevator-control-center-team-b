@@ -17,9 +17,9 @@ import java.util.function.Consumer;
 
 public class AppController {
 
-    private static final int UPDATE_INTERVAL_MS = 500;
-    private static final int TERMINATION_TIMEOUT_MS = 1000;
-    private static final int DISPLAY_MESSAGE_FAILURE_CNT = 5;
+    public static final int UPDATE_INTERVAL_MS = 500;
+    public static final int TERMINATION_TIMEOUT_MS = 1000;
+    public static final int DISPLAY_MESSAGE_FAILURE_CNT = 5;
 
     BusinessLogic mLogic;
     BuildingViewModel mViewModel;
@@ -35,8 +35,8 @@ public class AppController {
     boolean mDisplayedError;
     int mUpdateFailureCnt;
 
-    public AppController(IElevatorService service, IUpdater updater, BusinessLogic logic, BuildingViewModel vm, Consumer<String> showErrCb, Consumer<String> showInfoCb) {
-        if (service == null || updater == null || logic == null || vm == null || showErrCb == null || showInfoCb == null) {
+    public AppController(IElevatorService service, IUpdater updater, BusinessLogic logic, BuildingViewModel vm, ScheduledExecutorService executor, Consumer<String> showErrCb, Consumer<String> showInfoCb) {
+        if (service == null || updater == null || logic == null || vm == null || executor == null || showErrCb == null || showInfoCb == null) {
             throw new LogicException("Could not create AppController, one or more of the given objects are null");
         }
 
@@ -44,12 +44,13 @@ public class AppController {
         mViewModel = vm;
         mUpdater = updater;
         mDisplayErrorCb = showErrCb;
+        mDisplayInfoCb = showInfoCb;
         mService = service;
         mUpdateFailureCnt = 0;
+        mExecutor = executor;
     }
 
     public void start() {
-        mExecutor = Executors.newSingleThreadScheduledExecutor();
         Runnable task = () -> Platform.runLater(this::updateCycle);
         mExecutor.scheduleAtFixedRate(task, UPDATE_INTERVAL_MS, UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS);
     }
