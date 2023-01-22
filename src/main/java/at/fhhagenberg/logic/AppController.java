@@ -75,7 +75,7 @@ public class AppController {
      * Creates a task to update the GUI and perform a Businesslogic workflow. Schedules the task periodically.
      */
     public void start() {
-        Runnable task = () -> Platform.runLater(this::updateCycle);
+        Runnable task = this::updateCycle;
         mExecutor.scheduleAtFixedRate(task, UPDATE_INTERVAL_MS, UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS);
     }
 
@@ -101,12 +101,13 @@ public class AppController {
     private void updateCycle() {
         try {
             mUpdater.update();
-            mViewModel.update();
+            Platform.runLater(mViewModel::update);
             mLogic.setNextTargets();
 
             if (mDisplayedError) {
                 mDisplayedError = false;
-                mDisplayInfoCb.accept("The connection to the service got reestablished and the application is running again!");
+                mUpdateFailureCnt = 0;
+                Platform.runLater(() -> mDisplayInfoCb.accept("The connection to the service got reestablished and the application is running again!"));
             }
         } catch (Exception ex) {
             Logging.getLogger().error(ex.getMessage());
@@ -121,7 +122,7 @@ public class AppController {
         mUpdateFailureCnt++;
         boolean connected = mService.connect();
         if (!connected && mUpdateFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
-            mDisplayErrorCb.accept("The application is not able to connect to the remote service anymore! Please check your connection to the internet and maybe restart the application!");
+            Platform.runLater(() -> mDisplayErrorCb.accept("The application is not able to connect to the remote service anymore! Please check your connection to the internet and maybe restart the application!"));
             mDisplayedError = true;
         }
     }

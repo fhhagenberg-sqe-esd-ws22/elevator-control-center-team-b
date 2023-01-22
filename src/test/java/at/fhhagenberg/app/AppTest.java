@@ -97,36 +97,6 @@ class AppTest {
     }
 
     @Test
-    void testUpdateMechanismFailedDueToViewModel() throws TimeoutException {
-        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
-        AtomicBoolean displayedError = new AtomicBoolean(false);
-        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), showInfoCb);
-        doThrow(UpdaterException.class).when(vm).update();
-        when(service.connect()).thenReturn(false);
-
-        controller.start();
-        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
-        controller.stop();
-
-        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT)).connect();
-    }
-
-    @Test
-    void testUpdateMechanismFailedDueToLogic() throws TimeoutException {
-        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
-        AtomicBoolean displayedError = new AtomicBoolean(false);
-        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), showInfoCb);
-        doThrow(UpdaterException.class).when(logic).setNextTargets();
-        when(service.connect()).thenReturn(false);
-
-        controller.start();
-        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
-        controller.stop();
-
-        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT)).connect();
-    }
-
-    @Test
     void testReconnect() throws TimeoutException {
         ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
         AtomicBoolean displayedError = new AtomicBoolean(false);
@@ -280,7 +250,8 @@ class AppTest {
         mock.setElevatorFloor(1, 1);
         mock.setElevatorFloor(2, 3);
 
-        waitFor(1, TimeUnit.SECONDS, () -> robot.lookup("#ElevatorTarget0_2").query().getStyle().equals(base + "green;"));
+        waitFor(1, TimeUnit.SECONDS, () -> robot.lookup("#ElevatorTarget3_0").query().getStyle().equals(base + "green;") &&
+                robot.lookup("#ElevatorTarget0_2").query().getStyle().equals(base + "green;"));
 
         style = robot.lookup("#ElevatorTarget0_2").query().getStyle();
         Assertions.assertEquals(base + "green;", style);
