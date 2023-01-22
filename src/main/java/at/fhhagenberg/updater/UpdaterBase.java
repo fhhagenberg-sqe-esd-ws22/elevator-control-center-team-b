@@ -17,6 +17,7 @@ public abstract class UpdaterBase implements IUpdater {
 
     /**
      * Constructor of an {@link UpdaterBase}
+     *
      * @param elevatorService service used for retrieving update values
      */
     protected UpdaterBase(IElevatorService elevatorService) {

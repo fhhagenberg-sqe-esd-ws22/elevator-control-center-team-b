@@ -20,6 +20,7 @@ public class UpdaterFactory {
 
     /**
      * Constructor of the UpdaterFactory
+     *
      * @param service IElevatorService object which will be passed to the updaters in order to perform the API requests for the updates.
      */
     public UpdaterFactory(IElevatorService service) {
@@ -32,6 +33,7 @@ public class UpdaterFactory {
 
     /**
      * Creates a BuildingUpdater for the given Building object.
+     *
      * @param building Building object which shall be updated.
      * @return BuildingUpdater for the given Building object.
      */
@@ -45,6 +47,7 @@ public class UpdaterFactory {
 
     /**
      * Creates an ElevatorUpdater object for every given Elevator object.
+     *
      * @param elevators List of elevators which shall be updated.
      * @return List of ElevatorUpdaters for the given Elevator objects.
      */
@@ -54,7 +57,7 @@ public class UpdaterFactory {
         }
 
         var updaters = new ArrayList<ElevatorUpdater>();
-        for (Elevator e: elevators) {
+        for (Elevator e : elevators) {
             updaters.add(new ElevatorUpdater(mElevatorService, e));
         }
 
@@ -63,6 +66,7 @@ public class UpdaterFactory {
 
     /**
      * Creates an FloorUpdater object for every given Floor object.
+     *
      * @param floors List of floors which shall be updated.
      * @return List of FloorUpdaters for the given Floor objects.
      */
@@ -72,7 +76,7 @@ public class UpdaterFactory {
         }
 
         var updaters = new ArrayList<FloorUpdater>();
-        for (Floor f: floors) {
+        for (Floor f : floors) {
             updaters.add(new FloorUpdater(mElevatorService, f));
         }
 

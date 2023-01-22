@@ -10,6 +10,7 @@ package at.fhhagenberg.service;
 public class ElevatorServiceException extends RuntimeException {
     /**
      * Constructor of a {@link ElevatorServiceException}
+     *
      * @param msg msg of the exception
      */
     ElevatorServiceException(String msg) {

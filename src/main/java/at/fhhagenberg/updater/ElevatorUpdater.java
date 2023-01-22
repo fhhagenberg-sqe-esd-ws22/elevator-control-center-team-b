@@ -10,18 +10,19 @@ import at.fhhagenberg.service.IElevatorService;
 /**
  * Updater that updates all members of an {@link Elevator}
  */
-public class ElevatorUpdater extends UpdaterBase{
+public class ElevatorUpdater extends UpdaterBase {
 
     private final Elevator mModel;
 
     /**
      * Constructor for the ElevatorUpdater
+     *
      * @param elevatorService IElevatorService object to retrieve the necessary information for an update on an Elevator object.
-     * @param model The to be updated Elevator object.
+     * @param model           The to be updated Elevator object.
      */
     public ElevatorUpdater(IElevatorService elevatorService, Elevator model) {
         super(elevatorService);
-        if(model == null) {
+        if (model == null) {
             throw new UpdaterException("Could not create ElevatorUpdater because the given Elevator object is null!");
         }
 
@@ -36,7 +37,7 @@ public class ElevatorUpdater extends UpdaterBase{
     public void update() {
         int elevatorNr = mModel.getElevatorNr();
 
-        if(mElevatorService.getCommittedDirection(elevatorNr) != mModel.getDirection()){
+        if (mElevatorService.getCommittedDirection(elevatorNr) != mModel.getDirection()) {
             mElevatorService.setCommittedDirection(elevatorNr, mModel.getDirection());
 
             // model gets updated with gotten direction, new direction
@@ -44,7 +45,7 @@ public class ElevatorUpdater extends UpdaterBase{
             mModel.setDirection(mElevatorService.getCommittedDirection(elevatorNr));
         }
 
-        if(mElevatorService.getTarget(elevatorNr) != mModel.getTarget()){
+        if (mElevatorService.getTarget(elevatorNr) != mModel.getTarget()) {
             mElevatorService.setTarget(elevatorNr, mModel.getTarget());
             mModel.setTarget(mElevatorService.getTarget(elevatorNr));
         }
@@ -62,11 +63,12 @@ public class ElevatorUpdater extends UpdaterBase{
 
     /**
      * Checks where people in the elevator want to get off
+     *
      * @param elevatorNr identifies the elevator
      */
     private void checkForStops(int elevatorNr) {
         int floors = mElevatorService.getFloorNum();
-        
+
         for (int i = 0; i < floors; i++) {
             mModel.setStop(i, mElevatorService.getElevatorButton(elevatorNr, i));
         }
@@ -74,6 +76,7 @@ public class ElevatorUpdater extends UpdaterBase{
 
     /**
      * Checks which floors are serviced
+     *
      * @param elevatorNr identifies the elevator
      */
     private void checkServiced(int elevatorNr) {

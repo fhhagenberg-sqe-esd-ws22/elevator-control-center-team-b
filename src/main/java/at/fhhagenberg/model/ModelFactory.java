@@ -17,6 +17,7 @@ public class ModelFactory {
 
     /**
      * Constructor for the ModelFactory.
+     *
      * @param service IElevatorService to retrieve the necessary information needed for the build up.
      */
     public ModelFactory(IElevatorService service) {
@@ -29,6 +30,7 @@ public class ModelFactory {
 
     /**
      * Creates a building objects wih the given floors and elevators.
+     *
      * @return Building object.
      */
     public Building createBuilding() {
@@ -37,12 +39,13 @@ public class ModelFactory {
 
     /**
      * Creates floor objects which represent the floors of a building.
+     *
      * @return List of floor objects which represent the floors of a building.
      */
     private ArrayList<Floor> createFloors() throws ElevatorServiceException {
         ArrayList<Floor> floors = new ArrayList<>();
         int nrOfFloors = mElevatorService.getFloorNum();
-        for(int i = 0; i < nrOfFloors; ++i) {
+        for (int i = 0; i < nrOfFloors; ++i) {
             floors.add(new Floor(i));
         }
 
@@ -51,13 +54,14 @@ public class ModelFactory {
 
     /**
      * Creates elevator objects which represent the elevators of a building.
+     *
      * @return List of elevator objects which represent the elevators of a building.
      */
     private ArrayList<Elevator> createElevators() throws ElevatorServiceException {
         ArrayList<Elevator> elevators = new ArrayList<>();
         int nrOfFloors = mElevatorService.getFloorNum();
         int nrOfElevators = mElevatorService.getElevatorNum();
-        for(int i = 0; i < nrOfElevators; ++i) {
+        for (int i = 0; i < nrOfElevators; ++i) {
             elevators.add(new Elevator(i, nrOfFloors));
         }
 

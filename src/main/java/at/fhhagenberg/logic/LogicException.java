@@ -10,6 +10,7 @@ package at.fhhagenberg.logic;
 public class LogicException extends RuntimeException {
     /**
      * Constructor for {@link LogicException}
+     *
      * @param message Exception message.
      */
     public LogicException(String message) {

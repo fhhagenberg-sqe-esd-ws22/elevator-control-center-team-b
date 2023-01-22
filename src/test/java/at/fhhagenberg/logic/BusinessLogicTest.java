@@ -1,14 +1,11 @@
 package at.fhhagenberg.logic;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import at.fhhagenberg.mock_observable.MockElevatorService;
+import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.IElevatorService;
 import org.junit.jupiter.api.Test;
 
-import at.fhhagenberg.mock_observable.MockElevatorService;
-import at.fhhagenberg.model.ModelFactory;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BusinessLogicTest {
     @Test
@@ -31,7 +28,7 @@ class BusinessLogicTest {
         logic.setManual(0, true);
         assertTrue(logic.getManual(0));
         assertFalse(logic.getManual(1));
-        
+
         logic.setManual(1, true);
         assertTrue(logic.getManual(0));
         assertTrue(logic.getManual(1));
@@ -77,13 +74,13 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testManualModeWithUnservicedFloor(){
+    void testManualModeWithUnservicedFloor() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 2, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
-        elevator0.setServiced(1,false);
+        elevator0.setServiced(1, false);
         elevator0.setTarget(1);
 
         logic.setManual(0, true);
@@ -97,7 +94,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeSingleElevatorPressedInsideSequence(){
+    void testAutomaticModeSingleElevatorPressedInsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -145,7 +142,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeSingleElevatorPressedOutsideSequence(){
+    void testAutomaticModeSingleElevatorPressedOutsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -178,7 +175,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequence(){
+    void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -211,14 +208,14 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor(){
+    void testAutomaticModeSingleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 4, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
         var elevator0 = building.getElevatorByNumber(0);
         elevator0.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
-        elevator0.setServiced(3,false);
+        elevator0.setServiced(3, false);
 
         elevator0.setStop(1, true);
         logic.setNextTargets();
@@ -243,8 +240,9 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(2, elevator0.getTarget());
     }
+
     @Test
-    void testAutomaticModeMultipleElevatorPressedInsideSequence(){
+    void testAutomaticModeMultipleElevatorPressedInsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 4, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -255,7 +253,7 @@ class BusinessLogicTest {
 
         elevator0.setStop(1, true);
         elevator0.setStop(3, true);
-        elevator1.setStop(2,true);
+        elevator1.setStop(2, true);
         logic.setNextTargets();
         assertEquals(1, elevator0.getTarget());
         assertEquals(2, elevator1.getTarget());
@@ -284,7 +282,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeMultipleElevatorPressedOutsideSequence(){
+    void testAutomaticModeMultipleElevatorPressedOutsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -326,7 +324,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequence(){
+    void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequence() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -368,7 +366,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor(){
+    void testAutomaticModeMultipleElevatorPressedInsideAndOutsideSequenceWithUnservicedFloor() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(2, 5, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -377,8 +375,8 @@ class BusinessLogicTest {
         var elevator1 = building.getElevatorByNumber(1);
         elevator1.setDoorStatus(IElevatorService.ELEVATOR_DOORS_OPEN);
         var floors = building.getFloors();
-        elevator0.setServiced(3,false);
-        elevator1.setServiced(2,false);
+        elevator0.setServiced(3, false);
+        elevator1.setServiced(2, false);
 
         floors.get(2).setWantUp(true);
         floors.get(3).setWantUp(true);
@@ -411,7 +409,7 @@ class BusinessLogicTest {
     }
 
     @Test
-    void testSwitchToManualModeAndBack(){
+    void testSwitchToManualModeAndBack() {
         ModelFactory factory = new ModelFactory(new MockElevatorService(1, 3, 10));
         var building = factory.createBuilding();
         BusinessLogic logic = new BusinessLogic(building);
@@ -435,9 +433,9 @@ class BusinessLogicTest {
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());
-        elevator0.setStop(2,false);
+        elevator0.setStop(2, false);
 
-        logic.setManual(0,false);
+        logic.setManual(0, false);
         logic.setNextTargets();
         assertEquals(0, elevator0.getTarget());
         assertEquals(IElevatorService.ELEVATOR_DIRECTION_DOWN, elevator0.getDirection());

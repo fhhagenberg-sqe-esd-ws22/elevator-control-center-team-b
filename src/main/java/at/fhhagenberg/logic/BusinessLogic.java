@@ -1,11 +1,11 @@
 package at.fhhagenberg.logic;
 
-import java.util.Arrays;
-
 import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.service.IElevatorService;
+
+import java.util.Arrays;
 
 /**
  * Class responsible for controlling the elevator
@@ -21,41 +21,42 @@ public class BusinessLogic {
 
     /**
      * determines if an elevator is standing on its target floor
+     *
      * @param elevator which to check if it is standing on its target floor
      * @return true if standing on the target floor, false otherwise
      */
-    private boolean isOnTargetFloor(Elevator elevator){
+    private boolean isOnTargetFloor(Elevator elevator) {
         return elevator.getTarget() == elevator.getFloor() && elevator.getSpeed() == 0 && elevator.getDoorStatus() == IElevatorService.ELEVATOR_DOORS_OPEN;
     }
 
     /**
      * updates the targets of the elevators that are not already set
      */
-    public void setNextTargets(){
+    public void setNextTargets() {
 
         // collect all floors where buttons are pressed in 2 arrays
         var upPressed = new boolean[mModel.getFloors().size()];
         var downPressed = new boolean[mModel.getFloors().size()];
-        for(var floor : mModel.getFloors()){
+        for (var floor : mModel.getFloors()) {
             downPressed[floor.getFloorNumber()] = floor.getWantDown();
             upPressed[floor.getFloorNumber()] = floor.getWantUp();
         }
 
         // handle the next target for each elevator one after the other
         // once a target is set, it is fixed until the elevator arrives at that location
-        for(var elevator : mModel.getElevators()){
+        for (var elevator : mModel.getElevators()) {
             var nr = elevator.getElevatorNr();
 
             // an array for the stops, needed so we don't try to stop on our
             // current floor again, when the button is still pressed when on the floor
             var stops = new boolean[mModel.getFloors().size()];
-            for(int i = 0; i < elevator.getNrOfFloors(); ++i){
+            for (int i = 0; i < elevator.getNrOfFloors(); ++i) {
                 stops[i] = elevator.getStop(i);
             }
 
             // if the elevator is standing at its current floor
-            if(isOnTargetFloor(elevator)) {
-                var currentFloor= elevator.getFloor();
+            if (isOnTargetFloor(elevator)) {
+                var currentFloor = elevator.getFloor();
 
                 // check if this floor was blocked as upwards/downwards target by this elevator
                 // this introduces special behavior in manual mode, where this could lead to
@@ -65,18 +66,17 @@ public class BusinessLogic {
                 // This has to be here, outside the automatic mode, because the last automatic mode target
                 // when switching into manual mode has to be cleared, as not to block servicing of a button
                 // indefinitely.
-                if(mUp[nr] && mUpTarget[currentFloor]){
+                if (mUp[nr] && mUpTarget[currentFloor]) {
                     mUpTarget[currentFloor] = false;
                 }
-                if(!mUp[nr] && mDownTarget[currentFloor]){
+                if (!mUp[nr] && mDownTarget[currentFloor]) {
                     mDownTarget[currentFloor] = false;
                 }
 
                 // if we are in manual mode, we set the last entered manual target
                 if (mManual[nr]) {
                     elevator.setTarget(mManualTarget[nr]);
-                }
-                else { //automatic mode
+                } else { //automatic mode
 
                     // we don't need to stop on the floor we are currently standing on
                     stops[currentFloor] = false;
@@ -86,7 +86,7 @@ public class BusinessLogic {
                     // if we search for stops that are on the way down, but find none we must look again for stops
                     // on the way up, for this we have to loop once, therefore this loop variable
                     var loop = 0;
-                    while(loop < 2){
+                    while (loop < 2) {
                         loop++;
 
                         // if the elevator is searching for stops upwards
@@ -99,7 +99,7 @@ public class BusinessLogic {
                                 // if a floor is a requested stop by an inside or outside button it will get serviced
                                 // if requested outside, see that it is not already serviced by another elevator
                                 if (((upPressed[i] && !mUpTarget[i]) || stops[i]) &&
-                                        elevator.getServiced(i))  {
+                                        elevator.getServiced(i)) {
                                     elevator.setTarget(i);
                                     if (upPressed[i]) {
 
@@ -115,12 +115,12 @@ public class BusinessLogic {
                             // starting with the upmost floor
                             if (i == elevator.getNrOfFloors()) {
                                 mUp[nr] = false;
-                                if(currentFloor != elevator.getNrOfFloors()-1) {
+                                if (currentFloor != elevator.getNrOfFloors() - 1) {
                                     currentFloor = i;
                                 }
                             }
                             // otherwise, we take care of the next elevator
-                            else{
+                            else {
                                 break;
                             }
                         }
@@ -130,7 +130,7 @@ public class BusinessLogic {
                             int i = currentFloor - 1;
                             for (; i >= 0; --i) {
                                 if (((downPressed[i] && !mDownTarget[i]) || stops[i]) &&
-                                    elevator.getServiced(i))  {
+                                        elevator.getServiced(i)) {
                                     elevator.setTarget(i);
                                     if (downPressed[i]) {
                                         mDownTarget[i] = true;
@@ -140,11 +140,10 @@ public class BusinessLogic {
                             }
                             if (i == -1) {
                                 mUp[nr] = true;
-                                if(currentFloor != 0) {
+                                if (currentFloor != 0) {
                                     currentFloor = i;
                                 }
-                            }
-                            else{
+                            } else {
                                 break;
                             }
                         }
@@ -152,13 +151,11 @@ public class BusinessLogic {
                 }
 
                 // set direction based on the target
-                if(elevator.getTarget() == elevator.getFloor()){
+                if (elevator.getTarget() == elevator.getFloor()) {
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED);
-                }
-                else if(elevator.getTarget() < elevator.getFloor()){
+                } else if (elevator.getTarget() < elevator.getFloor()) {
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_DOWN);
-                }
-                else if(elevator.getTarget() > elevator.getFloor()){
+                } else if (elevator.getTarget() > elevator.getFloor()) {
                     elevator.setDirection(IElevatorService.ELEVATOR_DIRECTION_UP);
                 }
             }
@@ -167,6 +164,7 @@ public class BusinessLogic {
 
     /**
      * Constructor of BusinessLogic
+     *
      * @param building the building for which the elevators should be controlled
      */
     public BusinessLogic(Building building) {
@@ -185,20 +183,22 @@ public class BusinessLogic {
 
     /**
      * Activates or deactivates manual mode of an elevator
+     *
      * @param elevatorNr elevator for which manual mode should be set
-     * @param active if true, the elevator will be operated in manual mode
-     *                  otherwise in automatic mode.
+     * @param active     if true, the elevator will be operated in manual mode
+     *                   otherwise in automatic mode.
      */
     public void setManual(int elevatorNr, boolean active) {
         mManual[elevatorNr] = active;
         //set default target in manual mode to current target
-        if(active){
+        if (active) {
             mManualTarget[elevatorNr] = mModel.getElevatorByNumber(elevatorNr).getTarget();
         }
     }
 
     /**
      * Getter for manual mode flag of an elevator
+     *
      * @param elevatorNr elevator for which the flag is retrieved
      * @return flag that indicates the manual mode
      */
@@ -208,8 +208,9 @@ public class BusinessLogic {
 
     /**
      * sets the next elevator target when in manual mode
+     *
      * @param elevatorNr for which elevator to set the target
-     * @param floor to which floor to set the target
+     * @param floor      to which floor to set the target
      */
     public void setElevatorManualTarget(int elevatorNr, int floor) {
         if (floor < 0 || floor >= mModel.getFloors().size()) {

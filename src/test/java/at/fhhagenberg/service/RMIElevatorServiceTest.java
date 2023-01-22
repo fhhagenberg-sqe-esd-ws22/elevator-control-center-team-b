@@ -30,10 +30,10 @@ class RMIElevatorServiceTest {
 
     @Test
     void testObjectCreationConnectionStringIsNullOrEmpty() {
-        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, ""); });
-        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, null); });
-        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, null); });
-        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, ""); });
+        assertThrows(ElevatorServiceException.class, () -> new RMIElevatorService(null, ""));
+        assertThrows(ElevatorServiceException.class, () -> new RMIElevatorService(null, null));
+        assertThrows(ElevatorServiceException.class, () -> new RMIElevatorService(api, null));
+        assertThrows(ElevatorServiceException.class, () -> new RMIElevatorService(api, ""));
     }
 
     @Test
@@ -45,7 +45,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetCommittedDirectionFails() throws RemoteException {
         when(api.getCommittedDirection(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getCommittedDirection(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getCommittedDirection(0));
     }
 
     @Test
@@ -57,7 +57,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorAccelFails() throws RemoteException {
         when(api.getElevatorAccel(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorAccel(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorAccel(0));
     }
 
     @Test
@@ -71,7 +71,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorButtonFails() throws RemoteException {
         when(api.getElevatorButton(0, 0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorButton(0, 0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorButton(0, 0));
     }
 
     @Test
@@ -83,7 +83,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorDoorStatusFails() throws RemoteException {
         when(api.getElevatorDoorStatus(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorDoorStatus(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorDoorStatus(0));
     }
 
     @Test
@@ -97,7 +97,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorFloorFails() throws RemoteException {
         when(api.getElevatorFloor(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorFloor(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorFloor(0));
     }
 
     @Test
@@ -109,7 +109,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorNumFails() throws RemoteException {
         when(api.getElevatorNum()).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorNum(); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorNum());
     }
 
     @Test
@@ -121,7 +121,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorPositionFails() throws RemoteException {
         when(api.getElevatorPosition(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorPosition(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorPosition(0));
     }
 
     @Test
@@ -133,7 +133,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorSpeedFails() throws RemoteException {
         when(api.getElevatorSpeed(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorSpeed(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorSpeed(0));
     }
 
     @Test
@@ -145,7 +145,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorWeightFails() throws RemoteException {
         when(api.getElevatorWeight(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorWeight(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorWeight(0));
     }
 
     @Test
@@ -157,7 +157,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetElevatorCapacityFails() throws RemoteException {
         when(api.getElevatorCapacity(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getElevatorCapacity(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getElevatorCapacity(0));
     }
 
     @Test
@@ -171,7 +171,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorButtonDownFails() throws RemoteException {
         when(api.getFloorButtonDown(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getFloorButtonDown(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getFloorButtonDown(0));
     }
 
     @Test
@@ -185,7 +185,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorButtonUpFails() throws RemoteException {
         when(api.getFloorButtonUp(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getFloorButtonUp(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getFloorButtonUp(0));
     }
 
     @Test
@@ -197,7 +197,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorHeightFails() throws RemoteException {
         when(api.getFloorHeight()).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getFloorHeight(); });
+        assertThrows(ElevatorServiceException.class, () -> service.getFloorHeight());
     }
 
     @Test
@@ -209,7 +209,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetFloorNumFails() throws RemoteException {
         when(api.getFloorNum()).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getFloorNum(); });
+        assertThrows(ElevatorServiceException.class, () -> service.getFloorNum());
     }
 
     @Test
@@ -223,7 +223,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetServicesFloorsFails() throws RemoteException {
         when(api.getServicesFloors(0, 0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getServicesFloors(0, 0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getServicesFloors(0, 0));
     }
 
     @Test
@@ -235,7 +235,7 @@ class RMIElevatorServiceTest {
     @Test
     void testGetTargetFails() throws RemoteException {
         when(api.getTarget(0)).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getTarget(0); });
+        assertThrows(ElevatorServiceException.class, () -> service.getTarget(0));
     }
 
     @Test
@@ -247,7 +247,7 @@ class RMIElevatorServiceTest {
     @Test
     void testSetCommittedDirectionFails() throws RemoteException {
         doThrow(RemoteException.class).when(api).setCommittedDirection(0, IElevatorService.ELEVATOR_DIRECTION_DOWN);
-        assertThrows(ElevatorServiceException.class, () -> { service.setCommittedDirection(0, IElevatorService.ELEVATOR_DIRECTION_DOWN); });
+        assertThrows(ElevatorServiceException.class, () -> service.setCommittedDirection(0, IElevatorService.ELEVATOR_DIRECTION_DOWN));
     }
 
     @Test
@@ -259,7 +259,7 @@ class RMIElevatorServiceTest {
     @Test
     void testSetServicesFloorsFails() throws RemoteException {
         doThrow(RemoteException.class).when(api).setServicesFloors(0, 0, true);
-        assertThrows(ElevatorServiceException.class, () -> { service.setServicesFloors(0, 0, true); });
+        assertThrows(ElevatorServiceException.class, () -> service.setServicesFloors(0, 0, true));
     }
 
     @Test
@@ -271,7 +271,7 @@ class RMIElevatorServiceTest {
     @Test
     void testSetTargetFails() throws RemoteException {
         doThrow(RemoteException.class).when(api).setTarget(0, 1);
-        assertThrows(ElevatorServiceException.class, () -> { service.setTarget(0, 1); });
+        assertThrows(ElevatorServiceException.class, () -> service.setTarget(0, 1));
     }
 
     @Test
@@ -283,6 +283,6 @@ class RMIElevatorServiceTest {
     @Test
     void testGetClockTickFails() throws RemoteException {
         when(api.getClockTick()).thenThrow(RemoteException.class);
-        assertThrows(ElevatorServiceException.class, () -> { service.getClockTick(); });
+        assertThrows(ElevatorServiceException.class, () -> service.getClockTick());
     }
 }

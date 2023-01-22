@@ -106,5 +106,5 @@ public class MockExceptionElevatorService implements IElevatorService {
     public long getClockTick() {
         return 0;
     }
-    
+
 }

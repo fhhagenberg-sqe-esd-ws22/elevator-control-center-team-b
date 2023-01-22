@@ -33,10 +33,11 @@ public class BuildingUpdater extends UpdaterBase {
 
     /**
      * Constructor for the BuildingUpdater
-     * @param service IElevatorService object to retrieve the necessary information for an update on a building object.
+     *
+     * @param service          IElevatorService object to retrieve the necessary information for an update on a building object.
      * @param elevatorUpdaters List of all {@link ElevatorUpdater}s of the building
-     * @param floorUpdaters List of all {@link FloorUpdater}s of the building
-     * @param model The to be updated Building object.
+     * @param floorUpdaters    List of all {@link FloorUpdater}s of the building
+     * @param model            The to be updated Building object.
      */
     public BuildingUpdater(IElevatorService service, List<ElevatorUpdater> elevatorUpdaters, List<FloorUpdater> floorUpdaters, Building model) {
         super(service);
@@ -52,9 +53,12 @@ public class BuildingUpdater extends UpdaterBase {
     /**
      * Function to retrieve the number of failed update cycles. The counter will be reset to 0
      * after one successful update cycle.
+     *
      * @return Number of failed update cycles.
      */
-    public int getFailureCnt() { return mFailureCnt; }
+    public int getFailureCnt() {
+        return mFailureCnt;
+    }
 
     /**
      * Performs all necessary API calls on a service object in order to update a referenced model object.
@@ -66,8 +70,7 @@ public class BuildingUpdater extends UpdaterBase {
             updateElevators();
 
             mFailureCnt = 0;
-        }
-        catch (ElevatorServiceException ex) {
+        } catch (ElevatorServiceException ex) {
             handleUpdateError(ex.getMessage());
         }
     }
@@ -84,7 +87,7 @@ public class BuildingUpdater extends UpdaterBase {
      * Triggers all FloorUpdaters
      */
     private void updateFloors() {
-        for(var updater : mFloorUpdaters) {
+        for (var updater : mFloorUpdaters) {
             updater.update();
         }
     }
@@ -93,7 +96,7 @@ public class BuildingUpdater extends UpdaterBase {
      * Triggers all ElevatorUpdaters
      */
     private void updateElevators() {
-        for(var updater : mElevatorUpdaters) {
+        for (var updater : mElevatorUpdaters) {
             updater.update();
         }
     }

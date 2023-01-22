@@ -13,16 +13,21 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class BuildingTest {
-    @Mock Elevator elevator1;
-    @Mock Elevator elevator2;
+    @Mock
+    Elevator elevator1;
+    @Mock
+    Elevator elevator2;
 
-    @Mock Floor floor1;
-    @Mock Floor floor2;
-    @Mock Floor floor3;
+    @Mock
+    Floor floor1;
+    @Mock
+    Floor floor2;
+    @Mock
+    Floor floor3;
 
     ArrayList<Floor> floors;
     ArrayList<Elevator> elevators;
@@ -50,7 +55,7 @@ class BuildingTest {
     @Test
     void testObjectCreationFails() {
         var emptyFloors = new ArrayList<Floor>();
-        var emptyElevators =  new ArrayList<Elevator>();
+        var emptyElevators = new ArrayList<Elevator>();
         assertThrows(ModelException.class, () -> new Building(null, floors));
         assertThrows(ModelException.class, () -> new Building(elevators, null));
         assertThrows(ModelException.class, () -> new Building(emptyElevators, floors));

@@ -17,22 +17,28 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BuildingUpdaterTest {
-    @Mock IElevatorService service;
-    @Mock Building building;
+    @Mock
+    IElevatorService service;
+    @Mock
+    Building building;
 
-    @Mock FloorUpdater floorUpdater1;
-    @Mock FloorUpdater floorUpdater2;
-    @Mock FloorUpdater floorUpdater3;
+    @Mock
+    FloorUpdater floorUpdater1;
+    @Mock
+    FloorUpdater floorUpdater2;
+    @Mock
+    FloorUpdater floorUpdater3;
 
-    @Mock ElevatorUpdater elevatorUpdater1;
-    @Mock ElevatorUpdater elevatorUpdater2;
+    @Mock
+    ElevatorUpdater elevatorUpdater1;
+    @Mock
+    ElevatorUpdater elevatorUpdater2;
 
     ArrayList<FloorUpdater> floors;
     ArrayList<ElevatorUpdater> elevators;
@@ -51,26 +57,26 @@ class BuildingUpdaterTest {
 
     @Test
     void testObjectCreationElevatorServiceIsNull() {
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(null, elevators, floors, building); });
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(null, elevators, floors, building));
     }
 
     @Test
     void testObjectCreationNoElevatorUpdaters() {
         var emptyElevators = new ArrayList<ElevatorUpdater>();
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, null, floors, building); });
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, emptyElevators, floors, building); });
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(service, null, floors, building));
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(service, emptyElevators, floors, building));
     }
 
     @Test
     void testObjectCreationNoFloorUpdaters() {
         var emptyFloors = new ArrayList<FloorUpdater>();
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, null, building); });
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, emptyFloors, building); });
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(service, elevators, null, building));
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(service, elevators, emptyFloors, building));
     }
 
     @Test
     void testObjectCreationNoBuildingModel() {
-        assertThrows(UpdaterException.class, () -> { new BuildingUpdater(service, elevators, floors, null); });
+        assertThrows(UpdaterException.class, () -> new BuildingUpdater(service, elevators, floors, null));
     }
 
     @Test
@@ -130,9 +136,9 @@ class BuildingUpdaterTest {
         var building = factory.createBuilding();
         BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
 
-        for (int i = 0; i < BuildingUpdater.MAX_FAILURE_CNT-1; ++i) {
+        for (int i = 0; i < BuildingUpdater.MAX_FAILURE_CNT - 1; ++i) {
             updater.update();
-            assertEquals(i+1, updater.getFailureCnt());
+            assertEquals(i + 1, updater.getFailureCnt());
         }
 
         assertThrows(UpdaterException.class, updater::update);

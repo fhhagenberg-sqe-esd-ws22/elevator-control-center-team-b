@@ -34,11 +34,11 @@ public class Elevator {
 
     /**
      * Constructor of an elevator
-     * @param elevatorNr number for identifying this elevator
+     *
+     * @param elevatorNr     number for identifying this elevator
      * @param numberOfFloors the number ofa all floors the elevator can target
      */
-    public Elevator(int elevatorNr, int numberOfFloors)
-    {
+    public Elevator(int elevatorNr, int numberOfFloors) {
         mNrOfFloors = numberOfFloors;
         mElevatorNr = elevatorNr;
         mStops = new boolean[numberOfFloors];
@@ -56,6 +56,7 @@ public class Elevator {
 
     /**
      * Setter for the elevators speed.
+     *
      * @param speed The current speed of the elevator.
      */
     public void setSpeed(int speed) {
@@ -65,6 +66,7 @@ public class Elevator {
 
     /**
      * Setter for the elevators current acceleration.
+     *
      * @param accel The current acceleration of the elevator.
      */
     public void setAccel(int accel) {
@@ -73,12 +75,13 @@ public class Elevator {
 
     /**
      * Setter for the elevators current target floor
+     *
      * @param target The current target floor of the elevator.
      */
     public void setTarget(int target) {
         if (target >= mNrOfFloors || target < 0) {
             Logging.getLogger().warn(String.format("Given target floor %d is out of the valid range [%d - %d[ and will not be set!",
-                        target, 0, mNrOfFloors));
+                    target, 0, mNrOfFloors));
             return;
         }
         this.mTarget = target;
@@ -86,12 +89,13 @@ public class Elevator {
 
     /**
      * Setter for the current direction of the elevator.
+     *
      * @param direction The current dircetion of the elevator.
      */
     public void setDirection(int direction) {
         if (direction < IElevatorService.ELEVATOR_DIRECTION_UP || direction > IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED) {
             Logging.getLogger().warn(String.format("Given direction %d is out of the valid range [%d - %d] and will not be set!",
-                        direction, IElevatorService.ELEVATOR_DIRECTION_UP, IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED));
+                    direction, IElevatorService.ELEVATOR_DIRECTION_UP, IElevatorService.ELEVATOR_DIRECTION_UNCOMMITTED));
             return;
         }
         this.mDirection = direction;
@@ -99,6 +103,7 @@ public class Elevator {
 
     /**
      * Setter for the elevator's current payload (weight of all passenger's currently inside the elevator).
+     *
      * @param payload Current payload.
      */
     public void setPayload(int payload) {
@@ -111,11 +116,12 @@ public class Elevator {
 
     /**
      * Setter for the current door status of the elevator.
+     *
      * @param doorStatus Current status.
      */
     public void setDoorStatus(int doorStatus) {
         if (doorStatus < IElevatorService.ELEVATOR_DOORS_OPEN || doorStatus > IElevatorService.ELEVATOR_DOORS_CLOSING) {
-            Logging.getLogger().warn(String.format("Given door status %d is out of the valid range [%d - %d] and will not be set!!", 
+            Logging.getLogger().warn(String.format("Given door status %d is out of the valid range [%d - %d] and will not be set!!",
                     doorStatus, IElevatorService.ELEVATOR_DOORS_OPEN, IElevatorService.ELEVATOR_DOORS_CLOSING));
             return;
         }
@@ -125,12 +131,13 @@ public class Elevator {
 
     /**
      * Setter for the current  floor.
+     *
      * @param floor Current floor.
      */
     public void setFloor(int floor) {
         if (floor < 0 || floor >= mNrOfFloors) {
             Logging.getLogger().warn(String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
-                            floor, 0, mNrOfFloors));
+                    floor, 0, mNrOfFloors));
             return;
         }
         this.mFloor = floor;
@@ -138,13 +145,14 @@ public class Elevator {
 
     /**
      * Sets a flag if the elevator should stop at a certain floor (request from inside the elevator)
+     *
      * @param floorNr identifies at which floor the flag should be set
-     * @param doStop true if the elevator should stop at that floor, false otherwise
+     * @param doStop  true if the elevator should stop at that floor, false otherwise
      */
     public void setStop(int floorNr, boolean doStop) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
             Logging.getLogger().warn(String.format("Given floor %d is out of the valid range [%d - %d[ and will not be set!",
-                            floorNr, 0, mNrOfFloors));
+                    floorNr, 0, mNrOfFloors));
             return;
         }
         mStops[floorNr] = doStop;
@@ -152,13 +160,14 @@ public class Elevator {
 
     /**
      * Sets a flag if the elevator is servicing a certain floor
-     * @param floorNr identifies at which floor the flag should be set
+     *
+     * @param floorNr    identifies at which floor the flag should be set
      * @param isServiced true if the elevator services that floor, false otherwise
      */
     public void setServiced(int floorNr, boolean isServiced) {
         if (floorNr < 0 || floorNr >= mNrOfFloors) {
             Logging.getLogger().warn(String.format("Given floor %d is out of the valid range %d - %d and will not be set!",
-                                floorNr, 0, mNrOfFloors));
+                    floorNr, 0, mNrOfFloors));
             return;
         }
         mServiced[floorNr] = isServiced;
@@ -166,6 +175,7 @@ public class Elevator {
 
     /**
      * Getter for the elevator's number (is unique).
+     *
      * @return The elevator's number
      */
     public int getElevatorNr() {
@@ -174,6 +184,7 @@ public class Elevator {
 
     /**
      * Getter for the number of floors which can be targeted by the elevator.
+     *
      * @return The number of floors which can be targeted by the elevator.
      */
     public int getNrOfFloors() {
@@ -182,6 +193,7 @@ public class Elevator {
 
     /**
      * Getter for current speed of the elevator
+     *
      * @return current speed
      */
     public int getSpeed() {
@@ -190,6 +202,7 @@ public class Elevator {
 
     /**
      * Getter for current accelleration of the elevator
+     *
      * @return current acceleration
      */
     public int getAccel() {
@@ -198,6 +211,7 @@ public class Elevator {
 
     /**
      * Getter for the current target floor of the elevator
+     *
      * @return next planned stop of the elevator
      */
     public int getTarget() {
@@ -206,6 +220,7 @@ public class Elevator {
 
     /**
      * Getter for the current direction of the elevator
+     *
      * @return current direction of the elevator
      */
     public int getDirection() {
@@ -214,6 +229,7 @@ public class Elevator {
 
     /**
      * Getter for the current payload of the elevator
+     *
      * @return current payload of the elevator
      */
     public int getPayload() {
@@ -222,6 +238,7 @@ public class Elevator {
 
     /**
      * Getter for the current status of the elevator door
+     *
      * @return current status of the elevator door
      */
     public int getDoorStatus() {
@@ -230,6 +247,7 @@ public class Elevator {
 
     /**
      * Getter for the floor where the elevator is at
+     *
      * @return floor where the elevator is at
      */
     public int getFloor() {
@@ -238,6 +256,7 @@ public class Elevator {
 
     /**
      * Getter for the flag if the elevator should stop at a floor (button inside elevator)
+     *
      * @param floorNr identifies the floor
      * @return true if the elevator should stop at that floor, false if not or the floor is invalid
      */
@@ -250,6 +269,7 @@ public class Elevator {
 
     /**
      * Getter for the flag if the elevator is servicing a certain floor
+     *
      * @param floorNr identifies the floor
      * @return true if the elevator services that floor, false otherwise
      */

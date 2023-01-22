@@ -10,6 +10,7 @@ package at.fhhagenberg.model;
 public class ModelException extends RuntimeException {
     /**
      * Constructor of a {@link ModelException}
+     *
      * @param message message of the exception
      */
     public ModelException(String message) {

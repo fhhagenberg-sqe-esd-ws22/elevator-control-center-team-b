@@ -34,7 +34,7 @@ public class ExceptionTest {
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
         robot.clickOn(okButton.queryText());
     }
-    
+
     @Test
     void testCannotCreateScene() throws TimeoutException {
         FxToolkit.setupApplication(ECCAppExceptionTest.class);
@@ -43,7 +43,7 @@ public class ExceptionTest {
 
         var dialogPane = robot.lookup(".dialog-pane").query();
         FxAssert.verifyThat(dialogPane, NodeMatchers.isVisible());
-        
+
         var okButton = robot.from(dialogPane).lookup((Text t) -> t.getText().startsWith("OK"));
         robot.clickOn(okButton.queryText());
     }

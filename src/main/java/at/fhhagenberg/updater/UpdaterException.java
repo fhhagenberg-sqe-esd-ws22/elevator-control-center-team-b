@@ -10,6 +10,7 @@ package at.fhhagenberg.updater;
 public class UpdaterException extends RuntimeException {
     /**
      * Constructor of a {@link UpdaterException}
+     *
      * @param message message of the exception
      */
     public UpdaterException(String message) {

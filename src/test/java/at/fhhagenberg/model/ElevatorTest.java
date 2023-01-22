@@ -1,13 +1,9 @@
 package at.fhhagenberg.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
-
 import sqelevator.IElevator;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ElevatorTest {
     @Test
@@ -96,7 +92,7 @@ class ElevatorTest {
         Elevator elevator = new Elevator(0, 1);
         elevator.setPayload(0);
         assertEquals(0, elevator.getPayload());
-        
+
         elevator.setPayload(-1);
         assertEquals(0, elevator.getPayload());
     }
@@ -144,7 +140,7 @@ class ElevatorTest {
         assertTrue(elevator.getServiced(1));
     }
 
-    @Test 
+    @Test
     void testInvalidFloorStops() {
         Elevator elevator = new Elevator(0, 1);
         assertFalse(elevator.getStop(0));

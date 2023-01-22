@@ -1,8 +1,8 @@
 package at.fhhagenberg.mock_observable;
 
-import java.util.Arrays;
-
 import at.fhhagenberg.service.IElevatorService;
+
+import java.util.Arrays;
 
 public class MockElevatorService implements IElevatorService {
 
@@ -195,5 +195,5 @@ public class MockElevatorService implements IElevatorService {
     public long getClockTick() {
         return 0;
     }
-    
+
 }

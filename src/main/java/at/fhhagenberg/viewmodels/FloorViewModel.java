@@ -17,6 +17,7 @@ public class FloorViewModel {
 
     /**
      * Constructor of FloorViewModel
+     *
      * @param floor model of the floor which is used to fill the properties
      */
     public FloorViewModel(Floor floor) {
@@ -29,6 +30,7 @@ public class FloorViewModel {
 
     /**
      * Getter for the want up property
+     *
      * @return want up property
      */
     public SimpleBooleanProperty getWantUpProp() {
@@ -37,6 +39,7 @@ public class FloorViewModel {
 
     /**
      * Getter for the want down property
+     *
      * @return want down property
      */
     public SimpleBooleanProperty getWantDownProp() {
@@ -45,6 +48,7 @@ public class FloorViewModel {
 
     /**
      * Getter for the string property that shows want up
+     *
      * @return string property that shows want up
      */
     public SimpleStringProperty getWantUpStrProp() {
@@ -53,6 +57,7 @@ public class FloorViewModel {
 
     /**
      * Getter for the string property that shows want down
+     *
      * @return string property that shows want down
      */
     public SimpleStringProperty getWantDownStrProp() {
@@ -61,6 +66,7 @@ public class FloorViewModel {
 
     /**
      * Getter for want up
+     *
      * @return want up
      */
     public boolean getWantUp() {
@@ -69,6 +75,7 @@ public class FloorViewModel {
 
     /**
      * Getter for want down
+     *
      * @return want down
      */
     public boolean getWantDown() {
@@ -77,6 +84,7 @@ public class FloorViewModel {
 
     /**
      * Getter for the floor number
+     *
      * @return floor number
      */
     public int getFloorNumber() {
@@ -92,15 +100,13 @@ public class FloorViewModel {
 
         if (mWantUp.get()) {
             mWantUpString.set("Up");
-        }
-        else {
+        } else {
             mWantUpString.set("");
         }
 
         if (mWantDown.get()) {
             mWantDownString.set("Down");
-        }
-        else {
+        } else {
             mWantDownString.set("");
         }
     }

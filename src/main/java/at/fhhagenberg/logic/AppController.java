@@ -47,12 +47,13 @@ public class AppController {
 
     /**
      * Constructor for the AppController
-     * @param service An instance of an ElevatorService to control the remote elevators
-     * @param updater An instance of IUpdater to trigger an update for the GUI
-     * @param logic An instacne of the BusinessLogic object.
-     * @param vm An instacne of the main BuildingViewModel
-     * @param executor An instance of a ScheduledExecutorService to periodically trigger a GUI update and BusinessLogic run.
-     * @param showErrCb A callback to display error messages to the user.
+     *
+     * @param service    An instance of an ElevatorService to control the remote elevators
+     * @param updater    An instance of IUpdater to trigger an update for the GUI
+     * @param logic      An instacne of the BusinessLogic object.
+     * @param vm         An instacne of the main BuildingViewModel
+     * @param executor   An instance of a ScheduledExecutorService to periodically trigger a GUI update and BusinessLogic run.
+     * @param showErrCb  A callback to display error messages to the user.
      * @param showInfoCb A callback to display info messages to the user.
      */
     public AppController(IElevatorService service, IUpdater updater, BusinessLogic logic, BuildingViewModel vm, ScheduledExecutorService executor, Consumer<String> showErrCb, Consumer<String> showInfoCb) {
@@ -84,11 +85,10 @@ public class AppController {
     public void stop() {
         mExecutor.shutdown();
         try {
-            if(!mExecutor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
+            if (!mExecutor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
                 mExecutor.shutdownNow();
             }
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Logging.getLogger().error(e.getMessage());
             mExecutor.shutdownNow();
             Thread.currentThread().interrupt();
@@ -108,8 +108,7 @@ public class AppController {
                 mDisplayedError = false;
                 mDisplayInfoCb.accept("The connection to the service got reestablished and the application is running again!");
             }
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             Logging.getLogger().error(ex.getMessage());
             handleUpdateError();
         }

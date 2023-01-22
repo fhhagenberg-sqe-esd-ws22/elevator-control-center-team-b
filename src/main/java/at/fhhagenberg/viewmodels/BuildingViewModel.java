@@ -1,9 +1,10 @@
 package at.fhhagenberg.viewmodels;
 
-import java.util.ArrayList;
-import java.util.List;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that holds all viewmodels and the {@link BusinessLogic} in order to update them
@@ -14,8 +15,9 @@ public class BuildingViewModel {
 
     /**
      * Constructor of BuildingViewModel
+     *
      * @param building model of the building
-     * @param logic BusinesLogic that is controling the elevators of this building
+     * @param logic    BusinesLogic that is controling the elevators of this building
      */
     public BuildingViewModel(Building building, BusinessLogic logic) {
         mElevators = new ArrayList<>();
@@ -34,6 +36,7 @@ public class BuildingViewModel {
 
     /**
      * Getter for the elevator view models
+     *
      * @return ArrayList of the elevator view models
      */
     public List<ElevatorViewModel> getElevatorViewModels() {
@@ -42,6 +45,7 @@ public class BuildingViewModel {
 
     /**
      * Getter for the floor view models
+     *
      * @return ArrayList of the floor view models
      */
     public List<FloorViewModel> getFloorViewModels() {

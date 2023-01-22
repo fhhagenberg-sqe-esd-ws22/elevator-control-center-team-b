@@ -7,8 +7,6 @@ import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
-import javafx.stage.WindowEvent;
-
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
@@ -21,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.concurrent.Executors;
 
@@ -46,7 +45,7 @@ public class ECCApp extends Application {
             showError("The service could not be created!" + shutdown);
             return;
         }
-        
+
         var scene = createScene(service);
 
         if (scene == null) {
@@ -75,6 +74,7 @@ public class ECCApp extends Application {
 
     /**
      * creates the scene for the GUI and instantiates all components that are needed in the background
+     *
      * @return the scene of the elevator service
      */
     private Scene createScene(IElevatorService service) {
@@ -94,13 +94,14 @@ public class ECCApp extends Application {
         }
         // display the errors to the user and throw the exception again since
         // they cannot be handled in this function
-        catch(ElevatorServiceException | UpdaterException | ModelException ex) {
+        catch (ElevatorServiceException | UpdaterException | ModelException ex) {
             return null;
         }
     }
 
     /**
      * Displays the given content in an Alert pop up with severity error.
+     *
      * @param content The message to display.
      */
     private static void showError(String content) {
@@ -113,6 +114,7 @@ public class ECCApp extends Application {
 
     /**
      * Displays the given content in an Alert pop up with severity information.
+     *
      * @param content The message to display.
      */
     private static void showInfo(String content) {
@@ -125,14 +127,14 @@ public class ECCApp extends Application {
 
     /**
      * Creates a service that is used for the elevator control
+     *
      * @return elevator service
      */
     protected IElevatorService createService() {
         RMIElevatorService service = new RMIElevatorService(null, "rmi://localhost/ElevatorSim");
         if (service.connect()) {
             return service;
-        }
-        else {
+        } else {
             return null;
         }
     }

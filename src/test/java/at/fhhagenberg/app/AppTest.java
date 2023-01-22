@@ -85,7 +85,7 @@ class AppTest {
     void testUpdateMechanismFailedDueToUpdater() throws TimeoutException {
         ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
         AtomicBoolean displayedError = new AtomicBoolean(false);
-        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), showInfoCb);
         doThrow(UpdaterException.class).when(updater).update();
         when(service.connect()).thenReturn(false);
 
@@ -100,7 +100,7 @@ class AppTest {
     void testUpdateMechanismFailedDueToViewModel() throws TimeoutException {
         ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
         AtomicBoolean displayedError = new AtomicBoolean(false);
-        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), showInfoCb);
         doThrow(UpdaterException.class).when(vm).update();
         when(service.connect()).thenReturn(false);
 
@@ -115,7 +115,7 @@ class AppTest {
     void testUpdateMechanismFailedDueToLogic() throws TimeoutException {
         ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
         AtomicBoolean displayedError = new AtomicBoolean(false);
-        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), showInfoCb);
         doThrow(UpdaterException.class).when(logic).setNextTargets();
         when(service.connect()).thenReturn(false);
 
