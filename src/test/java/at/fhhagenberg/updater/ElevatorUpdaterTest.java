@@ -11,8 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorUpdaterTest {
@@ -25,12 +26,12 @@ class ElevatorUpdaterTest {
 
     @Test
     void testObjectCreationElevatorSerivceIsNull() {
-        assertThrows(UpdaterException.class, () -> { new ElevatorUpdater(null, elevator); });
+        assertThrows(UpdaterException.class, () -> new ElevatorUpdater(null, elevator));
     }
 
     @Test
     void testObjectCreationModelIsNull() {
-        assertThrows(UpdaterException.class, () -> { new ElevatorUpdater(service, null); });
+        assertThrows(UpdaterException.class, () -> new ElevatorUpdater(service, null));
     }
 
     @Test
@@ -60,7 +61,7 @@ class ElevatorUpdaterTest {
 
     // these calls are all made in update() and expected to bring correct results,
     // but they are unnecessary to see if serviced floors and stops were correctly handled
-    void setIrrelevantUpdateCalls(){
+    void setIrrelevantUpdateCalls() {
         when(service.getTarget(0)).thenReturn(1);
         when(service.getFloorNum()).thenReturn(3);
         when(service.getElevatorAccel(0)).thenReturn(1);
@@ -70,7 +71,7 @@ class ElevatorUpdaterTest {
     }
 
     @Test
-    void testTargetDirectionUpdate(){
+    void testTargetDirectionUpdate() {
         when(elevator.getElevatorNr()).thenReturn(0);
         when(elevator.getTarget()).thenReturn(3);
         when(elevator.getDirection()).thenReturn(IElevatorService.ELEVATOR_DIRECTION_DOWN);
@@ -80,15 +81,15 @@ class ElevatorUpdaterTest {
         ElevatorUpdater updater = new ElevatorUpdater(service, elevator);
         updater.update();
 
-        verify(service).setTarget(0,3);
-        verify(service).setCommittedDirection(0,IElevatorService.ELEVATOR_DIRECTION_DOWN);
+        verify(service).setTarget(0, 3);
+        verify(service).setCommittedDirection(0, IElevatorService.ELEVATOR_DIRECTION_DOWN);
     }
 
     @Test
     void testRequestStops() {
         when(elevator.getElevatorNr()).thenReturn(0);
-        
-       setIrrelevantUpdateCalls();
+
+        setIrrelevantUpdateCalls();
 
         when(service.getElevatorButton(0, 0)).thenReturn(true);
         when(service.getElevatorButton(0, 1)).thenReturn(false);

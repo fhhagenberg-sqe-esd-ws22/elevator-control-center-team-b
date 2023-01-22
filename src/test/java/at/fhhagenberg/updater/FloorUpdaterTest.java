@@ -12,8 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FloorUpdaterTest {
@@ -25,12 +26,12 @@ class FloorUpdaterTest {
 
     @Test
     void testObjectCreationServiceIsNull() {
-        assertThrows(UpdaterException.class, () -> { new FloorUpdater(null, floor); });
+        assertThrows(UpdaterException.class, () -> new FloorUpdater(null, floor));
     }
 
     @Test
     void testObjectCreationModelIsNull() {
-        assertThrows(UpdaterException.class, () -> { new FloorUpdater(service, null); });
+        assertThrows(UpdaterException.class, () -> new FloorUpdater(service, null));
     }
 
     @Test

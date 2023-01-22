@@ -11,7 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +41,9 @@ class ModelFactoryTest {
 
     @Test
     void testObjectCreationFails() {
-        assertThrows(ModelException.class, () -> { new ModelFactory(null); });
+        assertThrows(ModelException.class, () -> {
+            new ModelFactory(null);
+        });
     }
 
     @Test

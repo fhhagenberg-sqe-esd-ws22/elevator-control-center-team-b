@@ -1,19 +1,18 @@
 package at.fhhagenberg.viewmodel;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.Elevator;
 import at.fhhagenberg.model.ModelFactory;
-import sqelevator.IElevator;
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.ElevatorViewModel;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import sqelevator.IElevator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -151,7 +150,7 @@ class ElevatorViewModelTest {
     void testSetManualProp() {
         viewModel.getManualProp().set(false);
         assertFalse(viewModel.getManualProp().get());
-        
+
         viewModel.getManualProp().set(true);
         assertTrue(viewModel.getManualProp().get());
         verify(logic).setManual(viewModel.getElevatorNr(), true);

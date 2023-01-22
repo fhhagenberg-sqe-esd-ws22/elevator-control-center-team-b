@@ -1,5 +1,8 @@
 package at.fhhagenberg.model;
 
+/**
+ * Model of a floor - contains all information of that floor
+ */
 public class Floor {
     // number which represents the floor - 0 is ground floor; 1 ist first floor, etc.
     private final int mFloorNr;
@@ -12,10 +15,10 @@ public class Floor {
 
     /**
      * Constructor of Floor
+     *
      * @param floorNr number for identifying this floor
      */
-    public Floor(int floorNr)
-    {
+    public Floor(int floorNr) {
         mFloorNr = floorNr;
         mWantUp = false;
         mWantDown = false;
@@ -23,6 +26,7 @@ public class Floor {
 
     /**
      * Setter for the WantUp flag
+     *
      * @param wantUp True if the WantUp button on the floor is pressed, otherwise false
      */
     public void setWantUp(Boolean wantUp) {
@@ -31,6 +35,7 @@ public class Floor {
 
     /**
      * Setter for the WantDown flag
+     *
      * @param wantDown True if the WantDown button on the floor is pressed, otherwise false
      */
     public void setWantDown(Boolean wantDown) {
@@ -39,28 +44,28 @@ public class Floor {
 
     /**
      * Getter for the floor number
+     *
      * @return number of this floor
      */
-    public int getFloorNumber()
-    {
+    public int getFloorNumber() {
         return mFloorNr;
     }
 
     /**
      * Getter for the call upwards button
+     *
      * @return boolean if someone called the elevator upwards
      */
-    public Boolean getWantUp()
-    {
+    public Boolean getWantUp() {
         return mWantUp;
     }
 
     /**
      * Getter for the call downwards button
+     *
      * @return boolean if someone called the elevator downwards
      */
-    public Boolean getWantDown()
-    {
+    public Boolean getWantDown() {
         return mWantDown;
     }
 }

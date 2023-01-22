@@ -2,16 +2,18 @@ package at.fhhagenberg.viewmodels;
 
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Elevator;
-import sqelevator.IElevator;
+import at.fhhagenberg.view.ElevatorView;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import sqelevator.IElevator;
 
 import java.util.ArrayList;
 
+/**
+ * ViewModel of an {@link Elevator} that contains properties which are used by an {@link ElevatorView}
+ */
 public class ElevatorViewModel {
     private final Elevator mModel;
     private final BusinessLogic mLogic;
@@ -42,8 +44,9 @@ public class ElevatorViewModel {
 
     /**
      * Constructor of ElevatorViewModel
+     *
      * @param elevator elevator which's properties are copied
-     * @param logic logic that controls the elevator
+     * @param logic    logic that controls the elevator
      */
     public ElevatorViewModel(Elevator elevator, BusinessLogic logic) {
         mModel = elevator;
@@ -62,71 +65,128 @@ public class ElevatorViewModel {
         mManualFloor = new SimpleIntegerProperty();
 
 
+        mManualFloor.addListener((obj, oldVal, newVal) -> mLogic.setElevatorManualTarget(getElevatorNr(), newVal.intValue()));
 
-
-        mManualFloor.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> obj, Number oldVal, Number newVal) {
-                mLogic.setElevatorManualTarget(getElevatorNr(),newVal.intValue());
-            }
-        });
-
-        mManual.addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obj, Boolean oldVal, Boolean newVal) {
-                mLogic.setManual(getElevatorNr(), newVal);
-            }
-        });
+        mManual.addListener((obj, oldVal, newVal) -> mLogic.setManual(getElevatorNr(), newVal));
     }
 
+    /**
+     * Getter for the payload property
+     *
+     * @return payload property
+     */
     public SimpleIntegerProperty getPayloadProp() {
         return mPayload;
     }
 
+    /**
+     * Getter for the speed property
+     *
+     * @return speed property
+     */
     public final SimpleIntegerProperty getSpeedProp() {
         return mSpeed;
     }
 
+    /**
+     * Getter for the acceleration property
+     *
+     * @return acceleration property
+     */
     public SimpleIntegerProperty getAccelProp() {
         return mAccel;
     }
 
+    /**
+     * Getter for the target property
+     *
+     * @return target property
+     */
     public SimpleIntegerProperty getTargetProp() {
         return mTarget;
     }
 
+    /**
+     * Getter for the direction property
+     *
+     * @return direction property
+     */
     public SimpleIntegerProperty getDirectionProp() {
         return mDirection;
     }
 
+    /**
+     * Getter for the door status property
+     *
+     * @return status property
+     */
     public SimpleStringProperty getDoorStatusStringProp() {
         return mDoorStatusString;
     }
 
+    /**
+     * Getter for the current floor property
+     *
+     * @return current floor property
+     */
     public SimpleIntegerProperty getFloorProp() {
         return mFloor;
     }
 
-    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() { return mStops; }
+    /**
+     * Getter for the requested stops property
+     *
+     * @return requested stops property
+     */
+    public SimpleObjectProperty<ArrayList<Integer>> getStopsProp() {
+        return mStops;
+    }
 
+    /**
+     * Getter for the serviced floors property
+     *
+     * @return serviced floors property
+     */
     public SimpleObjectProperty<ArrayList<Integer>> getServicedProp() {
         return mServiced;
     }
 
+    /**
+     * Getter for the manual mode property
+     *
+     * @return manual mode property
+     */
     public SimpleBooleanProperty getManualProp() {
         return mManual;
     }
 
+    /**
+     * Getter for the manual floor request property
+     *
+     * @return floor request property
+     */
     public SimpleIntegerProperty getManualFloorProp() {
         return mManualFloor;
     }
 
+    /**
+     * Getter for the identifying elevator number
+     *
+     * @return identifying elevator number
+     */
     public int getElevatorNr() {
         return mModel.getElevatorNr();
     }
 
-    public int getNrFloors(){ return mModel.getNrOfFloors(); }
-    
+    /**
+     * Getter for the number of floors
+     *
+     * @return number of floors
+     */
+    public int getNrFloors() {
+        return mModel.getNrOfFloors();
+    }
+
     /**
      * Updates all properties of this
      */
@@ -141,19 +201,18 @@ public class ElevatorViewModel {
 
         var stops = new ArrayList<Integer>();
         var serviced = new ArrayList<Integer>();
-        for(int i = 0; i < mModel.getNrOfFloors(); ++i){
-            if(mModel.getStop(i)){
+        for (int i = 0; i < mModel.getNrOfFloors(); ++i) {
+            if (mModel.getStop(i)) {
                 stops.add(i);
             }
-            if(mModel.getServiced(i)){
+            if (mModel.getServiced(i)) {
                 serviced.add(i);
             }
         }
         mStops.set(stops);
         mServiced.set(serviced);
 
-        switch(mDoorStatus.get())
-        {
+        switch (mDoorStatus.get()) {
             case IElevator.ELEVATOR_DOORS_CLOSED:
                 mDoorStatusString.set("Closed");
                 break;

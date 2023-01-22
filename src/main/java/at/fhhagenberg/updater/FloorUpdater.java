@@ -7,13 +7,17 @@ package at.fhhagenberg.updater;
 import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.service.IElevatorService;
 
-public class FloorUpdater extends UpdaterBase{
+/**
+ * Updater for a {@link Floor} which updates all members of that floor
+ */
+public class FloorUpdater extends UpdaterBase {
     private final Floor mModel;
 
     /**
      * Constructor for the FloorUpdater
+     *
      * @param service IElevatorService object to retrieve the necessary information for an update on a Floor object.
-     * @param model The to be updated Floor object.
+     * @param model   The to be updated Floor object.
      */
     public FloorUpdater(IElevatorService service, Floor model) {
         super(service);

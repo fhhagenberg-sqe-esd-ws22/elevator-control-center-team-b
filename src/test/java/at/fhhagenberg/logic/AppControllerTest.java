@@ -12,12 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testfx.util.WaitForAsyncUtils;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,7 +22,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AppControllerTest {
+class AppControllerTest {
 
     @Mock
     ScheduledExecutorService executor;
@@ -57,13 +54,13 @@ public class AppControllerTest {
 
     @Test
     void testObjectCreationFails() {
-        assertThrows(LogicException.class, () -> { new AppController(null, updater, logic, vm, executor, showErrorCb, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, null, logic, vm, executor, showErrorCb, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, updater, null, vm, executor, showErrorCb, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, updater, logic, null, executor, showErrorCb, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, updater, logic, vm, null, showErrorCb, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, updater, logic, vm, executor, null, showInfoCb); });
-        assertThrows(LogicException.class, () -> { new AppController(service, updater, logic, vm, executor, showErrorCb, null); });
+        assertThrows(LogicException.class, () -> new AppController(null, updater, logic, vm, executor, showErrorCb, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, null, logic, vm, executor, showErrorCb, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, updater, null, vm, executor, showErrorCb, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, updater, logic, null, executor, showErrorCb, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, updater, logic, vm, null, showErrorCb, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, updater, logic, vm, executor, null, showInfoCb));
+        assertThrows(LogicException.class, () -> new AppController(service, updater, logic, vm, executor, showErrorCb, null));
     }
 
     @Test

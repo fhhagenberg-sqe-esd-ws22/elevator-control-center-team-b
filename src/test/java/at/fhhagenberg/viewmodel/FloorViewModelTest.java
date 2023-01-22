@@ -1,20 +1,17 @@
 package at.fhhagenberg.viewmodel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
-
 import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.viewmodels.FloorViewModel;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class FloorViewModelTest {
     @Test
     void testWantUp() {
         Floor model = new Floor(0);
         FloorViewModel viewModel = new FloorViewModel(model);
-        
+
         model.setWantUp(false);
         viewModel.update();
         assertEquals("", viewModel.getWantUpStrProp().get());
@@ -27,12 +24,12 @@ class FloorViewModelTest {
         assertTrue(viewModel.getWantUp());
         assertTrue(viewModel.getWantUpProp().get());
     }
-    
+
     @Test
     void testWantDown() {
         Floor model = new Floor(0);
         FloorViewModel viewModel = new FloorViewModel(model);
-        
+
         model.setWantDown(false);
         viewModel.update();
         assertEquals("", viewModel.getWantDownStrProp().get());

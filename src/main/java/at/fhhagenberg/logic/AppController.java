@@ -18,9 +18,17 @@ import java.util.function.Consumer;
  * COntroller class for the whole application. Encapsulates the updating mechanism and the error handling (reconnect).
  */
 public class AppController {
-
+    /**
+     * Update interval in milliseconds
+     */
     public static final int UPDATE_INTERVAL_MS = 100;
+    /**
+     * Timeout for termination of the controller in milliseconds
+     */
     public static final int TERMINATION_TIMEOUT_MS = 1000;
+    /**
+     * At this amount of failures, an alert is shown to the user
+     */
     public static final int DISPLAY_MESSAGE_FAILURE_CNT = 5;
 
     final BusinessLogic mLogic;
@@ -39,12 +47,13 @@ public class AppController {
 
     /**
      * Constructor for the AppController
-     * @param service An instance of an ElevatorService to control the remote elevators
-     * @param updater An instance of IUpdater to trigger an update for the GUI
-     * @param logic An instacne of the BusinessLogic object.
-     * @param vm An instacne of the main BuildingViewModel
-     * @param executor An instance of a ScheduledExecutorService to periodically trigger a GUI update and BusinessLogic run.
-     * @param showErrCb A callback to display error messages to the user.
+     *
+     * @param service    An instance of an ElevatorService to control the remote elevators
+     * @param updater    An instance of IUpdater to trigger an update for the GUI
+     * @param logic      An instacne of the BusinessLogic object.
+     * @param vm         An instacne of the main BuildingViewModel
+     * @param executor   An instance of a ScheduledExecutorService to periodically trigger a GUI update and BusinessLogic run.
+     * @param showErrCb  A callback to display error messages to the user.
      * @param showInfoCb A callback to display info messages to the user.
      */
     public AppController(IElevatorService service, IUpdater updater, BusinessLogic logic, BuildingViewModel vm, ScheduledExecutorService executor, Consumer<String> showErrCb, Consumer<String> showInfoCb) {
@@ -66,7 +75,7 @@ public class AppController {
      * Creates a task to update the GUI and perform a Businesslogic workflow. Schedules the task periodically.
      */
     public void start() {
-        Runnable task = () -> Platform.runLater(this::updateCycle);
+        Runnable task = this::updateCycle;
         mExecutor.scheduleAtFixedRate(task, UPDATE_INTERVAL_MS, UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS);
     }
 
@@ -76,11 +85,10 @@ public class AppController {
     public void stop() {
         mExecutor.shutdown();
         try {
-            if(!mExecutor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
+            if (!mExecutor.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS)) {
                 mExecutor.shutdownNow();
             }
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Logging.getLogger().error(e.getMessage());
             mExecutor.shutdownNow();
             Thread.currentThread().interrupt();
@@ -93,15 +101,15 @@ public class AppController {
     private void updateCycle() {
         try {
             mUpdater.update();
-            mViewModel.update();
+            Platform.runLater(mViewModel::update);
             mLogic.setNextTargets();
 
             if (mDisplayedError) {
                 mDisplayedError = false;
-                mDisplayInfoCb.accept("The connection to the service got reestablished and the application is running again!");
+                mUpdateFailureCnt = 0;
+                Platform.runLater(() -> mDisplayInfoCb.accept("The connection to the service got reestablished and the application is running again!"));
             }
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             Logging.getLogger().error(ex.getMessage());
             handleUpdateError();
         }
@@ -114,7 +122,7 @@ public class AppController {
         mUpdateFailureCnt++;
         boolean connected = mService.connect();
         if (!connected && mUpdateFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
-            mDisplayErrorCb.accept("The application is not able to connect to the remote service anymore! Please check your connection to the internet and maybe restart the application!");
+            Platform.runLater(() -> mDisplayErrorCb.accept("The application is not able to connect to the remote service anymore! Please check your connection to the internet and maybe restart the application!"));
             mDisplayedError = true;
         }
     }

@@ -4,9 +4,13 @@
  */
 package at.fhhagenberg.logic;
 
+/**
+ * Exceptions thrown by {@link BusinessLogic} and {@link AppController}
+ */
 public class LogicException extends RuntimeException {
     /**
-     * Constructor for LogicException
+     * Constructor for {@link LogicException}
+     *
      * @param message Exception message.
      */
     public LogicException(String message) {

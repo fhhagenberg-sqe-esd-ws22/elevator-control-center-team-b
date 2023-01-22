@@ -1,34 +1,18 @@
 package at.fhhagenberg.viewmodel;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
-
-import at.fhhagenberg.service.IElevatorService;
-import javafx.application.Platform;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-
 import at.fhhagenberg.logic.BusinessLogic;
-import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.model.Building;
-import at.fhhagenberg.model.Elevator;
-import at.fhhagenberg.model.Floor;
 import at.fhhagenberg.model.ModelFactory;
-import at.fhhagenberg.updater.BuildingUpdater;
-import at.fhhagenberg.updater.ElevatorUpdater;
-import at.fhhagenberg.updater.FloorUpdater;
+import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
