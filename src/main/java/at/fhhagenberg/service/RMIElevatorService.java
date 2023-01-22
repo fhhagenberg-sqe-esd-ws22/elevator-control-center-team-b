@@ -4,23 +4,43 @@
  */
 package at.fhhagenberg.service;
 
-import java.rmi.RemoteException;
+import java.rmi.*;
 
 import at.fhhagenberg.logging.Logging;
 import sqelevator.IElevator;
 
 public class RMIElevatorService implements IElevatorService{
-    private final IElevator mApi;
+    private IElevator mApi;
+
+    private final String mConnectionString;
 
     private static final String ERROR_MESSAGE_LITERAL = "! \nError message: ";
 
-    public RMIElevatorService(IElevator api) {
-        if (api == null) {
-            String errorMsg = "Could not create RMIElevatorService, the given IElevator object is null!";
+    public RMIElevatorService(IElevator api, String connectionString) {
+        if (connectionString == null || connectionString.isEmpty()) {
+            String errorMsg = "Could not create RMIElevatorService, the given connection string is null or empty!";
             Logging.getLogger().error(errorMsg);
             throw new ElevatorServiceException(errorMsg);
         }
-        mApi = api;
+
+        mConnectionString = connectionString;
+        if (api != null) {
+            mApi = api;
+        }
+    }
+
+    @Override
+    public boolean connect() {
+        try {
+            mApi = (IElevator) Naming.lookup(mConnectionString);
+        }
+        catch (Exception e) {
+            // if the service is not available, there is no saving the program
+            Logging.getLogger().error(String.format("Failed to create the service!%n%s",
+                    e.getMessage()));
+            return false;
+        }
+        return true;
     }
 
     @Override

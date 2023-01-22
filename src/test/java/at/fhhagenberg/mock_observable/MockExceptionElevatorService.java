@@ -6,6 +6,11 @@ import at.fhhagenberg.service.IElevatorService;
 public class MockExceptionElevatorService implements IElevatorService {
 
     @Override
+    public boolean connect() {
+        return false;
+    }
+
+    @Override
     public int getCommittedDirection(int elevatorNumber) {
         return 0;
     }

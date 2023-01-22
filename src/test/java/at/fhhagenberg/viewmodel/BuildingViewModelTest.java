@@ -51,7 +51,7 @@ class BuildingViewModelTest {
 
         timer = new TimerSetable();
         updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, model);
-        viewModel = new BuildingViewModel(updater, model, logic, timer);
+        viewModel = new BuildingViewModel(model, logic);
     }
 
     public static void waitForRunLater() throws InterruptedException {
