@@ -251,7 +251,9 @@ class AppTest {
         mock.setElevatorFloor(2, 3);
 
         waitFor(1, TimeUnit.SECONDS, () -> robot.lookup("#ElevatorTarget3_0").query().getStyle().equals(base + "green;") &&
-                robot.lookup("#ElevatorTarget0_2").query().getStyle().equals(base + "green;"));
+                robot.lookup("#ElevatorTarget0_2").query().getStyle().equals(base + "green;") &&
+                robot.lookup("#ElevatorTarget1_1").query().getStyle().equals(base + "green;") &&
+                robot.lookup("#ElevatorTarget2_3").query().getStyle().equals(base + "green;"));
 
         style = robot.lookup("#ElevatorTarget0_2").query().getStyle();
         Assertions.assertEquals(base + "green;", style);
