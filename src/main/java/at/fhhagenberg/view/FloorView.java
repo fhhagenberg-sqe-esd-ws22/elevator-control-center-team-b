@@ -24,7 +24,7 @@ public class FloorView {
     private static final int HEIGHT = 40;
     private static final int WIDTH = 60;
     private static final int PADDING = 10;
-    private final int FloorNumber;
+    private final int floorNumber;
 
     /**
      * creates an arrow for going up/down
@@ -36,7 +36,7 @@ public class FloorView {
      */
     private Button createArrow(int direction, int rotation, SimpleBooleanProperty binding) {
         var arrow = new Button();
-        arrow.setId(String.format("FloorArrow%d_%d", FloorNumber, direction));
+        arrow.setId(String.format("FloorArrow%d_%d", floorNumber, direction));
         arrow.setDisable(true);
         arrow.setOpacity(1);
         arrow.styleProperty().bind(Bindings.createStringBinding(() -> {
@@ -72,7 +72,7 @@ public class FloorView {
      * @return floor number as a label
      */
     private Label createFloorLabel() {
-        var lbl = new Label(String.format("%" + 2 + "s", FloorNumber).replace(' ', '0'));
+        var lbl = new Label(String.format("%" + 2 + "s", floorNumber).replace(' ', '0'));
         lbl.setPadding(new Insets(PADDING));
         return lbl;
     }
@@ -85,7 +85,7 @@ public class FloorView {
      */
     public FloorView(FloorViewModel viewModel) {
         mViewModel = viewModel;
-        FloorNumber = mViewModel.getFloorNumber();
+        floorNumber = mViewModel.getFloorNumber();
         mView = new HBox();
 
         mView.setAlignment(Pos.CENTER_LEFT);
