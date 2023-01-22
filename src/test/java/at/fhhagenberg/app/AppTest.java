@@ -202,12 +202,11 @@ class AppTest {
             assertNotNull(robot.lookup(String.format("#ElevatorTarget0_%d", i)).query());
         }
 
-        assertThrows(EmptyNodeQueryException.class, () ->
-                robot.lookup(String.format("#PressedInEle0_%d",
-                        mock.getFloorNum())).query());
-        assertThrows(EmptyNodeQueryException.class, () ->
-                robot.lookup(String.format("#ElevatorTarget0_%d",
-                        mock.getFloorNum())).query());
+        var query = robot.lookup(String.format("#PressedInEle0_%d", mock.getFloorNum()));
+        assertThrows(EmptyNodeQueryException.class, query::query);
+
+        query = robot.lookup(String.format("#ElevatorTarget0_%d", mock.getFloorNum()));
+        assertThrows(EmptyNodeQueryException.class, query::query);
     }
 
     @Test

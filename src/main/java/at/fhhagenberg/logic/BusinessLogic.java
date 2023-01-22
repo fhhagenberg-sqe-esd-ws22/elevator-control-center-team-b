@@ -214,7 +214,7 @@ public class BusinessLogic {
      */
     public void setElevatorManualTarget(int elevatorNr, int floor) {
         if (floor < 0 || floor >= mModel.getFloors().size()) {
-            Logging.getLogger().warn("Attempt to set floor %d manual to %b!", floor);
+            Logging.getLogger().warn("Attempt to set floor {} manual target for elevator {}!", floor, elevatorNr);
             return;
         }
         mManualTarget[elevatorNr] = floor;

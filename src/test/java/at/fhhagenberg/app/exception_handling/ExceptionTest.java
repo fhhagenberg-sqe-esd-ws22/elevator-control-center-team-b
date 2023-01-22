@@ -13,7 +13,7 @@ import java.util.concurrent.TimeoutException;
 
 import static org.testfx.util.WaitForAsyncUtils.waitFor;
 
-public class ExceptionTest {
+class ExceptionTest {
     FxRobot robot;
 
     @BeforeEach

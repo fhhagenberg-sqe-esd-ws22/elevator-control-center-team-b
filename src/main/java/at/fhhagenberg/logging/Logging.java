@@ -7,7 +7,14 @@ import org.slf4j.LoggerFactory;
  * Class responsible for logging
  */
 public class Logging {
+
     private static final Logger mLogger = (Logger) LoggerFactory.getLogger(Logging.class);
+
+    /**
+     * Private constructor of Logging, so it cannot be instantiated externally
+     */
+    private Logging() {
+    }
 
     /**
      * Getter of the projects' logger
