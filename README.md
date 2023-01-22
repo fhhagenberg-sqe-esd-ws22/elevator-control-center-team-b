@@ -1,8 +1,14 @@
 # Installation and Setup
+## Requirements
+For the use of this software please check that you have JRE 1.8.0 or newer.
+The elevator simulator https://github.com/winterer/elevator/releases/tag/v0.1.2 is required to simulate use of a real elevator service.
 
-???
+## Setup
+Download the jar file from the release page.
+Start the elevator simulator and start a simulation.
+Run the jar file by double clicking on it.
 
-# Description Graphical User Interface
+# Description and Usage of the Graphical User Interface
 ## Basic structure
 
 The GUI consists of two semantically different elements: the elevators and the floors. Every elevator of the given building is visualized with the information corresponding to that individual elevator. On the right-hand side of the elevators is the visualization of the floors.
