@@ -25,6 +25,12 @@ public interface IElevatorService {
     public static final int ELEVATOR_DIRECTION_UNCOMMITTED = 2;
 
     /**
+     * Function which tries to establish a connection to the remote elevator service.
+     * @return Boolean value to indicate success or failure.
+     */
+    public boolean connect();
+
+    /**
      * Retrieves the committed direction of the specified elevator (up / down / uncommitted). 
      * @param elevatorNumber - elevator number whose committed direction is being retrieved 
      * @return the current direction of the specified elevator where up=0, down=1 and uncommitted=2

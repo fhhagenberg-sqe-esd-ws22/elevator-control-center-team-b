@@ -25,12 +25,15 @@ class RMIElevatorServiceTest {
 
     @BeforeEach
     void setup() {
-        service = new RMIElevatorService(api);
+        service = new RMIElevatorService(api, "asdf");
     }
 
     @Test
-    void testObjectCreationApiIsNull() {
-        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null); });
+    void testObjectCreationConnectionStringIsNullOrEmpty() {
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, ""); });
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, null); });
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, null); });
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, ""); });
     }
 
     @Test
