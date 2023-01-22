@@ -8,7 +8,7 @@ import at.fhhagenberg.model.ModelException;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
 import javafx.stage.WindowEvent;
-import sqelevator.IElevator;
+
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
@@ -22,10 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-import java.rmi.Naming;
-import java.util.Timer;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 /**
  * JavaFX App
@@ -44,22 +41,21 @@ public class ECCApp extends Application {
     @Override
     public void start(Stage stage) {
         var service = createService();
-        String err = "The service could not be created!\nThe application will now shut down.";
-        
+        String shutdown = "\nThe application will now shut down.";
         if (service == null) {
-            showError(err);
+            showError("The service could not be created!" + shutdown);
             return;
         }
         
         var scene = createScene(service);
 
         if (scene == null) {
-            showError(err);
+            showError("Could not create the JavaFX scene object!" + shutdown);
             return;
         }
 
         if (mController == null) {
-            showError(err);
+            showError("Something went wrongduring the apps initialization!" + shutdown);
             return;
         }
 
@@ -103,6 +99,10 @@ public class ECCApp extends Application {
         }
     }
 
+    /**
+     * Displays the given content in an Alert pop up with severity error.
+     * @param content The message to display.
+     */
     private static void showError(String content) {
         Logging.getLogger().error(content);
         Alert alert = new Alert(AlertType.ERROR);
@@ -111,8 +111,12 @@ public class ECCApp extends Application {
         alert.show();
     }
 
+    /**
+     * Displays the given content in an Alert pop up with severity information.
+     * @param content The message to display.
+     */
     private static void showInfo(String content) {
-        Logging.getLogger().error(content);
+        Logging.getLogger().info(content);
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setContentText(content);

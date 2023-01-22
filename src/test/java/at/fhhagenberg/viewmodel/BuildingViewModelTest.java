@@ -3,11 +3,14 @@ package at.fhhagenberg.viewmodel;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
+import at.fhhagenberg.service.IElevatorService;
 import javafx.application.Platform;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -22,46 +25,33 @@ import at.fhhagenberg.updater.BuildingUpdater;
 import at.fhhagenberg.updater.ElevatorUpdater;
 import at.fhhagenberg.updater.FloorUpdater;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+
+@ExtendWith(MockitoExtension.class)
 class BuildingViewModelTest {
     Building model;
     BuildingViewModel viewModel;
+    @Mock
     BusinessLogic logic;
-    BuildingUpdater updater;
-    MockElevatorService service;
-    TimerSetable timer;
+    @Mock
+    IElevatorService service;
 
     @BeforeEach
     void setup() {
-        service = new MockElevatorService(2, 2, 10);
+        when(service.getFloorNum()).thenReturn(5);
+        when(service.getElevatorNum()).thenReturn(3);
         ModelFactory factory = new ModelFactory(service);
         model = factory.createBuilding();
         logic = new BusinessLogic(model);
-        
-        List<FloorUpdater> floorUpdaters = new ArrayList<>();
-        List<ElevatorUpdater> elevatorUpdaters = new ArrayList<>();
-
-        for (Elevator elevator : model.getElevators()) {
-            elevatorUpdaters.add(new ElevatorUpdater(service, elevator));
-        }
-
-        for (Floor floor : model.getFloors()) {
-            floorUpdaters.add(new FloorUpdater(service, floor));
-        }
-
-        timer = new TimerSetable();
-        updater = new BuildingUpdater(service, elevatorUpdaters, floorUpdaters, model);
         viewModel = new BuildingViewModel(model, logic);
     }
 
-    public static void waitForRunLater() throws InterruptedException {
-        Semaphore semaphore = new Semaphore(0);
-        Platform.runLater(() -> semaphore.release());
-        semaphore.acquire();
-    }
-
-    @Disabled
-    void testUpdate() throws InterruptedException {
+    @Test
+    void testUpdate() {
         assertEquals(0, model.getElevatorByNumber(0).getSpeed());
         assertEquals(0, model.getElevatorByNumber(1).getSpeed());
         assertFalse(model.getFloorByNumber(0).getWantUp());
@@ -70,16 +60,11 @@ class BuildingViewModelTest {
         assertFalse(viewModel.getFloorViewModels().get(0).getWantDown());
         assertFalse(logic.getManual(0));
 
-        service.setSpeed(0, 10);
-        service.setSpeed(1, 20);
-        service.setFloorUp(0, true);
+        model.getElevators().get(0).setSpeed(10);
+        model.getElevators().get(1).setSpeed(20);
+        model.getFloors().get(0).setWantUp(true);
 
-        // passes individually, but fails if run with other tests
-        // needed so the platform is initialized, as we call platform.runLater in the Thread
-        Platform.startup(()->{});
-        timer.forceUpdate();
-        // waits for runLater to have finished
-        waitForRunLater();
+        viewModel.update();
 
         assertEquals(10, model.getElevatorByNumber(0).getSpeed());
         assertEquals(20, model.getElevatorByNumber(1).getSpeed());

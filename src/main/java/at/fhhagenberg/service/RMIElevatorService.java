@@ -16,6 +16,12 @@ public class RMIElevatorService implements IElevatorService{
 
     private static final String ERROR_MESSAGE_LITERAL = "! \nError message: ";
 
+    /**
+     * Constructor for the RMIElevatorService. The IElevator api can be null in that case just the connectionString
+     * is used to establish a connection. If api is not null the connectionString must match the given api object or otherwise a reconnect won't work.
+     * @param api IElevator RMI remote object.
+     * @param connectionString String which is used to establish a RMI connection.
+     */
     public RMIElevatorService(IElevator api, String connectionString) {
         if (connectionString == null || connectionString.isEmpty()) {
             String errorMsg = "Could not create RMIElevatorService, the given connection string is null or empty!";

@@ -17,7 +17,7 @@ public class BuildingUpdater extends UpdaterBase {
     private final List<FloorUpdater> mFloorUpdaters;
 
     private int mFailureCnt;
-    private static final int MAX_FAILURE_CNT = 10;
+    public static final int MAX_FAILURE_CNT = 10;
 
     /**
      * Constructor for the BuildingUpdater

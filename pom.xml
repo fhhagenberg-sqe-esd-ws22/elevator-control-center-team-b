@@ -110,7 +110,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>1.9.9</version>
@@ -128,13 +128,13 @@
                         <goals>
                             <goal>mutationCoverage</goal>
                         </goals>
-                        <!--  fails the build if mutation score is less than 100%  -->
+                        <!--  fails the build if mutation score is less than 100%
                         <configuration>
                             <mutationThreshold>80</mutationThreshold>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>

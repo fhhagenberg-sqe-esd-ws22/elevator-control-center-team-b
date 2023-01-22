@@ -10,31 +10,43 @@ import at.fhhagenberg.updater.IUpdater;
 import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.application.Platform;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+/**
+ * COntroller class for the whole application. Encapsulates the updating mechanism and the error handling (reconnect).
+ */
 public class AppController {
 
-    public static final int UPDATE_INTERVAL_MS = 500;
+    public static final int UPDATE_INTERVAL_MS = 100;
     public static final int TERMINATION_TIMEOUT_MS = 1000;
     public static final int DISPLAY_MESSAGE_FAILURE_CNT = 5;
 
-    BusinessLogic mLogic;
-    BuildingViewModel mViewModel;
-    IUpdater mUpdater;
+    final BusinessLogic mLogic;
+    final BuildingViewModel mViewModel;
+    final IUpdater mUpdater;
 
-    IElevatorService mService;
+    final IElevatorService mService;
 
-    Consumer<String> mDisplayErrorCb;
-    Consumer<String> mDisplayInfoCb;
+    final Consumer<String> mDisplayErrorCb;
+    final Consumer<String> mDisplayInfoCb;
 
-    ScheduledExecutorService mExecutor;
+    final ScheduledExecutorService mExecutor;
 
     boolean mDisplayedError;
     int mUpdateFailureCnt;
 
+    /**
+     * Constructor for the AppController
+     * @param service An instance of an ElevatorService to control the remote elevators
+     * @param updater An instance of IUpdater to trigger an update for the GUI
+     * @param logic An instacne of the BusinessLogic object.
+     * @param vm An instacne of the main BuildingViewModel
+     * @param executor An instance of a ScheduledExecutorService to periodically trigger a GUI update and BusinessLogic run.
+     * @param showErrCb A callback to display error messages to the user.
+     * @param showInfoCb A callback to display info messages to the user.
+     */
     public AppController(IElevatorService service, IUpdater updater, BusinessLogic logic, BuildingViewModel vm, ScheduledExecutorService executor, Consumer<String> showErrCb, Consumer<String> showInfoCb) {
         if (service == null || updater == null || logic == null || vm == null || executor == null || showErrCb == null || showInfoCb == null) {
             throw new LogicException("Could not create AppController, one or more of the given objects are null");
@@ -50,11 +62,17 @@ public class AppController {
         mExecutor = executor;
     }
 
+    /**
+     * Creates a task to update the GUI and perform a Businesslogic workflow. Schedules the task periodically.
+     */
     public void start() {
         Runnable task = () -> Platform.runLater(this::updateCycle);
         mExecutor.scheduleAtFixedRate(task, UPDATE_INTERVAL_MS, UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS);
     }
 
+    /**
+     * Stops the periodic execution of the Task created in start.
+     */
     public void stop() {
         mExecutor.shutdown();
         try {
@@ -69,6 +87,9 @@ public class AppController {
         }
     }
 
+    /**
+     * Updates the models, the GUI and performs a BusinessLogic workflow.
+     */
     private void updateCycle() {
         try {
             mUpdater.update();
@@ -86,6 +107,9 @@ public class AppController {
         }
     }
 
+    /**
+     * Processes an occurred excpetion during an update cycle.
+     */
     private void handleUpdateError() {
         mUpdateFailureCnt++;
         boolean connected = mService.connect();

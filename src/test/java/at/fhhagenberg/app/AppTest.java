@@ -73,10 +73,7 @@ class AppTest {
         AppController controller = new AppController(service, updater, logic, vm, realExecutor, showErrorCb, showInfoCb);
 
         controller.start();
-        try {
-            WaitForAsyncUtils.waitFor(500, TimeUnit.MILLISECONDS, () -> false);
-        } catch (TimeoutException ignored) {
-        }
+        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS, () -> false));
         controller.stop();
 
         verify(updater).update();
@@ -141,10 +138,7 @@ class AppTest {
         controller.start();
         WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
         when(service.connect()).thenReturn(true);
-        try {
-            WaitForAsyncUtils.waitFor(500, TimeUnit.MILLISECONDS, () -> false);
-        }
-        catch(TimeoutException ignored) {}
+        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS, () -> false));
         Mockito.reset(updater);
         WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, reconnected::get);
         controller.stop();

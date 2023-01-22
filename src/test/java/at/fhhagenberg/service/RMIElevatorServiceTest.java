@@ -32,6 +32,8 @@ class RMIElevatorServiceTest {
     void testObjectCreationConnectionStringIsNullOrEmpty() {
         assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, ""); });
         assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(null, null); });
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, null); });
+        assertThrows(ElevatorServiceException.class, () -> { new RMIElevatorService(api, ""); });
     }
 
     @Test
