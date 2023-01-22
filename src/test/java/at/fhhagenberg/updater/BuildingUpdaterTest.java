@@ -119,4 +119,23 @@ class BuildingUpdaterTest {
 
         assertEquals(1, updater.getFailureCnt());
     }
+
+    @Test
+    void testUpdateFailsTooOften() {
+        when(service.getFloorNum()).thenReturn(3);
+        when(service.getElevatorNum()).thenReturn(2);
+        doThrow(ElevatorServiceException.class).when(elevatorUpdater1).update();
+
+        ModelFactory factory = new ModelFactory(service);
+        var building = factory.createBuilding();
+        BuildingUpdater updater = new BuildingUpdater(service, elevators, floors, building);
+
+        for (int i = 0; i < BuildingUpdater.MAX_FAILURE_CNT-1; ++i) {
+            updater.update();
+            assertEquals(i+1, updater.getFailureCnt());
+        }
+
+        assertThrows(UpdaterException.class, updater::update);
+        assertThrows(UpdaterException.class, updater::update);
+    }
 }

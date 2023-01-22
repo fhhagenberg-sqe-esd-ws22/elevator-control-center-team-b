@@ -1,30 +1,63 @@
 package at.fhhagenberg.app;
 
+import at.fhhagenberg.logic.AppController;
+import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.mock_observable.MockElevatorService;
 import at.fhhagenberg.service.IElevatorService;
+import at.fhhagenberg.updater.IUpdater;
+import at.fhhagenberg.updater.UpdaterException;
+import at.fhhagenberg.viewmodels.BuildingViewModel;
 import javafx.scene.control.Button;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.testfx.api.FxAssert;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.testfx.service.query.EmptyNodeQueryException;
+import org.testfx.util.WaitForAsyncUtils;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.testfx.util.WaitForAsyncUtils.waitFor;
 
 @ExtendWith(ApplicationExtension.class)
+@ExtendWith(MockitoExtension.class)
 class AppTest {
 
     MockElevatorService mock;
     FxRobot robot;
+
+    @Mock
+    BuildingViewModel vm;
+
+    @Mock
+    IUpdater updater;
+
+    @Mock
+    BusinessLogic logic;
+
+    @Mock
+    Consumer<String> showErrorCb;
+
+    @Mock
+    Consumer<String> showInfoCb;
+
+    @Mock
+    IElevatorService service;
 
     @BeforeEach
     public void setup() throws TimeoutException {
@@ -32,6 +65,85 @@ class AppTest {
         FxToolkit.registerPrimaryStage();
         FxToolkit.setupApplication(() -> new TestECCApp(mock));
         robot = new FxRobot();
+    }
+
+    @Test
+    void testUpdateMechanism() {
+        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, showErrorCb, showInfoCb);
+
+        controller.start();
+        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS + AppController.UPDATE_INTERVAL_MS / 2, TimeUnit.MILLISECONDS, () -> false));
+        controller.stop();
+
+        verify(updater).update();
+        verify(vm).update();
+        verify(logic).setNextTargets();
+    }
+
+    @Test
+    void testUpdateMechanismFailedDueToUpdater() throws TimeoutException {
+        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
+        AtomicBoolean displayedError = new AtomicBoolean(false);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        doThrow(UpdaterException.class).when(updater).update();
+        when(service.connect()).thenReturn(false);
+
+        controller.start();
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
+        controller.stop();
+
+        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT)).connect();
+    }
+
+    @Test
+    void testUpdateMechanismFailedDueToViewModel() throws TimeoutException {
+        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
+        AtomicBoolean displayedError = new AtomicBoolean(false);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        doThrow(UpdaterException.class).when(vm).update();
+        when(service.connect()).thenReturn(false);
+
+        controller.start();
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
+        controller.stop();
+
+        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT)).connect();
+    }
+
+    @Test
+    void testUpdateMechanismFailedDueToLogic() throws TimeoutException {
+        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
+        AtomicBoolean displayedError = new AtomicBoolean(false);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> { displayedError.set(true); }, showInfoCb);
+        doThrow(UpdaterException.class).when(logic).setNextTargets();
+        when(service.connect()).thenReturn(false);
+
+        controller.start();
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
+        controller.stop();
+
+        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT)).connect();
+    }
+
+    @Test
+    void testReconnect() throws TimeoutException {
+        ScheduledExecutorService realExecutor = Executors.newSingleThreadScheduledExecutor();
+        AtomicBoolean displayedError = new AtomicBoolean(false);
+        AtomicBoolean reconnected = new AtomicBoolean(false);
+        AppController controller = new AppController(service, updater, logic, vm, realExecutor, (String s) -> displayedError.set(true), (String s) -> reconnected.set(true));
+        doThrow(UpdaterException.class).when(updater).update();
+        when(service.connect()).thenReturn(false);
+
+        controller.start();
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, displayedError::get);
+        when(service.connect()).thenReturn(true);
+        assertThrows(TimeoutException.class, () -> WaitForAsyncUtils.waitFor(AppController.UPDATE_INTERVAL_MS, TimeUnit.MILLISECONDS, () -> false));
+        Mockito.reset(updater);
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, reconnected::get);
+        controller.stop();
+
+        verify(service, times(AppController.DISPLAY_MESSAGE_FAILURE_CNT + 1)).connect();
     }
 
     @Test

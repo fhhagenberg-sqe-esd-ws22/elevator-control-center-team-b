@@ -60,6 +60,11 @@ public class MockElevatorService implements IElevatorService {
     }
 
     @Override
+    public boolean connect() {
+        return false;
+    }
+
+    @Override
     public int getCommittedDirection(int elevatorNumber) {
         return direction[elevatorNumber];
     }

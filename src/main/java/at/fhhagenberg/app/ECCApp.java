@@ -1,12 +1,14 @@
 package at.fhhagenberg.app;
 
 import at.fhhagenberg.logging.Logging;
+import at.fhhagenberg.logic.AppController;
 import at.fhhagenberg.logic.BusinessLogic;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.model.ModelException;
 import at.fhhagenberg.model.ModelFactory;
 import at.fhhagenberg.service.ElevatorServiceException;
-import sqelevator.IElevator;
+import javafx.stage.WindowEvent;
+
 import at.fhhagenberg.service.IElevatorService;
 import at.fhhagenberg.service.RMIElevatorService;
 import at.fhhagenberg.updater.BuildingUpdater;
@@ -20,8 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-import java.rmi.Naming;
-import java.util.Timer;
+import java.util.concurrent.Executors;
 
 /**
  * JavaFX App
@@ -35,19 +36,26 @@ public class ECCApp extends Application {
     private static final int ELEVATOR_WIDTH = 280;
     private static final int FLOOR_WIDTH = 185;
 
+    private AppController mController;
+
     @Override
     public void start(Stage stage) {
         var service = createService();
-        
+        String shutdown = "\nThe application will now shut down.";
         if (service == null) {
-            showError("The service could not be created!\nThe application will now shut down");
+            showError("The service could not be created!" + shutdown);
             return;
         }
         
         var scene = createScene(service);
 
         if (scene == null) {
-            showError("The app could not be started!\nThe application will now shut down");
+            showError("Could not create the JavaFX scene object!" + shutdown);
+            return;
+        }
+
+        if (mController == null) {
+            showError("Something went wrongduring the apps initialization!" + shutdown);
             return;
         }
 
@@ -60,6 +68,8 @@ public class ECCApp extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.centerOnScreen();
+        stage.onCloseRequestProperty().set((WindowEvent e) -> mController.stop());
+        mController.start();
         stage.show();
     }
 
@@ -75,8 +85,10 @@ public class ECCApp extends Application {
 
             BuildingUpdater updater = updaterFactory.createBuildingUpdater(building);
             BusinessLogic logic = new BusinessLogic(building);
-            BuildingViewModel buildingViewModel = new BuildingViewModel(updater, building, logic, new Timer());
+            BuildingViewModel buildingViewModel = new BuildingViewModel(building, logic);
             BuildingView buildingView = new BuildingView(buildingViewModel);
+
+            mController = new AppController(service, updater, logic, buildingViewModel, Executors.newSingleThreadScheduledExecutor(), ECCApp::showError, ECCApp::showInfo);
 
             return new Scene(buildingView.getLayout(), 1200, 480);
         }
@@ -87,10 +99,27 @@ public class ECCApp extends Application {
         }
     }
 
-    private static void showError(String context) {
+    /**
+     * Displays the given content in an Alert pop up with severity error.
+     * @param content The message to display.
+     */
+    private static void showError(String content) {
+        Logging.getLogger().error(content);
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Critical Error Occurred");
-        alert.setContentText(context);
+        alert.setContentText(content);
+        alert.show();
+    }
+
+    /**
+     * Displays the given content in an Alert pop up with severity information.
+     * @param content The message to display.
+     */
+    private static void showInfo(String content) {
+        Logging.getLogger().info(content);
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setContentText(content);
         alert.show();
     }
 
@@ -99,17 +128,12 @@ public class ECCApp extends Application {
      * @return elevator service
      */
     protected IElevatorService createService() {
-        IElevator controller = null;
-        try {
-            controller = (IElevator) Naming.lookup("rmi://localhost/ElevatorSim");
+        RMIElevatorService service = new RMIElevatorService(null, "rmi://localhost/ElevatorSim");
+        if (service.connect()) {
+            return service;
         }
-        catch (Exception e){
-            // if the service is not available, there is no saving the program
-            Logging.getLogger().error(String.format("Failed to create the service!%n%s", 
-                e.getMessage()));
+        else {
             return null;
         }
-
-        return new RMIElevatorService(controller);
     }
 }

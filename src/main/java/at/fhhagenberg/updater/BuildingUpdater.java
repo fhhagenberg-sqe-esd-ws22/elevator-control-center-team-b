@@ -8,7 +8,6 @@ import at.fhhagenberg.logging.Logging;
 import at.fhhagenberg.model.Building;
 import at.fhhagenberg.service.ElevatorServiceException;
 import at.fhhagenberg.service.IElevatorService;
-import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -17,10 +16,8 @@ public class BuildingUpdater extends UpdaterBase {
     private final List<ElevatorUpdater> mElevatorUpdaters;
     private final List<FloorUpdater> mFloorUpdaters;
 
-    private boolean mShowedError;
-
     private int mFailureCnt;
-    private static final int DISPLAY_MESSAGE_FAILURE_CNT = 100;
+    public static final int MAX_FAILURE_CNT = 10;
 
     /**
      * Constructor for the BuildingUpdater
@@ -35,7 +32,6 @@ public class BuildingUpdater extends UpdaterBase {
 
         mElevatorUpdaters = elevatorUpdaters;
         mFloorUpdaters = floorUpdaters;
-        mShowedError = false;
         mFailureCnt = 0;
     }
 
@@ -65,7 +61,7 @@ public class BuildingUpdater extends UpdaterBase {
     private void handleUpdateError(String message) {
         Logging.getLogger().error(message);
         mFailureCnt++;
-        if (mFailureCnt == DISPLAY_MESSAGE_FAILURE_CNT) {
+        if (mFailureCnt >= MAX_FAILURE_CNT) {
             throw new UpdaterException("The last " + mFailureCnt + " update cycles have failed! Please check your internet connection and restart the application.");
         }
     }
