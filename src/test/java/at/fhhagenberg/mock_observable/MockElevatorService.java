@@ -175,10 +175,6 @@ public class MockElevatorService implements IElevatorService {
         this.elevatorFloor[elevatorNum] = floorNum;
     }
 
-    public void setPosition(int elevatorNum, int position) {
-        this.position[elevatorNum] = position;
-    }
-
     public void setSpeed(int elevatorNum, int speed) {
         this.speed[elevatorNum] = speed;
     }
@@ -187,10 +183,6 @@ public class MockElevatorService implements IElevatorService {
         this.weight[elevatorNum] = weight;
     }
 
-    public void setCapacity(int elevatorNum, int capacity) {
-        this.capacity[elevatorNum] = capacity;
-    }
-    
     public void setFloorDown(int floorNum, boolean wantDown) {
         this.floorDown[floorNum] = wantDown;
     }

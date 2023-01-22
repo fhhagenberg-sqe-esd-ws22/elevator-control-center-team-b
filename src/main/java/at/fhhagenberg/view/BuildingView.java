@@ -1,6 +1,7 @@
 package at.fhhagenberg.view;
 
 import at.fhhagenberg.viewmodels.BuildingViewModel;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -17,9 +18,10 @@ public class BuildingView {
 
     /**
      * creates all elevators
+     *
      * @return all elevators in a HBox
      */
-    private HBox createElevatorLayout(){
+    private HBox createElevatorLayout() {
         var elevatorLayout = new HBox();
         var addElevators = elevatorLayout.getChildren();
         for (var elevator : mViewModel.getElevatorViewModels()) {
@@ -30,21 +32,26 @@ public class BuildingView {
 
     /**
      * creates all floors
+     *
      * @return all floors in a VBox
      */
-    private VBox createFloorLayout(){
+    private VBox createFloorLayout() {
         var floorLayout = new VBox();
         var addFloors = floorLayout.getChildren();
-        var lbl = new Label("Buttons on floors");
-        addFloors.add(lbl);
         for (var floor : mViewModel.getFloorViewModels()) {
             addFloors.add((new FloorView(floor)).getLayout());
         }
+        // reverse the floors, so they are shown in an intuitive order
+        FXCollections.reverse(addFloors);
+
+        //add the heading on top
+        addFloors.add(0, new Label("Buttons on floors"));
         return floorLayout;
     }
 
     /**
      * Constructor of BuildingView
+     *
      * @param viewModel view model with the data of the building to be viewed
      */
     public BuildingView(BuildingViewModel viewModel) {
@@ -57,6 +64,7 @@ public class BuildingView {
 
     /**
      * Getter for the layout
+     *
      * @return layout
      */
     public HBox getLayout() {

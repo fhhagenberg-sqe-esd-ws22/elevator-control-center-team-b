@@ -35,8 +35,8 @@ public class ECCApp extends Application {
     private static final int ELEVATOR_HEIGHT_OFFSET = 215;
 
     // constants for width of the window
-    private static final int ELEVATOR_WIDTH = 250;
-    private static final int FLOOR_WIDTH = 165;
+    private static final int ELEVATOR_WIDTH = 280;
+    private static final int FLOOR_WIDTH = 185;
 
     private AppController mController;
 
